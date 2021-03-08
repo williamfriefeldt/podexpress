@@ -1,0 +1,36 @@
+.create-account-placeholder {
+	display: grid;
+	justify-content: center;
+}
+
+.create-account-placeholder h2 {
+	text-align: center;
+}
+
+.create-account-container {
+	background-color: wheat;
+	color: #003366;
+	padding: 20px;
+	border-radius: 20px;
+	display: grid;
+}
+
+.create-account-label {
+	padding-bottom: 8px;
+}
+
+.create-account-label-not-first {
+	padding-top: 15px;
+}
+
+.create-account-input {
+	background-color: wheat;
+	border: none;
+	border-bottom: 2px solid #003366;
+	outline: none;
+	width: 300px;
+}
+
+.no-match {
+	color: red;
+}

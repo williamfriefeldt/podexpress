@@ -2,11 +2,33 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
+import Header from './header/header';
+import Login from './login/login';
+import CreateAccount from './create-account/create-account';
 import reportWebVitals from './reportWebVitals';
+import {
+  BrowserRouter as Router,
+  Route,
+  Switch
+} from "react-router-dom";
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+		<Router>
+		  <Header />
+	    <Switch>
+	      <Route path="/logga-in">
+	        <Login />
+	      </Route>
+	      <Route path="/skapa-konto">
+	      	<CreateAccount />
+	      </Route>
+	      <Route path="/">
+	        <App />
+	      </Route>
+    </Switch>
+
+		</Router>
   </React.StrictMode>,
   document.getElementById('root')
 );

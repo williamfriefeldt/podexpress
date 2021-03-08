@@ -1,23 +1,34 @@
-import logo from './logo.svg';
+import speakericon from './SpeakerIcon.svg';
 import './App.css';
+import { Link } from "react-router-dom";
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="start-container">
+
+      <div className="intro-container">
+        <h1> Dela podcasts med ditt företag </h1>
+        <h2> Snabbt, smidigt och enkelt. </h2> 
+        <h3>
+        	Skapa ett konto eller hitta 
+        	ditt företag för att lyssna på deras podcasts. Prova gratis
+        	i två veckor eller få ett kostnadsförslag av oss.
+        </h3>
+
+        <div className="intro-buttons">
+	       	<Link to="/skapa-konto"><button className="intro-btn"> Skapa konto </button></Link>
+	       	<button className="intro-btn"> Hitta företag </button>
+       	</div> 
+
+     </div>
+
+		<div className="right-container">
+     	<div className="img-container">
+ 				<img className="speaker-icon" src={speakericon}  alt="Speaker" />
+    	</div>
+    </div>
+
+
     </div>
   );
 }

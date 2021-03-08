@@ -1,0 +1,16 @@
+.header-title {
+	padding-left: 40px;
+}
+
+nav {
+	padding: 30px;
+}
+
+nav a {
+	padding-right: 30px;
+}
+
+.header-container {
+	display: flex;
+	justify-content: space-between;
+}
