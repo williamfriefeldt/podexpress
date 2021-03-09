@@ -1,0 +1,25 @@
+.menu-container {
+	background: #003366;
+  position: absolute;
+  top: 0px;
+  bottom: 0px;
+  width: 0px;
+  transition: width 1.5s;
+}
+
+.show-menu {
+	width: 225px;
+}
+
+.menu-items {
+	display: grid;
+}
+
+.menu-items nav {
+	padding-top: 7.5px;
+}
+
+.menu-items a {
+	padding-bottom: 10px;
+	padding-left: 10px;
+}

@@ -24,13 +24,23 @@
 }
 
 .create-account-input {
-	background-color: wheat;
-	border: none;
-	border-bottom: 2px solid #003366;
-	outline: none;
 	width: 300px;
+}
+
+.create-account-button {
+	margin-top: 25px;
 }
 
 .no-match {
 	color: red;
+}
+
+.no-match-text {
+	max-height: 0px;
+	overflow-y: hidden;
+	transition: max-height 1s;
+}
+
+.show-no-match-text {
+	max-height: 999px;
 }

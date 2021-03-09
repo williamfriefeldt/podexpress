@@ -5,6 +5,7 @@ import App from './App';
 import Header from './header/header';
 import Login from './login/login';
 import CreateAccount from './create-account/create-account';
+import UserPage from './user/user-page/user-page';
 import reportWebVitals from './reportWebVitals';
 import {
   BrowserRouter as Router,
@@ -15,15 +16,20 @@ import {
 ReactDOM.render(
   <React.StrictMode>
 		<Router>
-		  <Header />
 	    <Switch>
 	      <Route path="/logga-in">
+	      	<Header />
 	        <Login />
 	      </Route>
 	      <Route path="/skapa-konto">
+	      	<Header />
 	      	<CreateAccount />
 	      </Route>
+	      <Route path="/företag/:name">
+	      	<UserPage />
+	      </Route>
 	      <Route path="/">
+	      	<Header />
 	        <App />
 	      </Route>
     </Switch>

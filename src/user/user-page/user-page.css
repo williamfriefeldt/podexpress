@@ -1,0 +1,13 @@
+.user-page-container {
+	background-color: wheat;
+  position: absolute;
+  display: flex;
+  top: 0px;
+  width: 100%;
+  bottom: 0px;
+	transition: top 1s;
+}
+
+.show-header {
+	top: 75px;
+}

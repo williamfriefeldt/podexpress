@@ -29,4 +29,31 @@ button {
   font-weight: 600;
   font-size: 15px;
   height: 50px;
+  transition: all 0.2s ease-in-out;
+}
+
+button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 17px rgba(0, 0, 0, 0.35);
+}
+
+.shift-button {
+  background-color: #003366;
+  color: wheat;
+}
+
+input {
+  background-color: wheat;
+  border: none;
+  border-bottom: 2px solid #003366;
+  outline: none;
+}
+
+/* Change the white to any color */
+input:-webkit-autofill,
+input:-webkit-autofill:hover, 
+input:-webkit-autofill:focus, 
+input:-webkit-autofill:active
+{
+ -webkit-box-shadow: 0 0 0 30px wheat inset !important;
 }
