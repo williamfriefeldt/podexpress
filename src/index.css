@@ -66,3 +66,8 @@ input:-webkit-autofill:active
 label {
   font-weight: 600;
 }
+
+p {
+  margin-block-start: 0;
+  margin-block-end: 0;
+}

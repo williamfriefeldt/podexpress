@@ -19,7 +19,7 @@ var RouteComponent = function( state ) {
 		case 'installningar':
 			return <UserSettings />;
 		default:
-			return <UserEpisodes />;
+			return 'Laddar...';
 	}
 
 }
@@ -31,7 +31,7 @@ class UserPage extends React.Component {
 		super(props);
 		this.state = {
 			user: {},
-			location: 'avsnitt',
+			location: '',
 		}	
 
 		this.changeRoute = this.changeRoute.bind(this);
@@ -40,7 +40,7 @@ class UserPage extends React.Component {
 	}
 
   componentDidMount() {
-  	console.log('mounted');
+
   	const user = SignIn();
   	user.then( res => {
   		let user = this.state.user;
@@ -50,7 +50,10 @@ class UserPage extends React.Component {
 	  	userRef.get().then( res => {
 	  		user['email'] = res.data()['email']; 
 	  		user['companyName'] = res.data()['companyName'];
-	  		this.setState({ user });
+	  	  	const path = window.location.pathname.split('/');
+		  	let location = this.state.location;
+		  	location = path[path.length - 1];
+	  		this.setState({ user, location });
 	  	});
    	});
   }
