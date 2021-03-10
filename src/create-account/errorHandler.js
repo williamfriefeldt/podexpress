@@ -1,5 +1,5 @@
 function ErrorHandler( errorCode ) {
-	console.error( errorCode);
+
 	switch ( errorCode ) {
 		case 'auth/weak-password':
 			return 'För svagt lösenord';
@@ -10,6 +10,7 @@ function ErrorHandler( errorCode ) {
 		default:
 			return;
 	}
+	
 }
 
 export default ErrorHandler;

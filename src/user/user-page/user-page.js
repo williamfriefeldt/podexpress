@@ -3,25 +3,44 @@ import SignIn from '../sign-in/sign-in';
 import UserHeader from '../user-header/user-header';
 import UserMenu from '../user-menu/user-menu';
 import UserEpisodes from '../user-episodes/user-episodes';
+import UserSettings from '../user-settings/user-settings';
+import Upload from '../upload/upload';
 
 import { firestore } from '../../store/services/firebase';
 import './user-page.css';
-import {
-  BrowserRouter as Router,
-  Route,
-  Switch
-} from "react-router-dom";
+
+
+var RouteComponent = function( state ) {
+	switch ( state.location ) {
+		case 'avsnitt':
+			return <UserEpisodes newRoute={this.changeRoute} />;
+		case 'ladda-upp':
+			return <Upload />;
+		case 'installningar':
+			return <UserSettings />;
+		default:
+			return <UserEpisodes />;
+	}
+
+}
+
 
 class UserPage extends React.Component {
 
-	constructor() {
-		super();
+	constructor(props) {
+		super(props);
 		this.state = {
-			user: {}
+			user: {},
+			location: 'avsnitt',
 		}	
+
+		this.changeRoute = this.changeRoute.bind(this);
+		RouteComponent = RouteComponent.bind(this);
+
 	}
 
   componentDidMount() {
+  	console.log('mounted');
   	const user = SignIn();
   	user.then( res => {
   		let user = this.state.user;
@@ -36,24 +55,22 @@ class UserPage extends React.Component {
    	});
   }
 
+  changeRoute(state) {
+  	let location = this.state.location;
+  	location = state.location;	
+  	this.setState({location});
+  }
+
 	render() { 
 
 		return (
 			<div>
 				<UserHeader />
 				<div className={`user-page-container ${ this.state.user.uid ? 'show-header' : '' }`}>
-					<UserMenu companyName={this.state.user.companyName} />
-					hej
-					<Router>
-						<Switch>
-							<Route path={`/företag/${this.state.user.companyName}/avsnitt`}>
-								<UserEpisodes />
-							</Route>
-							<Route path={`/företag/${this.state.user.companyName}/ladda-upp`}>
-
-							</Route>
-						</Switch>
-					</Router>
+					<UserMenu companyName={this.state.user.companyName} newRoute={this.changeRoute} />
+					<div className="user-route-container">
+						<RouteComponent location={this.state.location} />
+					</div>
 				</div>
 			</div>
 		);

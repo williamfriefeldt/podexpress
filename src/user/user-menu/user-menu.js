@@ -10,6 +10,8 @@ class UserMenu extends React.Component {
 			show: false,
 			companyName: ''
 		}
+
+		this.route = this.route.bind(this);
 	}
 
 	componentDidMount() {
@@ -23,6 +25,10 @@ class UserMenu extends React.Component {
 
 	}
 
+	route( location ) {
+		this.props.newRoute({location:location});
+	}
+
 	render() {
 
 		return (
@@ -30,9 +36,10 @@ class UserMenu extends React.Component {
 
 				<nav className="menu-items">
 
-						<Link to={`/företag/${this.state.companyName}/avsnitt`}> Avsnitt </Link>
-						<Link to={`/företag/${this.state.companyName}/ladda-upp`}> Ladda upp </Link>
-						<Link to={`/företag/${this.state.companyName}/installningar`}> Inställningar </Link>
+						<Link to={`/företag/${this.state.companyName}/avsnitt`} onClick={ () => { this.route('avsnitt') }}> Avsnitt </Link>
+						<Link to={`/företag/${this.state.companyName}/ladda-upp`} onClick={ () => { this.route('ladda-upp') }}> Ladda upp </Link>
+						<Link to={`/företag/${this.state.companyName}/installningar`} onClick={ () => { this.route('installningar') }}> Inställningar </Link>
+						<Link to={'/'}> Logga ut </Link>
 
 				</nav>
 

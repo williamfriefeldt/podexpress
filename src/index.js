@@ -32,7 +32,7 @@ ReactDOM.render(
 	      	<Header />
 	        <App />
 	      </Route>
-    </Switch>
+    	</Switch>
 
 		</Router>
   </React.StrictMode>,
