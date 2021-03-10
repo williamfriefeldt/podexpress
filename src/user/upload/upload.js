@@ -1,5 +1,6 @@
 import React from 'react';
 import './upload.css';
+import { storage } from '../../store/services/firebase';
 
 class Upload extends React.Component {
 
@@ -21,6 +22,7 @@ class Upload extends React.Component {
 
 		this.setHover = this.setHover.bind(this);
 		this.checkFile = this.checkFile.bind(this);
+		this.uploadFile = this.uploadFile.bind(this);
 	}
 
 	setHover(type) {
@@ -41,6 +43,15 @@ class Upload extends React.Component {
 	setInput() {
 
 	}
+
+	uploadFile() {
+		const storageRef = storage.ref(this.state.fileName.episode);
+    storageRef.put(this.fileEpInput.current.files[0]).then((url) => {
+      url.ref.getDownloadURL().then( url => {
+      	console.log(url);
+      }); 	
+    });
+  }
 
 	render() {
 
@@ -93,7 +104,7 @@ class Upload extends React.Component {
 				</div>
 
 				<div className="center-btn">
-					<button type="button" className="shift-button">
+					<button type="button" className="shift-button" onClick={this.uploadFile}>
 						Ladda upp avsnitt
 					</button>
 				</div>

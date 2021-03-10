@@ -52,7 +52,12 @@ class UserPage extends React.Component {
 	  		user['companyName'] = res.data()['companyName'];
 	  	  	const path = window.location.pathname.split('/');
 		  	let location = this.state.location;
-		  	location = path[path.length - 1];
+				if( path.length === 4 ) {
+		  		location = path[path.length - 1];
+		  	} else {
+		  		location = 'avsnitt';
+		  	}
+		  	console.log(user['uid']);
 	  		this.setState({ user, location });
 	  	});
    	});

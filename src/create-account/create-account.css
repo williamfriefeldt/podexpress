@@ -44,3 +44,7 @@
 .show-no-match-text {
 	max-height: 999px;
 }
+
+.create-account-placeholder p {
+	margin-top: 10px;
+}
