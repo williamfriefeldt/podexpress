@@ -76,8 +76,7 @@ class CreateAccount extends React.Component {
 	  }
 	}
 
-	async createAccount() {
-
+	async createAccount() {	
 		let formComplete = 0;
 		let validators = this.state.validators;
 		for( const key in this.state.inputs ) {
@@ -110,7 +109,7 @@ class CreateAccount extends React.Component {
 			<div className="create-account-placeholder">
 
 				<h2> Skapa konto </h2>
-				<form className="create-account-container" onSubmit={this.createAccount}>
+				<form className="create-account-container">
 
 					<label className="create-account-label">
 						Företagsnamn

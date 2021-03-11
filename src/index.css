@@ -47,6 +47,22 @@ button:hover {
   color: wheat;
 }
 
+.link-button {
+  color: wheat;
+  height: 0px;
+  font-size: 20px;
+  background-color: transparent;
+  text-align: left;
+  padding-left: 9px;
+  margin-top: -10px;
+}
+
+.link-button:hover {  
+  transform: translateX(5px);
+  text-shadow: 0 4px 17px black;
+  box-shadow: none;
+}
+
 input {
   background-color: wheat;
   border: none;
@@ -70,4 +86,8 @@ label {
 p {
   margin-block-start: 0em;
   margin-block-end: 0;
+}
+
+li {
+  list-style: none;
 }

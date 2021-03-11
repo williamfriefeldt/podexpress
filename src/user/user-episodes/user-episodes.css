@@ -5,3 +5,25 @@
 .no-eps-container p {
 	margin-bottom: 10px;
 }
+
+.rhap_container {
+	width: 400px !important;
+	background-color: #003366 !important;
+	border-radius: 20px;
+}
+
+.rhap_time, .rhap_main-controls-button, .rhap_volume-button {
+	color: wheat !important;
+}
+
+.rhap_additional-controls {
+	display: none !important;
+}
+
+.rhap_progress-indicator, .rhap_download-progress, .rhap_volume-bar {
+	background-color: wheat !important;
+}
+
+.rhap_progress-filled, .rhap_volume-indicator {
+	background-color: #E8C782 !important;
+}

@@ -1,5 +1,8 @@
 import React from 'react';
 import './user-episodes.css';
+import { auth, firestore } from '../../store/services/firebase';
+import AudioPlayer from 'react-h5-audio-player';
+import 'react-h5-audio-player/lib/styles.css';
 
 class UserEpisodes extends React.Component {
 
@@ -10,7 +13,30 @@ class UserEpisodes extends React.Component {
 		}
 	}
 
+	async componentDidMount() {
+		const user = auth.currentUser;
+
+	  const userRef = firestore.doc(`companies/${user.uid}`);
+	  const snapshot = await userRef.get();
+	  let episodes = this.state.episodes;
+	  episodes = Object.values(snapshot.data()['episodes']);
+	  this.setState({ episodes });
+	  console.log(episodes);
+	}
+
 	render() {
+
+		const Episodes = () => (
+			<ul>
+				{this.state.episodes.map( (episode, index) => {
+					return <li key={index}>
+										<AudioPlayer
+											src={episode.url}
+										/>
+									</li>
+				})}
+			</ul>
+		);
 
 		return (
 			<div className="episodes-container">
@@ -23,7 +49,7 @@ class UserEpisodes extends React.Component {
 										onClick={() =>{ this.props.newRoute({location:'ladda-upp'}) }}> Ladda upp </button>
 					</div>
 				: 
-					<p> Så många avsnitt finns </p>
+					<Episodes />
 				}	
 
 			</div>

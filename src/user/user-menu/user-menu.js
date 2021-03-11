@@ -1,6 +1,7 @@
 import React from 'react';
 import './user-menu.css'
 import { Link } from "react-router-dom";
+import { auth } from "../../store/services/firebase";
 
 class UserMenu extends React.Component {
 
@@ -29,8 +30,16 @@ class UserMenu extends React.Component {
 		this.props.newRoute({location:location});
 	}
 
-	render() {
+	async logout() {
+		try {
+			await auth.signOut();
+			window.location.href = '/';
+		} catch ( error ) {
+			console.log('Något gick fel...');
+		}
+	}
 
+	render() {
 		return (
 			<div className={`menu-container ${ this.state.show ? 'show-menu' : '' }`}>
 
@@ -39,7 +48,7 @@ class UserMenu extends React.Component {
 						<Link to={`/företag/${this.state.companyName}/avsnitt`} onClick={ () => { this.route('avsnitt') }}> Avsnitt </Link>
 						<Link to={`/företag/${this.state.companyName}/ladda-upp`} onClick={ () => { this.route('ladda-upp') }}> Ladda upp </Link>
 						<Link to={`/företag/${this.state.companyName}/installningar`} onClick={ () => { this.route('installningar') }}> Inställningar </Link>
-						<Link to={'/'}> Logga ut </Link>
+						<button onClick={ () => this.logout() } className="link-button"> Logga ut </button>
 
 				</nav>
 

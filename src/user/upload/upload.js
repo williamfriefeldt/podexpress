@@ -1,6 +1,6 @@
 import React from 'react';
 import './upload.css';
-import { storage } from '../../store/services/firebase';
+import { auth, storage, firestore } from '../../store/services/firebase';
 
 class Upload extends React.Component {
 
@@ -44,13 +44,30 @@ class Upload extends React.Component {
 
 	}
 
-	uploadFile() {
+	async uploadFile() {
 		const storageRef = storage.ref(this.state.fileName.episode);
-    storageRef.put(this.fileEpInput.current.files[0]).then((url) => {
-      url.ref.getDownloadURL().then( url => {
-      	console.log(url);
-      }); 	
-    });
+		try {
+    	const fileRes = await storageRef.put(this.fileEpInput.current.files[0]);
+      const uploadUrl = await fileRes.ref.getDownloadURL();
+
+    	const userID = auth.currentUser.uid;
+			const userRef = firestore.doc(`companies/${userID}`);
+			const userData = await userRef.get();
+			let episodes = userData.data()['episodes'];
+			if( episodes ) {
+
+			} else {
+				episodes = {
+					ep1: {
+						url: uploadUrl
+					}
+				};
+				await userRef.set({ episodes }, { merge:true });
+			};
+
+    } catch ( error ) {
+    	console.log(error);
+    }
   }
 
 	render() {
@@ -101,7 +118,7 @@ class Upload extends React.Component {
 						   className="episode-file-input" type="file" ref={this.fileEpInput} 
 						   onChange={() =>{ this.checkFile('episode')}}/>
 
-				</div>
+				</div>	
 
 				<div className="center-btn">
 					<button type="button" className="shift-button" onClick={this.uploadFile}>

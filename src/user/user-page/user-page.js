@@ -43,6 +43,8 @@ class UserPage extends React.Component {
 
   	const user = SignIn();
   	user.then( res => {
+  		if( res === null ) window.location = '/logga-in';
+
   		let user = this.state.user;
   		user['uid'] = res['uid'];
 
@@ -50,14 +52,13 @@ class UserPage extends React.Component {
 	  	userRef.get().then( res => {
 	  		user['email'] = res.data()['email']; 
 	  		user['companyName'] = res.data()['companyName'];
-	  	  	const path = window.location.pathname.split('/');
+	  	  const path = window.location.pathname.split('/');
 		  	let location = this.state.location;
 				if( path.length === 4 ) {
 		  		location = path[path.length - 1];
 		  	} else {
 		  		location = 'avsnitt';
 		  	}
-		  	console.log(user['uid']);
 	  		this.setState({ user, location });
 	  	});
    	});
