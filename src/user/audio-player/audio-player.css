@@ -1,0 +1,34 @@
+.audio-player-container {
+	position: absolute;
+	bottom: 0px;
+	width: calc(100% - 205px);
+	left: 205px;
+	background-color: #003366;
+	opacity: 0;
+	transition: opacity 1s;
+}
+
+.show-audio-container {
+	opacity: 1;
+}
+
+.rhap_container {
+	background-color: #003366 !important;
+	padding: 20px;
+}
+
+.rhap_time, .rhap_main-controls-button, .rhap_volume-button {
+	color: wheat !important;
+}
+
+.rhap_additional-controls {
+	display: none !important;
+}
+
+.rhap_progress-indicator, .rhap_download-progress, .rhap_volume-bar {
+	background-color: wheat !important;
+}
+
+.rhap_progress-filled, .rhap_volume-indicator {
+	background-color: #E8C782 !important;
+}

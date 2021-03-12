@@ -57,13 +57,13 @@ input.upload-file-input::-webkit-file-upload-button {
 	border-radius: 20px;
 }
 
-.episode {
+.upload-episode {
 	top: 360px;
 	width: 430px;
 	margin-left: 0px;
 }
 
-.episode-hover {
+.upload-episode-hover {
   	transform: scale(1.025);
 	box-shadow: 0 4px 17px rgba(0, 0, 0, 0.35);
 }
@@ -74,7 +74,7 @@ input.upload-file-input::-webkit-file-upload-button {
     height: 60px;
     width: 470px;
     margin-top: 124px;
-    margin-bottom: 50px;
+    margin-bottom: 35px;
 }
 
 .center-btn {

@@ -6,7 +6,7 @@ import UserEpisodes from '../user-episodes/user-episodes';
 import UserSettings from '../user-settings/user-settings';
 import Upload from '../upload/upload';
 
-import { firestore } from '../../store/services/firebase';
+import { firestore, auth } from '../../store/services/firebase';
 import './user-page.css';
 
 
@@ -50,9 +50,19 @@ class UserPage extends React.Component {
 
   		const userRef = firestore.doc(`companies/${user.uid}`);
 	  	userRef.get().then( res => {
+	  		const companyName = res.data()['companyName'];
+	 	  	const path = window.location.pathname.split('/');
+	 	  	if( companyName !== path[2] ) {
+	 	  		auth.signOut().then( () => {
+	 	  			window.location = '/logga-in';
+	 	  		}, error => {
+	 	  			console.log('Något gick fel...');
+	 	  		});
+	 	  	};
+
 	  		user['email'] = res.data()['email']; 
-	  		user['companyName'] = res.data()['companyName'];
-	  	  const path = window.location.pathname.split('/');
+	  		user['companyName'] = companyName;
+
 		  	let location = this.state.location;
 				if( path.length === 4 ) {
 		  		location = path[path.length - 1];

@@ -11,6 +11,10 @@ class Upload extends React.Component {
 				img: false,
 				episode: false
 			},
+			episodeInfo: {
+				episodeName: '',
+				episodeDescription: ''
+			},
 			fileName: {
 				img: '',
 				episode: ''
@@ -21,6 +25,7 @@ class Upload extends React.Component {
 		this.fileEpInput = React.createRef();
 
 		this.setHover = this.setHover.bind(this);
+		this.setInput = this.setInput.bind(this);
 		this.checkFile = this.checkFile.bind(this);
 		this.uploadFile = this.uploadFile.bind(this);
 	}
@@ -40,26 +45,43 @@ class Upload extends React.Component {
 		}
 	}
 
-	setInput() {
-
+	setInput(event) {
+ 		let episodeInfo = this.state.episodeInfo;
+  	episodeInfo[event.target.name] = event.target.value;
+  	this.setState({episodeInfo});
 	}
 
 	async uploadFile() {
-		const storageRef = storage.ref(this.state.fileName.episode);
+		const storageImgRef = storage.ref(this.state.fileName.img);
+		const storageEpRef = storage.ref(this.state.fileName.episode);
 		try {
-    	const fileRes = await storageRef.put(this.fileEpInput.current.files[0]);
-      const uploadUrl = await fileRes.ref.getDownloadURL();
+			const fileImgRes = await storageImgRef.put(this.fileImgInput.current.files[0]);
+			const uploadImgUrl = await fileImgRes.ref.getDownloadURL();
+
+    	const fileEpRes = await storageEpRef.put(this.fileEpInput.current.files[0]);
+      const uploadEpUrl = await fileEpRes.ref.getDownloadURL();
 
     	const userID = auth.currentUser.uid;
 			const userRef = firestore.doc(`companies/${userID}`);
 			const userData = await userRef.get();
 			let episodes = userData.data()['episodes'];
 			if( episodes ) {
-
+				const keys = Object.keys( episodes );
+				const newEp = 'ep' + ( parseInt(keys[keys.length-1].replace('ep','') ) + 1 );
+				episodes[newEp] =  {
+					name: this.state.episodeInfo.episodeName,
+					description: this.state.episodeInfo.episodeDescription,
+					img: uploadImgUrl,
+					url: uploadEpUrl
+				}
+				await userRef.set({ episodes }, { merge:true });
 			} else {
 				episodes = {
 					ep1: {
-						url: uploadUrl
+						name: this.state.episodeInfo.episodeName,
+						description: this.state.episodeInfo.episodeDescription,
+						img: uploadImgUrl,
+						url: uploadEpUrl
 					}
 				};
 				await userRef.set({ episodes }, { merge:true });
@@ -93,7 +115,7 @@ class Upload extends React.Component {
 							Avsnittets namn
 						</label>
 						<input className="input-input" autoComplete="off"
-						   	   type="text" onChange={this.setInput} name="companyName" />
+						   	   type="text" onChange={this.setInput} name="episodeName" />
 					</div>
 				</div>
 
@@ -102,12 +124,12 @@ class Upload extends React.Component {
 					<label className="input-label">
 						Avsnittets beskrivning
 					</label>
-					<textarea className="input-textarea" />
+					<textarea className="input-textarea" onChange={this.setInput} name="episodeDescription" />
 				</div>
 
 				<div>
-					<div className={`upload-file-placeholder episode
-						${this.state.hover.episode ? 'episode-hover' : ''}`}>
+					<div className={`upload-file-placeholder upload-episode
+						${this.state.hover.episode ? 'upload-episode-hover' : ''}`}>
 							{this.state.fileName.episode === '' ?
 								<p><strong> + </strong> Lägg till avsnitt </p>:
 								<p>{this.state.fileName.episode}</p>

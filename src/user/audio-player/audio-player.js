@@ -1,0 +1,23 @@
+import React from 'react';
+import './audio-player.css';
+import AudioPlayer from 'react-h5-audio-player';
+
+class PodexpressAudioPlayer extends React.Component {
+
+	constructor(props) {
+		super(props);
+		this.state = {};
+	}
+
+	render() {
+
+		return (
+			<div className={`audio-player-container ${this.props.src !== '' ? 'show-audio-container' : ''}`}>
+				<AudioPlayer src={this.props.src} />
+				hej
+			</div>
+		)
+	}
+}
+
+export default PodexpressAudioPlayer;
