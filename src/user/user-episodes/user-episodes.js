@@ -1,8 +1,7 @@
 import React from 'react';
 import './user-episodes.css';
 import { auth, firestore } from '../../store/services/firebase';
-import PodexpressAudioPlayer from '../audio-player/audio-player';
-import 'react-h5-audio-player/lib/styles.css';
+import PodexpressAudioPlayer from '../audio-player/audio-player';	
 
 class UserEpisodes extends React.Component {
 
@@ -18,11 +17,16 @@ class UserEpisodes extends React.Component {
 
 	async componentDidMount() {
 		const user = auth.currentUser;
-
 	  const userRef = firestore.doc(`companies/${user.uid}`);
 	  const snapshot = await userRef.get();
 	  let episodes = this.state.episodes;
-	  episodes = Object.values(snapshot.data()['episodes']);
+	  const data = snapshot.data()['episodes'];
+		if( data === undefined ) {
+			episodes = [];
+		} else {
+			episodes = Object.values( data );
+			console.log(episodes)
+		}
 	  this.setState({episodes});
 	}
 
@@ -33,18 +37,30 @@ class UserEpisodes extends React.Component {
 	render() {
 
 		const Episodes = () => (
-			<ul>
-				{this.state.episodes.map( (episode, index) => {
-					return <li key={index} className="episode">
-										<img src={episode.img} />
-										<p>{episode.name}</p>
-										<p>{episode.description}</p>
-										<button onClick={ ()=> {this.setNowPlaying(episode.url)}} className="shift-button"> 
+			<table>
+				<thead>
+					<tr>
+						<th> Omslag </th>
+						<th> Namn </th>
+						<th> Beskrivning </th>
+						<th className={"ep-play-title"}> Spela upp </th>
+					</tr>
+				</thead>
+				<tbody>
+					{this.state.episodes.map( (episode, index) => {
+						return <tr key={index} className="episode">
+							   	<td><img src={episode.img} alt="bla" /></td>
+								<td><p>{episode.name}</p></td>
+								<td className="ep-description">{episode.description}</td>
+								<td>
+										<button onClick={ ()=> {this.setNowPlaying(episode.url)}} className="shift-button ep-btn-play"> 
 											Spela upp 
 										</button>
-									</li>
-				})}
-			</ul>
+									</td>
+						</tr>;
+					})}
+				</tbody>
+			</table>
 		);
 
 		return (

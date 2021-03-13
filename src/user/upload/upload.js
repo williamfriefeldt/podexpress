@@ -1,6 +1,7 @@
 import React from 'react';
 import './upload.css';
 import { auth, storage, firestore } from '../../store/services/firebase';
+import ImgTypes from './imgTypes';
 
 class Upload extends React.Component {
 
@@ -18,7 +19,8 @@ class Upload extends React.Component {
 			fileName: {
 				img: '',
 				episode: ''
-			}
+			},
+			errors: []
 		}
 
 		this.fileImgInput = React.createRef();
@@ -27,6 +29,7 @@ class Upload extends React.Component {
 		this.setHover = this.setHover.bind(this);
 		this.setInput = this.setInput.bind(this);
 		this.checkFile = this.checkFile.bind(this);
+		this.checkInputs = this.checkInputs.bind(this);
 		this.uploadFile = this.uploadFile.bind(this);
 	}
 
@@ -47,21 +50,42 @@ class Upload extends React.Component {
 
 	setInput(event) {
  		let episodeInfo = this.state.episodeInfo;
-  	episodeInfo[event.target.name] = event.target.value;
-  	this.setState({episodeInfo});
+  		episodeInfo[event.target.name] = event.target.value;
+  		this.setState({episodeInfo});
+	}
+
+	checkInputs() {
+		const errors = [];
+		if( this.fileImgInput.current.files.length === 0 ) {
+			errors.push( 'En omslagsbild måste laddas upp' );
+		} else {
+			if( ImgTypes.find( type => type === this.fileImgInput.current.files[0].type) === undefined ) {
+				errors.push( 'Bilden måste ha en godkänd typ' );
+			}
+		}
+		const epInfo = this.state.episodeInfo;
+		if( epInfo.episodeName === '' ) errors.push( 'Avsnittet måste ha ett namn' );
+		if( epInfo.episodeDescription === '' ) errors.push( 'Avsnittet måste ha en beskrivning' );
+
+		if( this.fileEpInput.current.files.length === 0 ) {
+			errors.push( 'Ett ljudklipp måste laddas upp' );
+		}
+		this.setState({errors});
 	}
 
 	async uploadFile() {
+		await this.checkInputs();
+		if(this.state.errors.length > 0 ) return;
 		const storageImgRef = storage.ref(this.state.fileName.img);
 		const storageEpRef = storage.ref(this.state.fileName.episode);
 		try {
 			const fileImgRes = await storageImgRef.put(this.fileImgInput.current.files[0]);
 			const uploadImgUrl = await fileImgRes.ref.getDownloadURL();
 
-    	const fileEpRes = await storageEpRef.put(this.fileEpInput.current.files[0]);
-      const uploadEpUrl = await fileEpRes.ref.getDownloadURL();
+    		const fileEpRes = await storageEpRef.put(this.fileEpInput.current.files[0]);
+      		const uploadEpUrl = await fileEpRes.ref.getDownloadURL();
 
-    	const userID = auth.currentUser.uid;
+    		const userID = auth.currentUser.uid;
 			const userRef = firestore.doc(`companies/${userID}`);
 			const userData = await userRef.get();
 			let episodes = userData.data()['episodes'];
@@ -87,10 +111,10 @@ class Upload extends React.Component {
 				await userRef.set({ episodes }, { merge:true });
 			};
 
-    } catch ( error ) {
-    	console.log(error);
-    }
-  }
+	    } catch ( error ) {
+	    	console.log(error);
+	    }
+  	}
 
 	render() {
 
@@ -141,6 +165,10 @@ class Upload extends React.Component {
 						   onChange={() =>{ this.checkFile('episode')}}/>
 
 				</div>	
+
+				<ul>
+					{this.state.errors.map( (item,i) => <li key={i}> {item} </li>)}
+				</ul>
 
 				<div className="center-btn">
 					<button type="button" className="shift-button" onClick={this.uploadFile}>

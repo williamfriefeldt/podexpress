@@ -14,7 +14,6 @@ class PodexpressAudioPlayer extends React.Component {
 		return (
 			<div className={`audio-player-container ${this.props.src !== '' ? 'show-audio-container' : ''}`}>
 				<AudioPlayer src={this.props.src} />
-				hej
 			</div>
 		)
 	}
