@@ -121,7 +121,10 @@ class Upload extends React.Component {
 		return (
 			<div>
 				<h2> Ladda upp avsnitt </h2>
-				<div className="upload-container">
+				<div className="upload-container">						
+					<label className="input-label">
+						Omslagsbild
+					</label>
 					<div className={`upload-file-placeholder 
 						${this.state.hover.img ? 'upload-file-placeholder-hover' : ''}`}>
 							{this.state.fileName.img === '' ?
@@ -152,6 +155,9 @@ class Upload extends React.Component {
 				</div>
 
 				<div>
+					<label className="input-label label-ep-file">
+						Avsnittets ljudfil
+					</label>
 					<div className={`upload-file-placeholder upload-episode
 						${this.state.hover.episode ? 'upload-episode-hover' : ''}`}>
 							{this.state.fileName.episode === '' ?
@@ -166,12 +172,14 @@ class Upload extends React.Component {
 
 				</div>	
 
-				<ul>
+				<ul className="errors-list">
 					{this.state.errors.map( (item,i) => <li key={i}> {item} </li>)}
 				</ul>
 
 				<div className="center-btn">
-					<button type="button" className="shift-button" onClick={this.uploadFile}>
+					<button type="button" 
+							className={`shift-button ${ this.state.errors.length > 0 ? 'error-btn' : '' }`}
+							onClick={this.uploadFile}>
 						Ladda upp avsnitt
 					</button>
 				</div>

@@ -65,9 +65,11 @@ button:hover {
 
 input {
   background-color: wheat;
-  border: none;
-  border-bottom: 2px solid #003366;
+  color: #003366;
+  border: 2px solid #003366;
   outline: none;
+  padding: 10px;
+  border-radius: 10px;
 }
 
 /* Change the white to any color */
@@ -77,6 +79,11 @@ input:-webkit-autofill:focus,
 input:-webkit-autofill:active
 {
  -webkit-box-shadow: 0 0 0 30px wheat inset !important;
+}
+
+input:focus {
+  background-color: #003366;
+  color: wheat;
 }
 
 label {
