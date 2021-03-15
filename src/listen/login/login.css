@@ -1,0 +1,48 @@
+.login-placeholder {
+	display: grid;
+	justify-content: center;
+}
+
+.login-placeholder h2 {
+	text-align: center;
+}
+
+.login-container {
+	background-color: wheat;
+	color: #003366;
+	padding: 20px;
+	border-radius: 20px;
+	display: grid;
+}
+
+.login-label {
+	padding-bottom: 8px;
+}
+
+.login-input {
+	width: 300px;
+}
+
+.login-label-not-first {
+	padding-top: 15px;
+}
+
+.login-button {
+	margin-top: 25px;
+}
+
+.no-match-text {
+	max-height: 0px;
+	overflow-y: hidden;
+	transition: max-height 1s;
+	color: red;
+	margin-top: 15px;
+}
+
+.no-match-text p {
+	padding-bottom: 10px;
+}
+
+.show-no-match-text {
+	max-height: 999px;
+}

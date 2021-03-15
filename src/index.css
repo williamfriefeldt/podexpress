@@ -110,3 +110,11 @@ th {
 td img {
   margin: 10px;
 }
+
+.flex {
+  display: flex;
+}
+
+.grid { 
+  display: grid;
+}

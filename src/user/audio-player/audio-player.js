@@ -1,6 +1,7 @@
 import React from 'react';
 import './audio-player.css';
 import AudioPlayer from 'react-h5-audio-player';
+import 'react-h5-audio-player/lib/styles.css';
 
 class PodexpressAudioPlayer extends React.Component {
 

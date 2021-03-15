@@ -2,6 +2,8 @@ import React from 'react';
 import './user-episodes.css';
 import { auth, firestore } from '../../store/services/firebase';
 import PodexpressAudioPlayer from '../audio-player/audio-player';	
+import PodcastPassword from './password/podcast-password';
+import SharePodcast from './share/share-podcast';
 
 class UserEpisodes extends React.Component {
 
@@ -66,8 +68,14 @@ class UserEpisodes extends React.Component {
 		return (
 			<div>
 				<div className="episodes-container">
-					<h2> Podavsnitt </h2>
-
+					<div className="episodes-header">
+						<h2> Podavsnitt </h2>
+						<div className="flex">
+							<PodcastPassword />
+							<SharePodcast />
+						</div>
+					</div>
+					
 					{this.state.episodes.length === 0 ? 
 						<div className="no-eps-container">
 							<p> Det finns inga avsnitt uppladdade </p>

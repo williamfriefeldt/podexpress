@@ -6,6 +6,7 @@ import Header from './header/header';
 import Login from './login/login';
 import CreateAccount from './create-account/create-account';
 import UserPage from './user/user-page/user-page';
+import ListenPage from './listen/listen-page/listen-page';
 import reportWebVitals from './reportWebVitals';
 import {
   BrowserRouter as Router,
@@ -27,6 +28,9 @@ ReactDOM.render(
 	      </Route>
 	      <Route path="/företag/:name">
 	      	<UserPage />
+	      </Route>
+	      <Route path="/lyssna/:name?">
+	      	<ListenPage />
 	      </Route>
 	      <Route path="/">
 	      	<Header />

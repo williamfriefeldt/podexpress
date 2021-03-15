@@ -3,6 +3,7 @@ import React from 'react';
 import { auth, firestore } from '../store/services/firebase';
 import ErrorHandler from './errorHandler.js';
 
+
 class CreateAccount extends React.Component {
 
 	constructor() {

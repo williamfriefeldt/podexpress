@@ -5,9 +5,9 @@
 .upload-file-input {
 	cursor: pointer;
 	opacity: 0;
-    height: 70px;
-    width: 180px;
-    margin-left: -110px;
+  height: 70px;
+  width: 180px;
+  margin-left: -110px;
 }
 
 input.upload-file-input::-webkit-file-upload-button {
@@ -15,25 +15,25 @@ input.upload-file-input::-webkit-file-upload-button {
 }
 
 .upload-file-placeholder {
-    position: absolute;
-    top: 110px;
-    padding: 10px;
-    background-color: wheat;
-    color: #003366;
-    border: 2px solid #003366;
-    border-radius: 10px;
-    transition: all 0.2s ease-in-out;
+  position: absolute;
+  top: 110px;
+  padding: 10px;
+  background-color: wheat;
+  color: #003366;
+  border: 2px solid #003366;
+  border-radius: 10px;
+  transition: all 0.2s ease-in-out;
 }
 
 .upload-file-placeholder:not(.episode) p {
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    max-width: 120px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 120px;
 }
 
 .upload-file-placeholder-hover {
-  	transform: scale(1.1);
+  transform: scale(1.1);
 	box-shadow: 0 4px 17px rgba(0, 0, 0, 0.35);
 }
 
@@ -44,9 +44,9 @@ input.upload-file-input::-webkit-file-upload-button {
 
 .input-input {
 	width: 200px;
-	fonr-size: 16px;
+	font-size: 16px;
 	margin-top: 10px;
-    padding: 17.5px;
+  padding: 17.5px;
 }
 
 .input-textarea {
@@ -75,16 +75,16 @@ input.upload-file-input::-webkit-file-upload-button {
 }
 
 .upload-episode-hover {
-  	transform: scale(1.025);
+  transform: scale(1.025);
 	box-shadow: 0 4px 17px rgba(0, 0, 0, 0.35);
 }
 
 .episode-file-input {
-    cursor: pointer;
-    opacity: 0;
-    height: 20px;
-    width: 470px;
-    margin-top: 124px;
+  cursor: pointer;
+  opacity: 0;
+  height: 20px;
+  width: 470px;
+  margin-top: 124px;
 }
 
 .center-btn {
@@ -95,6 +95,7 @@ input.upload-file-input::-webkit-file-upload-button {
 
 .center-btn .shift-button {
 	width: 100%;
+	margin-top: 15px;
 }
 
 .error-btn {
@@ -103,6 +104,7 @@ input.upload-file-input::-webkit-file-upload-button {
 
 .errors-list {
 	color: red;
+	margin-top: 35px;
 }
 
 .label-ep-file {
