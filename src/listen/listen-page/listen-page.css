@@ -1,0 +1,17 @@
+.listen-header {
+	padding-right: 40px;
+}
+
+.listen-title-eps h2 {
+ text-align: center;
+}
+
+.listen-eps-container {
+	margin: 28px 20% 20px 20%;
+}
+
+@media (max-width: 600px) {
+	.listen-eps-container {
+		margin: 10px;
+	}
+}

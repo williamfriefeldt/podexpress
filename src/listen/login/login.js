@@ -1,6 +1,6 @@
 import React from 'react';
 import './login.css';
-import { auth, firestore } from '../../store/services/firebase';
+import { firestore } from '../../store/services/firebase';
 
 class Login extends React.Component {
 
@@ -32,7 +32,6 @@ class Login extends React.Component {
 		 		companyInfo['companyName'] = data.companyName;
 		 		companyInfo['episodes'] = data.episodes;
 		 		companyInfo['password'] = data.password;
-		 		console.log(companyInfo)
 		 		this.setState({companyInfo});	
 		 	});
 		}
@@ -56,21 +55,13 @@ class Login extends React.Component {
 	 	this.setState({ errorState });
 	}
 
-	async login() {
-		console.log('login');
-		let { email, password } = this.state.inputs;
-		try {
-			const { user } = await auth.signInWithEmailAndPassword( email, password );
-			if( this.state.errorState.msg !== '' ) {
-				this.setState({ errorState: { msg: '' }});
-			}
-
-			const userRef = firestore.doc(`companies/${user.uid}`);
-	  	userRef.get().then( res => {
-	  		const companyName = res.data()['companyName'];
-	  		window.location.href = window.location.href.replace( window.location.pathname, '' ) + '/företag/' + companyName;
-	  	});
-		} catch ( error ) {
+	login() {
+		if( this.state.inputs.password === this.state.companyInfo.password ) {
+			this.props.sendCompanyInfo(this.state.companyInfo.episodes);
+		} else {
+			let errorState = this.state.errorState;
+			errorState.msg = 'Fel lösenord';
+			this.setState({errorState});
 		}
 	}
 
@@ -78,7 +69,7 @@ class Login extends React.Component {
 		return (
 			<div className="login-placeholder">
 				<h2> 
-					{this.props.companyName === '' ? 'Hitta företag' : this.props.companyName }
+					{this.props.companyName === '' ? 'Hitta företag' : this.props.companyName}
 				</h2>
 				<form className="login-container">
 					{this.props.companyName === '' ?

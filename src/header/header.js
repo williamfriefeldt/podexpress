@@ -7,7 +7,7 @@ function Header() {
 		<div className="header-container">
 			<h2 className="header-title">Podexpress</h2>
 			<nav>
-				<Link to="/hitta-podcast"> Hitta podcast </Link>
+				<Link to="/lyssna"> Hitta podcast </Link>
 				<Link to="/logga-in"> Logga in </Link>	
 				<Link to="/om"> Om </Link>	
 			</nav>

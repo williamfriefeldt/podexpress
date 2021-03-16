@@ -17,7 +17,6 @@ class PodcastPassword extends React.Component {
 	setInput( event ) {
 		let pw = this.state.password;
   	pw = event.target.value;
-  	console.log(pw);
   	this.setState({ password: pw });
 	}
 
@@ -35,7 +34,7 @@ class PodcastPassword extends React.Component {
 			<div className="password-container">
 				<label> Lösenord </label>
 				<div className="flex">
-					<input type="text" onChange={this.setInput} name="password"/>
+					<input type="text" onChange={this.setInput} name="password" autoComplete="new-password" />
 					<button onClick={this.setNewPw}>Ändra</button>
 				</div>
 			</div>

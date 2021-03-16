@@ -118,3 +118,11 @@ td img {
 .grid { 
   display: grid;
 }
+
+.space {
+  justify-content: space-between; 
+}
+
+.center-content {
+  justify-content: center;
+}

@@ -17,9 +17,8 @@ function App() {
 
         <div className="intro-buttons">
 	       	<Link to="/skapa-konto"><button className="intro-btn"> Skapa konto </button></Link>
-	       	<button className="intro-btn"> Hitta företag </button>
+	       	<Link to="/lyssna"><button className="intro-btn"> Hitta ditt företag </button></Link>
        	</div> 
-
      </div>
 
 		<div className="right-container">

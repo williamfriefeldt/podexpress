@@ -1,0 +1,34 @@
+.listen-episode {
+	background-color: wheat;
+	color: #003366;
+	padding: 20px;
+	width: 100%;
+	border-radius: 15px;
+	margin-bottom: 10px;
+}
+
+.listen-episode button {
+	padding: 0px 10px 0px 10px;
+}
+
+.listen-episode h3 {
+	margin-block: 0px;
+}
+
+.listen-episode-info {
+	margin-left: 15px;
+}
+
+.play-icon {
+	width: 35px;
+	height: 35px;
+}
+
+@media (max-width: 600px) {
+	.listen-episode {
+		padding: 10px 0px 10px 0px;
+	}
+	.listen-episode h3, .listen-episode p {
+		padding: 3px;
+	}
+}

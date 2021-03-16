@@ -1,0 +1,81 @@
+.listen-audio-player-container {
+	position: absolute;
+	bottom: 0px;
+	width: 100%;
+	background-color: wheat;
+	color: #003366;
+	opacity: 0;
+	transition: opacity 1s;
+}
+
+.listen-show-audio-container {
+	opacity: 1;
+}
+
+.listen-show-audio-container img {
+	width: 100px;
+	height: 100px;
+	padding: 5px;
+}
+
+.listen-audio-player-container h3 {
+	position: absolute;
+	left: 150px;
+	bottom: 10px;
+}
+
+.listen-audio-player-container h4 {
+	position: absolute;
+  bottom: 105px;
+  color: wheat;
+  text-align: center;
+  width: 100%;
+  display: none;
+}
+
+.listen-audio-player-container .rhap_container {
+	background-color: wheat !important;
+	padding: 20px;
+	box-shadow: none !important;
+}
+
+.listen-audio-player-container .rhap_time, 
+.listen-audio-player-container .rhap_main-controls-button,
+.listen-audio-player-container .rhap_volume-button {
+	color: #003366 !important;
+}
+
+.listen-audio-player-container .rhap_progress-indicator, 
+.listen-audio-player-container .rhap_download-progress, 
+.listen-audio-player-container .rhap_volume-bar {
+	background-color: #003366 !important;
+}
+
+.listen-audio-player-container .rhap_progress-filled, 
+.listen-audio-player-container .rhap_volume-indicator {
+	background-color: #003366 !important;
+}
+
+.listen-audio-player-container .rhap_progress-bar-show-download {
+	background-color: lightblue !important;
+}
+
+.listen-audio-player-container .rhap_main-controls {
+	width: calc(100% - 100px) !important;
+}
+
+.listen-audio-player-container .rhap_volume-controls {
+	position: absolute;
+  right: 10px;
+ 	width: 100px;
+}
+
+@media (max-width: 600px) {
+	.listen-audio-player-container h3 {
+		display:none;
+	}
+
+	.listen-audio-player-container h4 {
+		display: block;
+	}
+}
