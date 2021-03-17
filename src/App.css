@@ -39,6 +39,30 @@
 	-webkit-animation-name: speaker-icon;
 	animation-name: speaker-icon;
 }
+
+@media (max-width: 750px) {
+  .start-container {
+    display: block;
+  }
+
+  .speaker-icon {
+    display: none;
+  }
+
+  .intro-container {
+    padding-left: 0px;
+    width: 90%;
+    margin: 0% 5%;
+  }
+
+  .intro-container h1, h2 {
+    text-align: center;
+  }
+
+  .intro-container h1 {
+    margin-block-start: 2px;
+  }
+}
     
 @-webkit-keyframes speaker-icon {
   0% {

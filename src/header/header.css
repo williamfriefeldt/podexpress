@@ -14,3 +14,15 @@ nav a {
 	display: flex;
 	justify-content: space-between;
 }
+
+@media (max-width: 750px) {
+	.header-title {
+	    padding-left: 20px !important;
+	}
+
+	.mobile-icon {
+		width: 35px;
+		height: 35px;
+		margin: 17.5px;
+	}
+}

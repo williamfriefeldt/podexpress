@@ -6,9 +6,11 @@
 	background-color: #003366;
 	opacity: 0;
 	transition: opacity 1s;
+	display:none;
 }
 
 .show-audio-container {
+	display: block;
 	opacity: 1;
 }
 

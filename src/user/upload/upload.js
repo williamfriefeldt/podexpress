@@ -82,10 +82,10 @@ class Upload extends React.Component {
 			const fileImgRes = await storageImgRef.put(this.fileImgInput.current.files[0]);
 			const uploadImgUrl = await fileImgRes.ref.getDownloadURL();
 
-    	const fileEpRes = await storageEpRef.put(this.fileEpInput.current.files[0]);
-      const uploadEpUrl = await fileEpRes.ref.getDownloadURL();
+	    	const fileEpRes = await storageEpRef.put(this.fileEpInput.current.files[0]);
+	      	const uploadEpUrl = await fileEpRes.ref.getDownloadURL();
 
-    	const userID = auth.currentUser.uid;
+	    	const userID = auth.currentUser.uid;
 			const userRef = firestore.doc(`companies/${userID}`);
 			const userData = await userRef.get();
 			let episodes = userData.data()['episodes'];

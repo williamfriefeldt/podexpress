@@ -27,7 +27,6 @@ class UserEpisodes extends React.Component {
 			episodes = [];
 		} else {
 			episodes = Object.values( data );
-			console.log(episodes)
 		}
 	  this.setState({episodes});
 	}
@@ -67,7 +66,8 @@ class UserEpisodes extends React.Component {
 
 		return (
 			<div>
-				<div className="episodes-container">
+				<div className={`episodes-container 
+												${this.state.nowPlaying !== '' ? 'episodes-container-play' : ''}`}>
 					<div className="episodes-header">
 						<h2> Podavsnitt </h2>
 						<div className="flex">

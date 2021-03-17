@@ -53,9 +53,8 @@ class UserPage extends React.Component {
 	  		const companyName = res.data()['companyName'];
 	 	  	const path = window.location.pathname.split('/');
 	 	  	if( companyName !== path[2].replace('%20', ' ') ) {
-	 	  		console.log('hello');
 	 	  		auth.signOut().then( () => {
-	 	  			//window.location = '/logga-in';
+	 	  			window.location = '/logga-in';
 	 	  		}, error => {
 	 	  			console.log('Något gick fel...');
 	 	  		});

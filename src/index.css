@@ -96,10 +96,9 @@ p {
 }
 
 table {
-  width: 100%;
+  width: 98%;
   padding-right: 50px;
-  border-collapse: separate; 
-  border-spacing: 8px;
+  border-collapse: collapse; 
 }
 
 th {
@@ -125,4 +124,18 @@ td img {
 
 .center-content {
   justify-content: center;
+}
+
+.mobile {
+  display: none;
+}
+
+@media (max-width: 750px) {
+  .desktop {
+    display: none;
+  }
+
+  .mobile {
+    display: block !important;
+  }
 }

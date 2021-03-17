@@ -3,20 +3,26 @@ import './App.css';
 import { Link } from "react-router-dom";
 
 function App() {
+
   return (
     <div className="start-container">
 
       <div className="intro-container">
-        <h1> Dela podcasts med ditt företag </h1>
+        <h1 className="desktop">Dela podcasts med ditt företag</h1>
+        <h1 className="mobile">Hitta podavsnitt från ditt företag</h1>
         <h2> Snabbt, smidigt och enkelt. </h2> 
-        <h3>
+        <h3 className="desktop">
         	Skapa ett konto eller hitta 
         	ditt företag för att lyssna på deras podcasts. Prova gratis
         	i två veckor eller få ett kostnadsförslag av oss.
         </h3>
+        <h3 className="mobile">
+          Hitta företaget du vill lyssna på, logga in och få direkt tillgång
+          till hela deras katalog av podavsnitt.
+        </h3>
 
         <div className="intro-buttons">
-	       	<Link to="/skapa-konto"><button className="intro-btn"> Skapa konto </button></Link>
+	       	<Link to="/skapa-konto"><button className="intro-btn desktop"> Skapa konto </button></Link>
 	       	<Link to="/lyssna"><button className="intro-btn"> Hitta ditt företag </button></Link>
        	</div> 
      </div>
