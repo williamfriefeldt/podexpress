@@ -5,7 +5,7 @@ import UserMenu from '../user-menu/user-menu';
 import UserEpisodes from '../user-episodes/user-episodes';
 import UserSettings from '../user-settings/user-settings';
 import Upload from '../upload/upload';
-
+import { VscLoading } from 'react-icons/vsc';
 import { firestore, auth } from '../../store/services/firebase';
 import './user-page.css';
 
@@ -32,6 +32,7 @@ class UserPage extends React.Component {
 		this.state = {
 			user: {},
 			location: '',
+			loading: true
 		}	
 
 		this.changeRoute = this.changeRoute.bind(this);
@@ -40,7 +41,6 @@ class UserPage extends React.Component {
 	}
 
   componentDidMount() {
-
   	const user = SignIn();
   	user.then( res => {
   		if( res === null ) window.location = '/logga-in';
@@ -57,6 +57,7 @@ class UserPage extends React.Component {
 	 	  			window.location = '/logga-in';
 	 	  		}, error => {
 	 	  			console.log('Något gick fel...');
+	 	  			this.setState({ loading: false });
 	 	  		});
 	 	  	};
 
@@ -69,7 +70,7 @@ class UserPage extends React.Component {
 		  	} else {
 		  		location = 'avsnitt';
 		  	}
-	  		this.setState({ user, location });
+	  		this.setState({ user, location, loading:false });
 	  	});
    	});
   }
@@ -84,14 +85,23 @@ class UserPage extends React.Component {
 
 		return (
 			<div>
-				<UserHeader />
-				<div className={`user-page-container ${ this.state.user.uid ? 'show-header' : '' }`}>
-					<UserMenu companyName={this.state.user.companyName} newRoute={this.changeRoute} />
-					<div className="user-route-container">
-						<RouteComponent location={this.state.location} />
+				{this.state.loading !== true ?
+					<div>
+						<UserHeader />
+						<div className={`user-page-container ${ this.state.user.uid ? 'show-header' : '' }`}>
+							<UserMenu companyName={this.state.user.companyName} newRoute={this.changeRoute} />
+							<div className="user-route-container">
+								<RouteComponent location={this.state.location} />
+							</div>
+						</div>
 					</div>
-				</div>
+				:
+					<div className="flex center-content">
+						<span className="big-loading"><VscLoading /></span> 
+					</div>
+				}
 			</div>
+
 		);
 
 	}

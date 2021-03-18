@@ -2,6 +2,7 @@ import './create-account.css';
 import React from 'react';
 import { auth, firestore } from '../store/services/firebase';
 import ErrorHandler from './errorHandler.js';
+import { VscLoading } from 'react-icons/vsc';
 
 
 class CreateAccount extends React.Component {
@@ -23,12 +24,14 @@ class CreateAccount extends React.Component {
 			},
 			errorState: {
 				msg: ''
-			}
+			},
+			loading: false
 		}
 
 		this.checkPassword = this.checkPassword.bind(this);
 		this.setInput = this.setInput.bind(this);
 		this.createAccount = this.createAccount.bind(this);
+		this.generateUserInfo = this.generateUserInfo.bind(this);
 
 	}
 
@@ -47,32 +50,29 @@ class CreateAccount extends React.Component {
 
 	setInput( event ) {
  		let inputs = this.state.inputs;
-  	inputs[event.target.name] = event.target.value;
+	  	inputs[event.target.name] = event.target.value;
 
-  	if( inputs[event.target.name] !== '' ) {
-  		let validators = this.state.validators;
-  		validators[event.target.name] = true;
-  		this.setState({ validators });
-  	}
+	  	if( inputs[event.target.name] !== '' ) {
+	  		let validators = this.state.validators;
+	  		validators[event.target.name] = true;
+	  		this.setState({ validators });
+	  	}
 
-    this.setState({ inputs });
+	    this.setState({ inputs });
 	}
 
 	async generateUserInfo( user, companyName ) {
-
 	  if (!user) return;
 	  const userRef = firestore.doc(`companies/${user.uid}`);
 	  const snapshot = await userRef.get();
 	  if (!snapshot.exists) {
 	    const { email } = user;
 	    try {
-	      await userRef.set({
-	        companyName,
-	        email
-	      });
+	      await userRef.set({ companyName, email });
 	      window.location.href = window.location.href.replace( window.location.pathname, '' ) + '/företag/' + companyName;
 	    } catch (error) {
 	      console.error("Error creating user document", error);
+	      this.setState({ loading: false });
 	    }
 	  }
 	}
@@ -91,16 +91,17 @@ class CreateAccount extends React.Component {
 		this.setState({ validators });
 		
 		if( formComplete === 4 ) {
+			this.setState({ loading: true });
 			let inputs = this.state.inputs;
 			try{
-	      const {user} = await auth.createUserWithEmailAndPassword(inputs['email'], inputs['password']);
-	      this.generateUserInfo( user, inputs.companyName );
-	    }
-	    catch(error) {
-	    	let errorState = this.state.errorState;
-	    	errorState['msg'] = ErrorHandler( error.code );
-        this.setState({ errorState });
-	    }
+	      		const {user} = await auth.createUserWithEmailAndPassword(inputs['email'], inputs['password']);
+	      		this.generateUserInfo( user, inputs.companyName );
+	    	}
+	    	catch(error) {
+	    		let errorState = this.state.errorState;
+	    		errorState['msg'] = ErrorHandler( error.code );
+        		this.setState({ errorState, loading: false });
+	    	}
 		}	
 	}
 
@@ -154,7 +155,11 @@ class CreateAccount extends React.Component {
 					</div>
 
 					<button type="button" className="create-account-button shift-button" onClick={this.createAccount}>
-						Skapa konto
+						{this.state.loading ?
+							<span className="loading"><VscLoading /></span> 
+						: 
+							'Skapa konto' 
+						}						
 					</button>
 
 				</form>

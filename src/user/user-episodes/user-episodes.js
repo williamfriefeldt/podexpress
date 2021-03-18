@@ -11,7 +11,8 @@ class UserEpisodes extends React.Component {
 		super(props);
 		this.state = {
 			episodes: [],
-			nowPlaying: ''
+			nowPlaying: '',
+			loading: true
 		}
 
 		this.setNowPlaying = this.setNowPlaying.bind(this);
@@ -28,6 +29,7 @@ class UserEpisodes extends React.Component {
 		} else {
 			episodes = Object.values( data );
 		}
+		console.log(episodes)
 	  this.setState({episodes});
 	}
 
@@ -70,14 +72,15 @@ class UserEpisodes extends React.Component {
 												${this.state.nowPlaying !== '' ? 'episodes-container-play' : ''}`}>
 					<div className="episodes-header">
 						<h2> Podavsnitt </h2>
-						<div className="flex">
-							<PodcastPassword />
-							<SharePodcast />
-						</div>
+						{this.state.episodes.length !== 0 ? 
+							<div className="flex">
+								<PodcastPassword />
+								<SharePodcast />
+							</div> : '' }
 					</div>
 					
 					{this.state.episodes.length === 0 ? 
-						<div className="no-eps-container">
+						<div className="no-eps-container grid center-content">
 							<p> Det finns inga avsnitt uppladdade </p>
 							<button className="upload-eps-btn shift-button"
 											onClick={() =>{ this.props.newRoute({location:'ladda-upp'}) }}> Ladda upp </button>

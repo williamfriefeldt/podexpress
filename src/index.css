@@ -139,3 +139,21 @@ td img {
     display: block !important;
   }
 }
+
+/* LOADIN SPINNER */
+.loading svg {
+    animation: spin 2s linear infinite;
+    height: 30px;
+    width: 30px;
+    margin-right: 15px;
+}
+.big-loading svg {
+    animation: spin 5s linear infinite;
+    height: 250px;
+    width: 250px;
+    margin-top: 50px;
+}
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% {  transform: rotate(359deg); }
+}
