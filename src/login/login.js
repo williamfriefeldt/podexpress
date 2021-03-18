@@ -2,6 +2,7 @@ import React from 'react';
 import './login.css';
 import { auth, firestore } from '../store/services/firebase';
 import ErrorHandler from './errorHandler';
+import { VscLoading } from 'react-icons/vsc';
 
 class Login extends React.Component {
 
@@ -14,7 +15,8 @@ class Login extends React.Component {
 			},
 			errorState: {
 				msg: ''
-			}
+			},
+			loading: false
 		};
 
 		this.setInput = this.setInput.bind(this);
@@ -28,11 +30,12 @@ class Login extends React.Component {
 	}
 
 	async login() {
+		this.setState({ loading: true, errorState:{ msg:'' }});
 		let { email, password } = this.state.inputs;
 		try {
 			const { user } = await auth.signInWithEmailAndPassword( email, password );
 			if( this.state.errorState.msg !== '' ) {
-				this.setState({ errorState: { msg: '' }});
+				this.setState({ errorState: { msg: '' }, loading: false });
 			}
 
 			const userRef = firestore.doc(`companies/${user.uid}`);
@@ -43,7 +46,7 @@ class Login extends React.Component {
 		} catch ( error ) {
     	let errorState = this.state.errorState;
     	errorState['msg'] = ErrorHandler( error.code );
-      this.setState({ errorState });
+      this.setState({ errorState, loading: false });
 		}
 	}
 
@@ -64,7 +67,11 @@ class Login extends React.Component {
 					</div>
 
 					<button type="button" className="create-account-button shift-button" onClick={this.login}>
-						Logga in
+						{this.state.loading ?
+							<span className="loading"><VscLoading /></span> 
+						: 
+							'Logga in' 
+						}	
 					</button>
 
 				</form>

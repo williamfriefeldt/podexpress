@@ -84,7 +84,7 @@ input.upload-file-input::-webkit-file-upload-button {
   opacity: 0;
   height: 20px;
   width: 470px;
-  margin-top: 124px;
+  margin-top: 140px;
 }
 
 .center-btn {
@@ -110,4 +110,13 @@ input.upload-file-input::-webkit-file-upload-button {
 .label-ep-file {
 	position: absolute;
 	top: 345px;
+}
+
+.upload-loading-container {
+	margin: 75px;
+}
+
+.upload-success{
+  justify-content: center;
+  display: contents;
 }

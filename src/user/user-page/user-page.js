@@ -15,7 +15,7 @@ var RouteComponent = function( state ) {
 		case 'avsnitt':
 			return <UserEpisodes newRoute={this.changeRoute} />;
 		case 'ladda-upp':
-			return <Upload />;
+			return <Upload newRoute={this.changeRoute} />;
 		case 'installningar':
 			return <UserSettings />;
 		default:
@@ -40,39 +40,39 @@ class UserPage extends React.Component {
 
 	}
 
-  componentDidMount() {
-  	const user = SignIn();
-  	user.then( res => {
-  		if( res === null ) window.location = '/logga-in';
+  async componentDidMount() {
+  	try {
+	  	const isUser = await SignIn();
+			if( isUser === null ) window.location = '/logga-in';
 
-  		let user = this.state.user;
-  		user['uid'] = res['uid'];
+			let user = this.state.user;
+			user['uid'] = isUser['uid'];
 
-  		const userRef = firestore.doc(`companies/${user.uid}`);
-	  	userRef.get().then( res => {
-	  		const companyName = res.data()['companyName'];
-	 	  	const path = window.location.pathname.split('/');
-	 	  	if( companyName !== path[2].replace('%20', ' ') ) {
-	 	  		auth.signOut().then( () => {
-	 	  			window.location = '/logga-in';
-	 	  		}, error => {
-	 	  			console.log('Något gick fel...');
-	 	  			this.setState({ loading: false });
-	 	  		});
-	 	  	};
+			const userRef = firestore.doc(`companies/${user.uid}`);
+	  	const userData = await userRef.get();
 
-	  		user['email'] = res.data()['email']; 
-	  		user['companyName'] = companyName;
+	  	const companyName = userData.data()['companyName'];
+	 	  const path = window.location.pathname.split('/');
 
-		  	let location = this.state.location;
-				if( path.length === 4 ) {
-		  		location = path[path.length - 1];
-		  	} else {
-		  		location = 'avsnitt';
-		  	}
-	  		this.setState({ user, location, loading:false });
-	  	});
-   	});
+	 	  if( companyName !== path[2].replace('%20', ' ') ) {
+	 	  	await auth.signOut();
+	 	  	window.location = '/logga-in';
+	 	  }
+
+  		user['email'] = userData.data()['email']; 
+  		user['companyName'] = companyName;
+
+	  	let location = this.state.location;
+			if( path.length === 4 ) {
+	  		location = path[path.length - 1];
+	  	} else {
+	  		location = 'avsnitt';
+	  	}
+  		this.setState({ user, location, loading:false });
+
+		} catch ( error ) {
+			console.log(error);
+		};
   }
 
   changeRoute(state) {

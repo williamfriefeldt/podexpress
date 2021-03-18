@@ -4,6 +4,7 @@ import { auth, firestore } from '../../store/services/firebase';
 import PodexpressAudioPlayer from '../audio-player/audio-player';	
 import PodcastPassword from './password/podcast-password';
 import SharePodcast from './share/share-podcast';
+import { VscLoading } from 'react-icons/vsc';
 
 class UserEpisodes extends React.Component {
 
@@ -19,18 +20,21 @@ class UserEpisodes extends React.Component {
 	}
 
 	async componentDidMount() {
-		const user = auth.currentUser;
-	  const userRef = firestore.doc(`companies/${user.uid}`);
-	  const snapshot = await userRef.get();
-	  let episodes = this.state.episodes;
-	  const data = snapshot.data()['episodes'];
-		if( data === undefined ) {
-			episodes = [];
-		} else {
-			episodes = Object.values( data );
+		try {
+			const user = auth.currentUser;
+		  const userRef = firestore.doc(`companies/${user.uid}`);
+		  const snapshot = await userRef.get();
+		  let episodes = this.state.episodes;
+		  const data = snapshot.data()['episodes'];
+			if( data === undefined ) {
+				episodes = [];
+			} else {
+				episodes = Object.values( data );
+			}
+		  this.setState({episodes, loading: false});
+		} catch ( error ) {
+			console.log(error);
 		}
-		console.log(episodes)
-	  this.setState({episodes});
 	}
 
 	setNowPlaying( url ) {
@@ -52,7 +56,7 @@ class UserEpisodes extends React.Component {
 				<tbody>
 					{this.state.episodes.map( (episode, index) => {
 						return <tr key={index} className="episode">
-							   	<td><img src={episode.img} alt="bla" /></td>
+							  <td><img src={episode.img} alt="bla" /></td>
 								<td><p>{episode.name}</p></td>
 								<td className="ep-description">{episode.description}</td>
 								<td>
@@ -79,14 +83,22 @@ class UserEpisodes extends React.Component {
 							</div> : '' }
 					</div>
 					
-					{this.state.episodes.length === 0 ? 
-						<div className="no-eps-container grid center-content">
-							<p> Det finns inga avsnitt uppladdade </p>
-							<button className="upload-eps-btn shift-button"
-											onClick={() =>{ this.props.newRoute({location:'ladda-upp'}) }}> Ladda upp </button>
+					{this.state.loading !== true ?
+						<div>
+							{this.state.episodes.length === 0 ? 
+								<div className="no-eps-container grid center-content">
+									<p> Det finns inga avsnitt uppladdade </p>
+									<button className="upload-eps-btn shift-button"
+													onClick={() =>{ this.props.newRoute({location:'ladda-upp'}) }}> Ladda upp </button>
+								</div>
+							: 
+								<Episodes />
+							}
 						</div>
-					: 
-						<Episodes />
+					:
+						<div className="flex center-content ep-loading">
+							<span className="big-loading"><VscLoading /></span> 
+						</div>
 					}	
 				</div>
 
