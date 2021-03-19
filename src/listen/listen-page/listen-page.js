@@ -4,6 +4,7 @@ import Login from '../login/login';
 import Episodes from '../episodes/episodes';
 import PodexpressAudioPlayer from '../audio-player/audio-player';
 import { firestore } from '../../store/services/firebase';
+import { VscLoading } from 'react-icons/vsc';
 
 class ListenPage extends React.Component {
 
@@ -12,7 +13,8 @@ class ListenPage extends React.Component {
 		this.state = {
 			companyName: '',
 			episodes: [],
-			nowPlayingInfo: {}
+			nowPlayingInfo: {},
+			loading: true
 		};
 
 		this.getCompanyInfo = this.getCompanyInfo.bind(this);
@@ -20,15 +22,15 @@ class ListenPage extends React.Component {
 	}
 
 	async componentDidMount() {
-		console.log('mount comp')
 		const path = window.location.pathname.split('/');
 		if( path.length === 3 ) {
-			console.log('3 way path');
 			const userRef = firestore.collection('companies').where('companyName', '==', path[2].replace('%20',' ') );
 		  const companies =	await userRef.get();
 		 	companies.forEach(company => {
-		 		this.setState({companyName:path[2]});
+		 		this.setState({companyName:path[2], loading:false });
 		 	});
+		} else {
+			this.setState({loading:false})
 		}
 	}
 
@@ -56,7 +58,15 @@ class ListenPage extends React.Component {
 							</div>
 					</div>
 				:
-					<Login companyName={this.state.companyName} sendCompanyInfo={this.getCompanyInfo} />
+					<div>
+						{!this.state.loading ?
+							<Login companyName={this.state.companyName} sendCompanyInfo={this.getCompanyInfo} />
+						:
+							<div className="flex center-content">
+								<span className="big-loading"><VscLoading /></span> 
+							</div>
+						}
+					</div>
 				}
 				{this.state.nowPlayingInfo.name ? <PodexpressAudioPlayer nowPlayingInfo={this.state.nowPlayingInfo} /> : '' }
 			</div>

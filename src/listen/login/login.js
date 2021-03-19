@@ -1,6 +1,7 @@
 import React from 'react';
 import './login.css';
 import { firestore } from '../../store/services/firebase';
+import { VscLoading } from 'react-icons/vsc';
 
 class Login extends React.Component {
 
@@ -14,7 +15,8 @@ class Login extends React.Component {
 			errorState: {
 				msg: ''
 			},
-			companyInfo: {}
+			companyInfo: {},
+			loading: false
 		};
 
 		this.setInput = this.setInput.bind(this);
@@ -32,7 +34,7 @@ class Login extends React.Component {
 		 		companyInfo['companyName'] = data.companyName;
 		 		companyInfo['episodes'] = data.episodes;
 		 		companyInfo['password'] = data.password;
-		 		this.setState({companyInfo});	
+		 		this.setState({companyInfo, loading:false});	
 		 	});
 		}
 	}
@@ -44,15 +46,15 @@ class Login extends React.Component {
 	}
 
 	async findCompany() {
+		this.setState({loading:true, errorState:{msg:''}});
 		const userRef = firestore.collection('companies').where('companyName', '==', this.state.inputs.companyName );
 	  const companies =	await userRef.get();
 	 	companies.forEach( company => {
-	 		window.location.href = '/lyssna/' + company.data().companyName;
+	 		window.location = '/lyssna/' + company.data().companyName;
 	 	});
-
 	 	let errorState = this.state.errorState;
 	 	errorState.msg = 'Inget företag hittades';
-	 	this.setState({ errorState });
+	 	this.setState({ errorState, loading:false });
 	}
 
 	login() {
@@ -94,7 +96,11 @@ class Login extends React.Component {
 								this.login();
 							}
 						}}>
-						{this.props.companyName === '' ? 'Hitta företag' : 'Logga in' }
+						{!this.state.loading ?
+							<span>{this.props.companyName === '' ? 'Hitta företag' : 'Logga in' }</span>
+							:
+							<span className="loading"><VscLoading /></span> 
+						}
 					</button>
 
 				</form>
