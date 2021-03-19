@@ -20,8 +20,10 @@ class ListenPage extends React.Component {
 	}
 
 	async componentDidMount() {
+		console.log('mount comp')
 		const path = window.location.pathname.split('/');
 		if( path.length === 3 ) {
+			console.log('3 way path');
 			const userRef = firestore.collection('companies').where('companyName', '==', path[2].replace('%20',' ') );
 		  const companies =	await userRef.get();
 		 	companies.forEach(company => {

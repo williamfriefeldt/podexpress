@@ -1,13 +1,15 @@
 import React from 'react';
 import './podcast-password.css';
 import { auth, firestore } from '../../../store/services/firebase';
+import { VscLoading } from 'react-icons/vsc';
 
 class PodcastPassword extends React.Component {
 
-	constructor() {
+	constructor(props) {
 		super();
 		this.state = {
-			password: ''
+			password: props.password,
+			loading: false
 		};
 
 		this.setInput = this.setInput.bind(this);
@@ -21,9 +23,16 @@ class PodcastPassword extends React.Component {
 	}
 
 	async setNewPw() {
+		this.setState({loading:true});
   	const userID = auth.currentUser.uid;
 		const userRef = firestore.doc(`companies/${userID}`);
-		await userRef.set({ password: this.state.password }, { merge:true });
+		try {
+			await userRef.set({ password: this.state.password }, { merge:true });
+			this.setState({loading:false});
+		} catch(error) {
+			console.log(error);
+		}
+		
 	}
 
 
@@ -32,10 +41,12 @@ class PodcastPassword extends React.Component {
 
 		return (
 			<div className="password-container">
-				<label> Lösenord </label>
+				<label> Lösenord på podcast </label>
 				<div className="flex">
-					<input type="text" onChange={this.setInput} name="password" autoComplete="new-password" />
-					<button onClick={this.setNewPw}>Ändra</button>
+					<input type="text" onChange={this.setInput} name="password" value={this.state.password} autoComplete="new-password" />
+					<button onClick={this.setNewPw}>
+						{this.state.loading ?	<span className="loading password-loading"><VscLoading /></span> :	'Ändra'}	
+					</button>
 				</div>
 			</div>
 		)

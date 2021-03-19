@@ -68,7 +68,7 @@ class CreateAccount extends React.Component {
 	  if (!snapshot.exists) {
 	    const { email } = user;
 	    try {
-	      await userRef.set({ companyName, email });
+	      await userRef.set({ companyName, email, password: 'jW92kLP' });
 	      window.location.href = window.location.href.replace( window.location.pathname, '' ) + '/företag/' + companyName;
 	    } catch (error) {
 	      console.error("Error creating user document", error);
@@ -94,13 +94,13 @@ class CreateAccount extends React.Component {
 			this.setState({ loading: true });
 			let inputs = this.state.inputs;
 			try{
-	      		const {user} = await auth.createUserWithEmailAndPassword(inputs['email'], inputs['password']);
-	      		this.generateUserInfo( user, inputs.companyName );
+	      	const {user} = await auth.createUserWithEmailAndPassword(inputs['email'], inputs['password']);
+	      	this.generateUserInfo( user, inputs.companyName );
 	    	}
 	    	catch(error) {
 	    		let errorState = this.state.errorState;
 	    		errorState['msg'] = ErrorHandler( error.code );
-        		this.setState({ errorState, loading: false });
+        	this.setState({ errorState, loading: false });
 	    	}
 		}	
 	}

@@ -37,7 +37,6 @@ ReactDOM.render(
 	        <App />
 	      </Route>
     	</Switch>
-
 		</Router>
   </React.StrictMode>,
   document.getElementById('root')

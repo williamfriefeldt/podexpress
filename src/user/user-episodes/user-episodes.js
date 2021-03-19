@@ -13,7 +13,8 @@ class UserEpisodes extends React.Component {
 		this.state = {
 			episodes: [],
 			nowPlaying: '',
-			loading: true
+			loading: true,
+			password: ''
 		}
 
 		this.setNowPlaying = this.setNowPlaying.bind(this);
@@ -31,7 +32,7 @@ class UserEpisodes extends React.Component {
 			} else {
 				episodes = Object.values( data );
 			}
-		  this.setState({episodes, loading: false});
+		  this.setState({episodes, loading: false, password: snapshot.data()['password']});
 		} catch ( error ) {
 			console.log(error);
 		}
@@ -57,7 +58,7 @@ class UserEpisodes extends React.Component {
 					{this.state.episodes.map( (episode, index) => {
 						return <tr key={index} className="episode">
 							  <td><img src={episode.img} alt="bla" /></td>
-								<td><p>{episode.name}</p></td>
+								<td><h3>{episode.name}</h3></td>
 								<td className="ep-description">{episode.description}</td>
 								<td>
 										<button onClick={ ()=> {this.setNowPlaying(episode.url)}} className="shift-button ep-btn-play"> 
@@ -78,7 +79,7 @@ class UserEpisodes extends React.Component {
 						<h2> Podavsnitt </h2>
 						{this.state.episodes.length !== 0 ? 
 							<div className="flex">
-								<PodcastPassword />
+								<PodcastPassword  password={this.state.password} />
 								<SharePodcast />
 							</div> : '' }
 					</div>
