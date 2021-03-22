@@ -7,6 +7,7 @@ import Login from './login/login';
 import CreateAccount from './create-account/create-account';
 import UserPage from './user/user-page/user-page';
 import ListenPage from './listen/listen-page/listen-page';
+import About from './about/about';
 import reportWebVitals from './reportWebVitals';
 import {
   BrowserRouter as Router,
@@ -35,6 +36,7 @@ ReactDOM.render(
 	      <Route path="/">
 	      	<Header />
 	        <App />
+	        <About />
 	      </Route>
     	</Switch>
 		</Router>

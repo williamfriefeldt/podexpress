@@ -5,6 +5,7 @@ import Episodes from '../episodes/episodes';
 import PodexpressAudioPlayer from '../audio-player/audio-player';
 import { firestore } from '../../store/services/firebase';
 import { VscLoading } from 'react-icons/vsc';
+import { Link } from 'react-router-dom';
 
 class ListenPage extends React.Component {
 
@@ -48,7 +49,13 @@ class ListenPage extends React.Component {
 			<div className="listen-container">
 				<div className="flex space">
 					<h2 className="header-title">Podexpress</h2>
-					{this.state.episodes.length !== 0 ? <h2 className="listen-header"> {this.state.companyName} </h2> : '' }
+					{this.state.episodes.length !== 0 ? 
+						<h2 className="listen-header"> {this.state.companyName} </h2> 
+					: 
+						<nav>
+							<Link to={'/'}>Hem</Link>
+						</nav>	
+					}
 				</div>
 				{this.state.episodes.length !== 0 ? 
 					<div className="listen-title-eps">

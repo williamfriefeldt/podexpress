@@ -130,6 +130,14 @@ td img {
   display: none;
 }
 
+.full-width {
+  width: 100%;
+}
+
+.center-text {
+  text-align: center;
+}
+
 @media (max-width: 750px) {
   .desktop {
     display: none;
@@ -142,18 +150,18 @@ td img {
 
 /* LOADIN SPINNER */
 .loading svg {
-    animation: spin 2s linear infinite;
-    height: 30px;
-    width: 30px;
-    margin-right: 15px;
+  animation: spin 2s linear infinite;
+  height: 30px;
+  width: 30px;
+  margin-right: 15px;
 }
 .big-loading svg {
-    animation: spin 5s linear infinite;
-    height: 250px;
-    width: 250px;
-    margin-top: 50px;
+  animation: spin 5s linear infinite;
+  height: 250px;
+  width: 250px;
+  margin-top: 50px;
 }
 @keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% {  transform: rotate(359deg); }
+  0% { transform: rotate(0deg); }
+  100% {  transform: rotate(359deg); }
 }

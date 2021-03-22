@@ -1,5 +1,6 @@
 .start-container {
 	display: flex;
+  height: calc(100vh - 83px);
 }
 
 .intro-container {
@@ -40,6 +41,19 @@
 	animation-name: speaker-icon;
 }
 
+.about-scroll-container {
+  margin-bottom: 5vh;
+  cursor: pointer;
+}
+
+.about-scroll-container h2 {
+  margin-block-end: 0px;
+}
+
+.down-icon {
+  height: 40px;
+}
+
 @media (max-width: 750px) {
   .start-container {
     display: block;
@@ -57,10 +71,6 @@
 
   .intro-container h1, h2 {
     text-align: center;
-  }
-
-  .intro-container h1 {
-    margin-block-start: 2px;
   }
 }
     

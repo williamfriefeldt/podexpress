@@ -1,0 +1,17 @@
+.about-container {
+	margin-left: 20%;
+	width: 60%;
+	text-align: center;
+}
+
+.about-container article {
+	font-size: 20px;
+	margin-bottom: 100px;
+}
+
+@media (max-width: 750px) {
+	.about-container {
+		margin-left: 5%;
+		width: 90%;
+	}
+}
