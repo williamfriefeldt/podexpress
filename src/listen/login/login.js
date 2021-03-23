@@ -25,11 +25,14 @@ class Login extends React.Component {
 	}
 
 	async componentDidUpdate() {
-		if( !this.state.companyInfo.companyName ) {
-			const userRef = firestore.collection('companies').where('companyName', '==', this.props.companyName );
+		console.log(this.state);
+		if(!this.state.companyInfo.companyName ) {
+			const userRef = firestore.collection('companies').where('companyName', '==', this.props.companyName.replace('%20',' ') );
 		  const companies =	await userRef.get();
+			console.log('hej');
 		 	companies.forEach( company => {
 		 		const data = company.data();
+				 console.log('data');
 		 		let companyInfo = this.state.companyInfo;
 		 		companyInfo['companyName'] = data.companyName;
 		 		companyInfo['episodes'] = data.episodes;
@@ -58,6 +61,7 @@ class Login extends React.Component {
 	}
 
 	login() {
+		console.log(this.state);
 		if( this.state.inputs.password === this.state.companyInfo.password ) {
 			this.props.sendCompanyInfo(this.state.companyInfo.episodes);
 		} else {
