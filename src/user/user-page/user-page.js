@@ -5,6 +5,7 @@ import UserMenu from '../user-menu/user-menu';
 import UserEpisodes from '../user-episodes/user-episodes';
 import UserSettings from '../user-settings/user-settings';
 import Upload from '../upload/upload';
+import UserPodcast from '../user-podcast/user-podcast';
 import { VscLoading } from 'react-icons/vsc';
 import { firestore, auth } from '../../store/services/firebase';
 import './user-page.css';
@@ -14,6 +15,8 @@ var RouteComponent = function( state ) {
 	switch ( state.location ) {
 		case 'avsnitt':
 			return <UserEpisodes newRoute={this.changeRoute} />;
+		case 'podcast':
+			return <UserPodcast />
 		case 'ladda-upp':
 			return <Upload newRoute={this.changeRoute} />;
 		case 'installningar':

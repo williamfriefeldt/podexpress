@@ -1,0 +1,21 @@
+.no-pod-container {
+  margin-top: 100px;
+}
+.no-pod-container p {
+  margin-bottom: 10px;
+}
+
+.create-pod {
+  position: fixed;
+  right: 0;
+  top: 75px;
+  width: 0px;
+  transition: width 2s;
+  background-color: #003366;
+  color: wheat;
+  height: 100%;
+}
+
+.create-pod-open {
+  width: 400px;
+}

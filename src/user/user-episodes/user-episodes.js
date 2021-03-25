@@ -5,6 +5,7 @@ import PodexpressAudioPlayer from '../audio-player/audio-player';
 import PodcastPassword from './password/podcast-password';
 import SharePodcast from './share/share-podcast';
 import { VscLoading } from 'react-icons/vsc';
+import { AiFillPlayCircle } from 'react-icons/ai';
 
 class UserEpisodes extends React.Component {
 
@@ -51,18 +52,20 @@ class UserEpisodes extends React.Component {
 						<th> Omslag </th>
 						<th> Namn </th>
 						<th> Beskrivning </th>
+						<th> Podcast </th>
 						<th className={"ep-play-title"}> Spela upp </th>
 					</tr>
 				</thead>
 				<tbody>
 					{this.state.episodes.map( (episode, index) => {
 						return <tr key={index} className="episode">
-							  <td><img src={episode.img} alt="bla" /></td>
+							  <td><img src={episode.img} alt="Episode cover" /></td>
 								<td><h3>{episode.name}</h3></td>
 								<td className="ep-description">{episode.description}</td>
+								<td>{episode.podcast ? episode.podcast : 'Ingen'}</td>
 								<td>
-										<button onClick={ ()=> {this.setNowPlaying(episode.url)}} className="shift-button ep-btn-play"> 
-											Spela upp 
+										<button onClick={ ()=> {this.setNowPlaying(episode.url)}} className="ep-btn-play"> 
+											<AiFillPlayCircle className="play-icon" />
 										</button>
 									</td>
 						</tr>;
