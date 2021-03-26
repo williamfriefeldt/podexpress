@@ -1,0 +1,30 @@
+.create-pod-container {
+  margin: 20px;
+}
+.create-pod-file-placeholder {
+  margin-top: 10px;
+  display: grid;
+}
+.create-pod-file-placeholder button {
+  margin-top: 10px;
+  height: 35px;
+}
+.create-pod-file-placeholder textarea {
+  width: 318px;
+}
+.create-pod-file-placeholder textarea:focus {
+  width: 318px;
+  border: 2px solid wheat;
+}
+.create-pod-input {
+  width: 338px;
+  margin-top: 10px;
+}
+.create-pod-input:focus {
+  border: 2px solid wheat;
+}
+.create-pod-upload button {
+  width: 100%;
+  margin-top: 20px;
+  height: 40px;
+}

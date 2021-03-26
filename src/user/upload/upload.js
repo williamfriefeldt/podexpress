@@ -57,8 +57,8 @@ class Upload extends React.Component {
 
 	setInput(event) {
  		let episodeInfo = this.state.episodeInfo;
-  		episodeInfo[event.target.name] = event.target.value;
-  		this.setState({episodeInfo});
+  	episodeInfo[event.target.name] = event.target.value;
+  	this.setState({episodeInfo});
 	}
 
 	checkInputs() {
