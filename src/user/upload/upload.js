@@ -140,7 +140,7 @@ class Upload extends React.Component {
 	render() {
 
 		return (
-			<div className="flex">
+			<div className="flex upload-flex">
 				<div>
 					<h2> Ladda upp avsnitt </h2>
 					<div className="upload-container">						

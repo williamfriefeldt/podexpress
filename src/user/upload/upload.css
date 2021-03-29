@@ -2,6 +2,16 @@
 	display: flex;
 }
 
+.upload-flex {
+	background-color: wheat;
+    margin-left: -20px;
+    padding-left: 20px;
+}
+
+.upload-flex .center-btn {
+	margin-bottom: 20px;
+}
+
 .upload-file-input {
 	cursor: pointer;
 	opacity: 0;

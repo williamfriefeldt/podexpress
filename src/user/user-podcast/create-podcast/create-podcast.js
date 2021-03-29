@@ -7,9 +7,6 @@ class CreatePodcast extends React.Component {
   constructor() {
     super();
     this.state = {
-      hover: {
-        img: false
-      },
       podcastInfo: {
         name: '',
         description: '',
@@ -17,7 +14,7 @@ class CreatePodcast extends React.Component {
       }, 
       errors: []
     }
-
+    this.fileImgInput = React.createRef();
     this.setInput = this.setInput.bind(this);
   }
 
@@ -50,6 +47,8 @@ class CreatePodcast extends React.Component {
                 <button><strong> + </strong> Lägg till bild </button>:
                 <p>{this.state.podcastInfo.img}</p>
               }
+              <input className="upload-file-input" type="file" ref={this.fileImgInput} 
+                     onChange={() =>{ this.checkFile('img')}}/>
 						</div>
           
             <div className="create-pod-file-placeholder">
