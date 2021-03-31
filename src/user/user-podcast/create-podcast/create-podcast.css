@@ -1,18 +1,24 @@
 .create-pod-container {
   margin: 20px;
 }
-.create-pod-file-placeholder {
+.create-pod-text-placeholder, .create-pod-file-placeholder {
   margin-top: 10px;
   display: grid;
 }
 .create-pod-file-placeholder button {
-  margin-top: 10px;
+  margin-top: 24px;
   height: 35px;
+  width: 360px;
+  position: absolute;
 }
-.create-pod-file-placeholder textarea {
+.create-pod-file-placeholder input {
+  opacity: 0;
+  cursor: pointer;
+}
+.create-pod-text-placeholder textarea {
   width: 318px;
 }
-.create-pod-file-placeholder textarea:focus {
+.create-pod-text-placeholder textarea:focus {
   width: 318px;
   border: 2px solid wheat;
 }

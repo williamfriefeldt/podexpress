@@ -2,6 +2,7 @@ import React from 'react';
 import './user-podcast.css';
 import { VscLoading } from 'react-icons/vsc';
 import CreatePodcast from './create-podcast/create-podcast';
+import { auth, firestore } from '../../store/services/firebase';
 
 class UserPodcast extends React.Component {
 
@@ -16,8 +17,15 @@ class UserPodcast extends React.Component {
     this.openCreatePod = this.openCreatePod.bind(this);
   }
 
-  componentDidMount() {
-    setTimeout( ()=> this.setState({loading:false}), 1000);
+  async componentDidMount() {
+    this.setState({loading:false});
+    const userID = auth.currentUser.uid;
+    const userRef = firestore.doc(`companies/${userID}`);
+    const userData = await userRef.get();
+    let podcasts = userData.data()['podcasts'];
+    if(podcasts) {
+      this.setState({podcasts: Object.values( podcasts )});
+    }
   }
 
   openCreatePod() {
@@ -26,6 +34,18 @@ class UserPodcast extends React.Component {
   }
 
   render() {
+
+    const Podcasts = () => (
+      <div className="podcasts">
+        {this.state.podcasts.map( (podcast, index) => {
+          return <div className="podcast grid center-content">
+                    <img className="podcast-img" src={podcast.img} alt="podcast cover" />
+                    <h3>{podcast.name}</h3>
+                  </div>;
+        })}
+      </div>
+    );
+
     return(
       <div className="user-pod-container">
         <h2>Podcasts</h2>
@@ -33,7 +53,7 @@ class UserPodcast extends React.Component {
         {!this.state.loading ?
           <div className="user-pod-items">
             {this.state.podcasts.length !== 0 ? 
-              '' 
+              <Podcasts />
             :
               <div className="no-pod-container grid center-content">
                 <p> Det finns ingen podcast </p>

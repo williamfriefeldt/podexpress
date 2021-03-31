@@ -19,3 +19,26 @@
 .create-pod-open {
   width: 400px;
 }
+.podcasts {
+  display: flex;
+}
+.podcast {
+ width: 225px;
+ border: 2px solid #003366;
+ border-radius: 10px;
+ margin: 5px;
+ transition: all 0.2s ease-in-out;
+ cursor: pointer;
+}
+.podcast:hover {
+ transform: translateY(-3px);
+ box-shadow: 0 4px 17px rgba(0, 0, 0, 0.35);
+}
+.podcast-img {
+  width: 200px;
+  height: 200px;
+  margin-top: 15px;
+}
+.podcast h3 {
+  text-align: center;
+}
