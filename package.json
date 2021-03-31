@@ -1,5 +1,5 @@
 {
-  "name": "podexpress",
+  "name": "yes",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -43,5 +43,9 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  }
+  },
+  "main": "index.js",
+  "repository": "https://github.com/williamfriefeldt/podexpress.git",
+  "author": "WP\\friwi <william.friefeldt@arbetsformedlingen.se>",
+  "license": "MIT"
 }
