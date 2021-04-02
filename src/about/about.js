@@ -10,8 +10,8 @@ function About() {
 			<h1>Om Podexpress</h1>
 
 			<article>
-				Podcasts är ett av världens snabbast växande medium och har gjort digital kommunikation ännu mer tillgänglig. 
-				Det har växt fram som en nöjesmedium men finns nu i alla former, ämnen och branscher. Det senaste är att företag
+				Podcasts är ett av världens snabbast växande medie och har gjort digital kommunikation ännu mer tillgänglig. 
+				Det har växt fram som en nöjesmedie men finns nu i alla former, ämnen och branscher. Det senaste är att företag
 				gör egna podcasts för att dela med sig av information till medarbetare och kunder.
 				<br /> <br />
 				Podexpress är ett av de första företagen som erbjuder distribuering av podcasts till en sluten krets. Skapa ett konto,

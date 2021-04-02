@@ -47,16 +47,7 @@ class ListenPage extends React.Component {
 
 		return (
 			<div className="listen-container">
-				<div className="flex space">
-					<h2 className="header-title">Podexpress</h2>
-					{this.state.episodes.length !== 0 ? 
-						<h2 className="listen-header"> {this.state.companyName} </h2> 
-					: 
-						<nav>
-							<Link to={'/'}>Hem</Link>
-						</nav>	
-					}
-				</div>
+
 				{this.state.episodes.length !== 0 ? 
 					<div className="listen-title-eps">
 							<h2> Podavsnitt </h2>

@@ -1,49 +1,42 @@
-import speakericon from './SpeakerIcon.svg';
+import React from 'react';
 import './App.css';
-import { Link } from "react-router-dom";
-import { AiOutlineArrowDown } from "react-icons/ai";
+import "react-tiger-transition/styles/main.min.css";
+import { Navigation, Route } from "react-tiger-transition";
+import Login from './login/login';
+import CreateAccount from './create-account/create-account';
+import UserPage from './user/user-page/user-page';
+import ListenPage from './listen/listen-page/listen-page';
+import About from './about/about';
+import Start from './start/start';
+import Header from './header/header';
 
 function App() {
 
-  const scrollToAbout = () => window.scrollTo({ top: window.innerHeight, behavior: 'smooth' });
+    const OnScroll = () => console.log('Scroll');
 
-  return (
-    <div className="start-container">
+    return (
+      <Navigation>
+          <Header />
+          <Route path="/logga-in">
+            <Login />
+          </Route>
+          <Route path="/skapa-konto">
+            <CreateAccount />
+          </Route>
+          <Route path="/företag/:name">
+            <UserPage />
+          </Route>
+          <Route path="/lyssna/:name?">
+            <ListenPage />
+          </Route>
+          <Route exact path="/" screen>
+            <Start onScroll={OnScroll} />
+            <About />
+          </Route>
+      </Navigation>
 
-      <div className="intro-container">
-        <h1 className="desktop">Dela podcasts med ditt företag</h1>
-        <h1 className="mobile">Hitta podavsnitt från ditt företag</h1>
-        <h2> Snabbt, smidigt och enkelt. </h2> 
-        <h3 className="desktop">
-        	Skapa ett konto eller hitta 
-        	ditt företag för att lyssna på deras podcasts. Prova gratis
-        	i två veckor eller få ett kostnadsförslag av oss.
-        </h3>
-        <h3 className="mobile">
-          Hitta företaget du vill lyssna på, logga in och få direkt tillgång
-          till hela deras katalog av podavsnitt.
-        </h3>
+    );
 
-        <div className="intro-buttons">
-	       	<Link to="/skapa-konto"><button className="intro-btn desktop"> Skapa konto </button></Link>
-	       	<Link to="/lyssna"><button className="intro-btn"> Hitta ditt företag </button></Link>
-       	</div> 
-
-        <div className="mobile about-scroll-container" onClick={ () => { scrollToAbout() } }>
-          <h2> Läs mer </h2>
-          <AiOutlineArrowDown className="full-width center-text down-icon"/>
-        </div>
-     </div>
-
-		<div className="right-container">
-     	<div className="img-container">
- 				<img className="speaker-icon" src={speakericon}  alt="Speaker" />
-    	</div>
-    </div>
-
-
-    </div>
-  );
 }
 
 export default App;

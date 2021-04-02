@@ -1,6 +1,7 @@
 .create-account-placeholder {
 	display: grid;
 	justify-content: center;
+	padding-top: 60px;
 }
 
 .create-account-placeholder h2 {

@@ -1,6 +1,7 @@
 .login-placeholder {
 	display: grid;
 	justify-content: center;
+	padding-top: 60px;
 }
 
 .login-placeholder h2 {

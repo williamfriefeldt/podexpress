@@ -1,6 +1,7 @@
 .start-container {
 	display: flex;
   height: calc(100vh - 83px);
+  padding-top: 58px;
 }
 
 .intro-container {

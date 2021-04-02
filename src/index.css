@@ -1,5 +1,6 @@
 body {
   margin: 0;
+  overflow: auto !important;
   font-family: anton, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -146,6 +147,10 @@ td img {
   .mobile {
     display: block !important;
   }
+}
+
+.react-tiger-transition--container {
+  height: 100vh !important;
 }
 
 /* LOADIN SPINNER */
