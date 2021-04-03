@@ -1,7 +1,7 @@
 import React from 'react';
 import './App.css';
 import "react-tiger-transition/styles/main.min.css";
-import { Navigation, Route } from "react-tiger-transition";
+import { Navigation, Route, glide } from "react-tiger-transition";
 import Login from './login/login';
 import CreateAccount from './create-account/create-account';
 import UserPage from './user/user-page/user-page';
@@ -11,8 +11,6 @@ import Start from './start/start';
 import Header from './header/header';
 
 function App() {
-
-    const OnScroll = () => console.log('Scroll');
 
     return (
       <Navigation>
@@ -29,8 +27,12 @@ function App() {
           <Route path="/lyssna/:name?">
             <ListenPage />
           </Route>
+          <Route path="/om">
+            <Start />
+            <About />
+          </Route>
           <Route exact path="/" screen>
-            <Start onScroll={OnScroll} />
+            <Start />
             <About />
           </Route>
       </Navigation>
@@ -38,5 +40,10 @@ function App() {
     );
 
 }
+
+glide({
+  name: "glide-left",
+  direction: "left"
+});
 
 export default App;

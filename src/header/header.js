@@ -14,7 +14,7 @@ function Header() {
 			<nav className="desktop">
 				<Link to="/lyssna" transition='glide-left'> Hitta podcast </Link>
 				<Link to="/logga-in"  transition="glide-left"> Logga in </Link>	
-				<Link to="/om" transition="glide-left" onClick={ () => { scrollToAbout() } }> Om </Link>	
+				<Link to="/om" onClick={ () => { scrollToAbout() } }> Om </Link>	
 			</nav>
 			<div className="mobile">
  				<img className="mobile speaker-icon mobile-icon" src={speakericon}  alt="Speaker" />
