@@ -1,7 +1,7 @@
 import './share-podcast.css';
 import { useParams } from "react-router-dom";
 
-function SharePodcast() {
+function SharePodcast(props) {
 
 	const { name } =  useParams();
 	const url = window.location.host + '/lyssna/' + name;
@@ -11,7 +11,12 @@ function SharePodcast() {
 			<label> Dela podcast</label>
 			<div className="flex">
 				<input type="text" name="password" defaultValue={url} />
-				<button onClick={() => {navigator.clipboard.writeText( url )}}> Kopiera </button>
+				<button onClick={() => {
+					navigator.clipboard.writeText( url );
+					props.changeCopyText();
+				}}>
+					{props.copyText}
+				</button>
 			</div>
 		</div>
 	);

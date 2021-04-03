@@ -34,6 +34,7 @@ class Login extends React.Component {
 		 		companyInfo['companyName'] = data.companyName;
 		 		companyInfo['episodes'] = data.episodes;
 		 		companyInfo['password'] = data.password;
+		 		companyInfo['podcasts'] = data.podcasts;
 		 		this.setState({companyInfo, loading:false});	
 		 	});
 		}
@@ -41,14 +42,14 @@ class Login extends React.Component {
 
 	setInput( event ) {
  		let inputs = this.state.inputs;
-  	inputs[event.target.name] = event.target.value;
-    this.setState({ inputs });
+  		inputs[event.target.name] = event.target.value;
+    	this.setState({ inputs });
 	}
 
 	async findCompany() {
 		this.setState({loading:true, errorState:{msg:''}});
 		const userRef = firestore.collection('companies').where('companyName', '==', this.state.inputs.companyName );
-	  const companies =	await userRef.get();
+	  	const companies =	await userRef.get();
 	 	companies.forEach( company => {
 	 		window.location = '/lyssna/' + company.data().companyName;
 	 	});
@@ -61,7 +62,10 @@ class Login extends React.Component {
 
 	login() {
 		if( this.state.inputs.password === this.state.companyInfo.password ) {
-			this.props.sendCompanyInfo(this.state.companyInfo.episodes);
+			this.props.sendCompanyInfo(
+				this.state.companyInfo.episodes,
+				this.state.companyInfo.podcasts
+			);
 		} else {
 			let errorState = this.state.errorState;
 			errorState.msg = 'Fel lösenord';

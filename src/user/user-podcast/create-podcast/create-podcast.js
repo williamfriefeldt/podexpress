@@ -2,10 +2,11 @@ import React from 'react';
 import './create-podcast.css'
 import { VscLoading } from 'react-icons/vsc';
 import { auth, firestore, storage } from '../../../store/services/firebase';
+
 class CreatePodcast extends React.Component {
 
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       podcastInfo: {
         name: '',
@@ -61,19 +62,23 @@ class CreatePodcast extends React.Component {
       let podcasts = userData.data()['podcasts'];
       if( !podcasts ) {
         podcasts = {};
-      } else {
-        podcasts[this.state.podcastInfo.name] = Object.assign({},podcastInfo);
-        podcasts[this.state.podcastInfo.name]['img'] = uploadImgUrl;
-        await userRef.set({ podcasts }, { merge:true });
-        this.setState({loading:false});
       }
+      podcasts[this.state.podcastInfo.name] = Object.assign({},podcastInfo);
+      podcasts[this.state.podcastInfo.name]['img'] = uploadImgUrl;
+      await userRef.set({ podcasts }, { merge:true });
+      this.setState({loading:false});
+      this.props.getPodcasts();
+ 
     }
   }
 
   render() {
     return(
       <div className="create-pod-container">
-        <h2>Lägg till podcast</h2> 
+        <div className="flex space">
+          <h2>Lägg till podcast</h2>
+          <button onClick={ this.props.closePodcast }>Stäng</button>
+        </div> 
 
         <div className="create-pod-input-container">						
 

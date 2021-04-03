@@ -15,10 +15,12 @@ class UserEpisodes extends React.Component {
 			episodes: [],
 			nowPlaying: '',
 			loading: true,
-			password: ''
+			password: '',
+			copyText: 'Kopiera'
 		}
 
 		this.setNowPlaying = this.setNowPlaying.bind(this);
+		this.changeCopyText = this.changeCopyText.bind(this);
 	}
 
 	async componentDidMount() {
@@ -41,6 +43,10 @@ class UserEpisodes extends React.Component {
 
 	setNowPlaying( url ) {
 		this.setState({nowPlaying: url});
+	}
+
+	changeCopyText() {
+		this.setState({copyText: 'Kopierat!'})
 	}
 
 	render() {
@@ -83,7 +89,8 @@ class UserEpisodes extends React.Component {
 						{this.state.episodes.length !== 0 ? 
 							<div className="flex">
 								<PodcastPassword  password={this.state.password} />
-								<SharePodcast />
+								<SharePodcast changeCopyText={this.changeCopyText} 
+											  copyText={this.state.copyText} />
 							</div> : '' }
 					</div>
 					

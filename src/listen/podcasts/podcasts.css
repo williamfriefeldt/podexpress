@@ -1,0 +1,28 @@
+.listen-podcasts {
+	flex-wrap: wrap;
+}
+
+.listen-podcast {
+	width: 200px;
+	border-radius: 10px;
+	color: #003366;
+	background-color: wheat;
+	margin: 10px;
+	cursor: pointer;
+    transition: all 0.2s ease-in-out;
+}
+.listen-podcast:hover {
+ 	transform: scale(1.05); 
+ 	box-shadow: 0 4px 17px rgba(0, 0, 0, 0.35);
+}
+.listen-podcast h3 {
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	max-width: 150px;
+}
+.listen-podcast-img {
+	width: 125px;
+	height: 125px;
+	margin-top: 10px;
+}

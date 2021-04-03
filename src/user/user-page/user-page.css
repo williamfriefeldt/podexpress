@@ -1,6 +1,7 @@
 .user-page-container {
 	background-color: wheat;
  	display: flex;
+ 	position: absolute;
   	top: 0px;
   	width: 100%;
   	bottom: 0px;
@@ -14,6 +15,6 @@
 .user-route-container {
 	width: 100%;
 	margin-left: 225px;
-	margin-top: 80px;
+	margin-top: 20px;
 	color: #003366;
 }

@@ -9,7 +9,8 @@ class PodcastPassword extends React.Component {
 		super();
 		this.state = {
 			password: props.password,
-			loading: false
+			loading: false,
+			buttonText: 'Ändra'
 		};
 
 		this.setInput = this.setInput.bind(this);
@@ -18,17 +19,17 @@ class PodcastPassword extends React.Component {
 
 	setInput( event ) {
 		let pw = this.state.password;
-  	pw = event.target.value;
-  	this.setState({ password: pw });
+  		pw = event.target.value;
+  		this.setState({ password: pw });
 	}
 
 	async setNewPw() {
 		this.setState({loading:true});
-  	const userID = auth.currentUser.uid;
+  		const userID = auth.currentUser.uid;
 		const userRef = firestore.doc(`companies/${userID}`);
 		try {
 			await userRef.set({ password: this.state.password }, { merge:true });
-			this.setState({loading:false});
+			this.setState({loading:false, buttonText: 'Ändrat!'});
 		} catch(error) {
 			console.log(error);
 		}
@@ -45,7 +46,7 @@ class PodcastPassword extends React.Component {
 				<div className="flex">
 					<input type="text" onChange={this.setInput} name="password" value={this.state.password} autoComplete="new-password" />
 					<button onClick={this.setNewPw}>
-						{this.state.loading ?	<span className="loading password-loading"><VscLoading /></span> :	'Ändra'}	
+						{this.state.loading ?	<span className="loading password-loading"><VscLoading /></span> : this.state.buttonText }	
 					</button>
 				</div>
 			</div>

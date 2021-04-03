@@ -2,6 +2,7 @@ import React from 'react';
 import './listen-page.css';
 import Login from '../login/login';
 import Episodes from '../episodes/episodes';
+import Podcasts from '../podcasts/podcasts';
 import PodexpressAudioPlayer from '../audio-player/audio-player';
 import { firestore } from '../../store/services/firebase';
 import { VscLoading } from 'react-icons/vsc';
@@ -14,6 +15,7 @@ class ListenPage extends React.Component {
 		this.state = {
 			companyName: '',
 			episodes: [],
+			podcasts: [],
 			nowPlayingInfo: {},
 			loading: true
 		};
@@ -35,13 +37,18 @@ class ListenPage extends React.Component {
 		}
 	}
 
-	getCompanyInfo( data ) {
-		this.setState({episodes: Object.values(data) });
+	getCompanyInfo( episodes, podcasts ) {
+		this.setState({
+			episodes: Object.values(episodes),
+			podcasts: Object.values(podcasts)
+		});
 	}
 
 	setNowPlaying( prop ) {
 		this.setState({nowPlayingInfo:prop});
 	}
+	
+	//For episodes: <Episodes eps={this.state.episodes} setNowPlaying={this.setNowPlaying} />
 
 	render() {
 
@@ -50,9 +57,9 @@ class ListenPage extends React.Component {
 
 				{this.state.episodes.length !== 0 ? 
 					<div className="listen-title-eps">
-							<h2> Podavsnitt </h2>
+							<h2> Podcasts </h2>
 							<div className="listen-eps-container">
-								<Episodes eps={this.state.episodes} setNowPlaying={this.setNowPlaying} />
+								<Podcasts podcasts={this.state.podcasts} />
 							</div>
 					</div>
 				:

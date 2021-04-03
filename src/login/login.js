@@ -25,8 +25,8 @@ class Login extends React.Component {
 
 	setInput( event ) {
  		let inputs = this.state.inputs;
-  	inputs[event.target.name] = event.target.value;
-    this.setState({ inputs });
+  		inputs[event.target.name] = event.target.value;
+    	this.setState({ inputs });
 	}
 
 	async login() {
@@ -39,14 +39,14 @@ class Login extends React.Component {
 			}
 
 			const userRef = firestore.doc(`companies/${user.uid}`);
-	  	userRef.get().then( res => {
-	  		const companyName = res.data()['companyName'];
-	  		window.location.href = window.location.href.replace( window.location.pathname, '' ) + '/företag/' + companyName;
-	  	});
+	  		userRef.get().then( res => {
+	  			const companyName = res.data()['companyName'];
+	  			window.location.href = window.location.href.replace( window.location.pathname, '' ) + '/företag/' + companyName;
+	  		});
 		} catch ( error ) {
-    	let errorState = this.state.errorState;
-    	errorState['msg'] = ErrorHandler( error.code );
-      this.setState({ errorState, loading: false });
+    		let errorState = this.state.errorState;
+    		errorState['msg'] = ErrorHandler( error.code );
+      		this.setState({ errorState, loading: false });
 		}
 	}
 

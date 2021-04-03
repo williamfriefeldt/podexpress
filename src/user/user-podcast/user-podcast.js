@@ -2,6 +2,7 @@ import React from 'react';
 import './user-podcast.css';
 import { VscLoading } from 'react-icons/vsc';
 import CreatePodcast from './create-podcast/create-podcast';
+import ShowPodcast from './show-podcast/show-podcast';
 import { auth, firestore } from '../../store/services/firebase';
 
 class UserPodcast extends React.Component {
@@ -10,22 +11,20 @@ class UserPodcast extends React.Component {
     super();
     this.state = {
       podcasts: [],
-      loading: true,
-      createPodOpen: false
+      loading: false,
+      createPodOpen: false,
+      modal: false, 
+      openPod: {}
     }
 
     this.openCreatePod = this.openCreatePod.bind(this);
+    this.getPodcasts = this.getPodcasts.bind(this);
+    this.openModal = this.openModal.bind(this);
+    this.closeModal = this.closeModal.bind(this);
   }
 
-  async componentDidMount() {
-    this.setState({loading:false});
-    const userID = auth.currentUser.uid;
-    const userRef = firestore.doc(`companies/${userID}`);
-    const userData = await userRef.get();
-    let podcasts = userData.data()['podcasts'];
-    if(podcasts) {
-      this.setState({podcasts: Object.values( podcasts )});
-    }
+  componentDidMount() {
+    this.getPodcasts();
   }
 
   openCreatePod() {
@@ -33,12 +32,30 @@ class UserPodcast extends React.Component {
     this.setState({createPodOpen});
   }
 
+  async getPodcasts() {
+    this.setState({loading:true});
+    const userID = auth.currentUser.uid;
+    const userRef = firestore.doc(`companies/${userID}`);
+    const userData = await userRef.get();
+    let podcasts = userData.data()['podcasts'];
+    if(!podcasts) podcasts = [];
+    this.setState({ podcasts: Object.values( podcasts ), loading: false });
+  }
+
+  openModal(index) {
+    this.setState({ modal: true, openPod: this.state.podcasts[index] });
+  }
+
+  closeModal() {
+    this.setState({ modal: false });
+  }
+
   render() {
 
     const Podcasts = () => (
       <div className="podcasts">
         {this.state.podcasts.map( (podcast, index) => {
-          return <div className="podcast grid center-content">
+          return <div className="podcast grid center-content" key={index} onClick={()=> this.openModal(index) }>
                     <img className="podcast-img" src={podcast.img} alt="podcast cover" />
                     <h3>{podcast.name}</h3>
                   </div>;
@@ -48,7 +65,12 @@ class UserPodcast extends React.Component {
 
     return(
       <div className="user-pod-container">
-        <h2>Podcasts</h2>
+        <div className="flex space">
+          <h2>Podcasts</h2>
+          <button className="shift-button"
+                style={{margin:'10px'}}
+                onClick={() =>{ this.openCreatePod() }}> Skapa </button>
+         </div>
 
         {!this.state.loading ?
           <div className="user-pod-items">
@@ -69,8 +91,15 @@ class UserPodcast extends React.Component {
         }
 
         <div className={`create-pod ${this.state.createPodOpen ? 'create-pod-open' : ''}`}>
-          <CreatePodcast />
+          <CreatePodcast getPodcasts={this.getPodcasts} closePodcast={this.openCreatePod}/>
         </div>
+
+        <ShowPodcast 
+          isOpen={this.state.modal} 
+          closeModal={this.closeModal} 
+          podcast={this.state.openPod}
+        />
+
       </div>
     )
   }

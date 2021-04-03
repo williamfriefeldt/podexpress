@@ -13,6 +13,7 @@ class Start extends React.Component {
       opacity: 1,
       scale: 1
     };
+    this.handleScroll = this.handleScroll.bind(this);
   }
 
   scrollToAbout() {
@@ -20,18 +21,25 @@ class Start extends React.Component {
   }
 
   componentDidMount() {
-    window.onscroll = () => {
-      console.log('hej');
-      let opacity = 1 - window.scrollY/window.innerHeight;
-      let scale = opacity;
-      if(window.scrollY > 50) opacity -= 0.3;
-      this.setState({ opacity: opacity, scale: scale});
-    }
+    document.getElementById('root').style.height= '200vh';
+    window.addEventListener('scroll', this.handleScroll);
   }
  
+  componentWillUnmount() {
+    document.getElementById('root').style.height = '100vh';
+    window.removeEventListener('scroll', this.handleScroll);
+  }
+
+  handleScroll() {
+    let opacity = 1 - window.scrollY/window.innerHeight;
+    let scale = opacity;
+    if(window.scrollY > 50) opacity -= 0.3;
+    this.setState({ opacity: opacity, scale: scale});
+  }
+
   render() {
   	return(
-  		<div className="start-container" style={{ opacity: this.state.opacity,
+  		  <div className="start-container" style={{ opacity: this.state.opacity,
                                               transform: 'scale('+this.state.scale+')'}}>
               <div className="intro-container">
                 <h1 className="desktop">Dela podcasts med ditt företag</h1>
@@ -63,6 +71,8 @@ class Start extends React.Component {
                   <img className="speaker-icon" src={speakericon}  alt="Speaker" />
                 </div>
                </div>
+
+
        	</div>
     )
   }

@@ -8,9 +8,8 @@ body {
   color: wheat;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+#root {
+  height: 100vh;
 }
 
 a {
@@ -147,10 +146,6 @@ td img {
   .mobile {
     display: block !important;
   }
-}
-
-.react-tiger-transition--container {
-  height: 200vh !important;
 }
 
 /* LOADIN SPINNER */

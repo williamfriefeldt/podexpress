@@ -1,7 +1,7 @@
 .listen-episodes-container {
 	height: calc(100vh - 165px);
-  position: relative;
-  overflow: auto;
+  	position: relative;
+  	overflow: auto;
 }
 
 .listen-episodes-container-play {
@@ -20,7 +20,8 @@
 }
 
 .listen-episode h3 {
-	margin-block: 0px !important;
+	margin-top: 0px !important;
+	margin-bottom: 0px !important;
 }
 
 .listen-episode-info {
