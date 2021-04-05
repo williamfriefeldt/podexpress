@@ -8,7 +8,7 @@ function Header() {
 
 	let display;
 
-	if( (pathList.length === 3 || pathList.length === 4) && pathList[1] === "f%C3%B6retag" ) {
+	if( (pathList.length === 3 || pathList.length === 4) && (pathList[1] === "f%C3%B6retag" /* Uncomment when header listen is done || pathList[1] === "lyssna" */ )) {
 		display = 'none';
 	} else {
 		display = 'flex';

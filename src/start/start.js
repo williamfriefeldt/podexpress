@@ -21,12 +21,12 @@ class Start extends React.Component {
   }
 
   componentDidMount() {
-    document.getElementById('root').style.height= '200vh';
+    let vh = window.innerHeight * 0.02;
+    document.documentElement.style.setProperty('--vh', `${vh}px`);
     window.addEventListener('scroll', this.handleScroll);
   }
  
   componentWillUnmount() {
-    document.getElementById('root').style.height = '100vh';
     window.removeEventListener('scroll', this.handleScroll);
   }
 

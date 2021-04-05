@@ -75,11 +75,11 @@ class Login extends React.Component {
 
 	render() {
 		return (
-			<div className="login-placeholder">
+			<div className="listen-login-placeholder">
 				<h2> 
 					{this.props.companyName === '' ? 'Hitta företag' : this.props.companyName}
 				</h2>
-				<form className="login-container">
+				<form className="listen-login-container">
 					{this.props.companyName === '' ?
 						<div className="grid">
 							<label className="login-label"> Företagsnamn </label>
