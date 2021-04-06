@@ -149,6 +149,11 @@ td img {
   }
 }
 
+/* REACT TRANSITION CUSTOM CSS */
+.react-tiger-transition--screen {
+  overflow-y: none !important;
+}
+
 /* LOADIN SPINNER */
 .loading svg {
   animation: spin 2s linear infinite;
