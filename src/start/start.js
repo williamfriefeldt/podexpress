@@ -20,26 +20,64 @@ class Start extends React.Component {
     window.scrollTo({ top: window.innerHeight, behavior: 'smooth' });
   }
 
+  buildThresholdList(steps) {
+    let thresholds = [];
+    let numSteps = steps;
+
+    for (let i=1.0; i<=numSteps; i++) {
+      let ratio = i/numSteps;
+      thresholds.push(ratio);
+    }
+
+    thresholds.push(0);
+    return thresholds;
+  }
+
   componentDidMount() {
     let vh = window.innerHeight * 0.01;
     document.documentElement.style.setProperty('--vh', `${vh}px`);
-    window.addEventListener('scroll', this.handleScroll);
+    //window.addEventListener('scroll', this.handleScroll);
+
+
+    /* Try new osberevr thing */
+    let options = {
+      root: document.querySelector('#root'),
+      rootMargin: '0px',
+      threshold: this.buildThresholdList(200)
+    }
+
+    let callback = (entries, observer) => {
+      entries.forEach(entry => {
+        this.handleScroll(entry.intersectionRatio);
+        // Each entry describes an intersection change for one observed
+        // target element:
+        //   entry.boundingClientRect
+        //   entry.intersectionRatio
+        //   entry.intersectionRect
+        //   entry.isIntersecting
+        //   entry.rootBounds
+        //   entry.target
+        //   entry.time
+      });
+    };
+
+    let observer = new IntersectionObserver(callback, options);
+
+    let target = document.querySelector('#start');
+    observer.observe(target);
   }
  
   componentWillUnmount() {
     window.removeEventListener('scroll', this.handleScroll);
   }
 
-  handleScroll() {
-    let opacity = 1 - window.scrollY/window.innerHeight;
-    let scale = opacity;
-    if(window.scrollY > 50) opacity -= 0.3;
-    this.setState({ opacity: opacity, scale: scale});
+  handleScroll(opacity) {
+    this.setState({ opacity: opacity, scale: opacity});
   }
 
   render() {
   	return(
-  		  <div className="start-container" style={{ opacity: this.state.opacity,
+  		  <div id="start" className="start-container" style={{ opacity: this.state.opacity,
                                               transform: 'scale('+this.state.scale+')'}}>
               <div className="intro-container">
                 <h1 className="desktop">Dela podcasts med ditt företag</h1>

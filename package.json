@@ -19,6 +19,7 @@
     "react-tiger-transition": "^4.1.2",
     "react-transition-group": "^4.4.1",
     "smoothscroll-polyfill": "^0.4.4",
+    "universal-cookie": "^4.0.4",
     "web-vitals": "^1.0.1",
     "yarn": "^1.22.10"
   },

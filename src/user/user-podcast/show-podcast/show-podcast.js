@@ -20,7 +20,6 @@ Modal.setAppElement('#root')
 function ShowPodcast(props) {
 
 	var subtitle;
-  const [modalIsOpen] = React.useState(false);
 	 
 	function afterOpenModal() {
 	  subtitle.style.color = 'wheat';

@@ -6,8 +6,8 @@ import Podcasts from '../podcasts/podcasts';
 import PodexpressAudioPlayer from '../audio-player/audio-player';
 import { firestore } from '../../store/services/firebase';
 import { VscLoading } from 'react-icons/vsc';
-import { FiThumbsUp } from 'react-icons/fi';
-import { Link } from 'react-router-dom';
+import { FiThumbsUp, FiThumbsDown } from 'react-icons/fi';
+import Cookies from 'universal-cookie';
 
 class ListenPage extends React.Component {
 
@@ -19,12 +19,15 @@ class ListenPage extends React.Component {
 			podcasts: [],
 			nowPlayingInfo: {},
 			loading: true,
-			currentPod: null
+			currentPod: null,
+			cookie: new Cookies(),
+			loadingReactions: false
 		};
 
 		this.getCompanyInfo = this.getCompanyInfo.bind(this);
 		this.setNowPlaying = this.setNowPlaying.bind(this);
 		this.showEps = this.showEps.bind(this);
+		this.saveReaction = this.saveReaction.bind(this);
 	}
 
 	async componentDidMount() {
@@ -55,8 +58,47 @@ class ListenPage extends React.Component {
 	}
 
 	showEps(pod) {
-		console.log(pod)
 		this.setState({currentPod:pod});
+	}
+
+	makeId(length) {
+    var result           = [];
+    var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    var charactersLength = characters.length;
+    for ( var i = 0; i < length; i++ ) {
+      result.push(characters.charAt(Math.floor(Math.random() * 
+ 			charactersLength)));
+   }
+   return result.join('');
+}
+
+	async saveReaction(type) {
+		if(!this.state.loadingReaction) {
+			this.setState({loadingReaction:true});
+			let reactionID = this.state.cookie.get('reactionID');
+			const isClicked = this.state.currentPod[type].find( id => id === reactionID );
+			const companyRef = firestore.collection('companies').where('companyName', '==', this.state.companyName );
+			const companies =	await companyRef.get();
+			companies.forEach( async company => {
+			 	let podcasts = company.data()['podcasts'];
+			 	if( !isClicked ) {
+			 		reactionID = this.makeId(8);
+					podcasts[this.state.currentPod.name][type].push( reactionID );
+				} else {
+					podcasts[this.state.currentPod.name][type] = podcasts[this.state.currentPod.name][type].filter( id => id !== reactionID );
+				}
+	      const userRef = await firestore.doc(`companies/${company.id}`);
+	      await userRef.set({ podcasts }, { merge:true });
+
+				this.state.cookie.set('reactionID', reactionID, { path: '/' });
+
+	      const newData = await userRef.get();
+	      const newThumbsUp = newData.data()['podcasts'][this.state.currentPod.name][type];
+	      let currentPod = this.state.currentPod;
+	      currentPod[type] = newThumbsUp;
+	      this.setState({currentPod, loadingReaction:false});
+			});
+		}
 	}
 
 	render() {
@@ -77,12 +119,19 @@ class ListenPage extends React.Component {
 								:
 									<div>
 										<div className="pod-info-container">
-											<img src={this.state.currentPod.img} />
+											<img src={this.state.currentPod.img} alt="Podcast cover" />
 											<article>
 												{this.state.currentPod.description}
 											</article>
 											<div className="pod-reactions">
-												<FiThumbsUp /> <p>34</p>
+												<div onClick={() => this.saveReaction('thumbsUp')} 
+														 className={`thumbs ${this.state.currentPod.thumbsUp.find((id) => this.state.cookie.get('reactionID') === id) ? 'thumb-filled' : ''}`}>
+														 	<p><FiThumbsUp />{this.state.currentPod.thumbsUp.length}</p>
+												</div>&nbsp;&nbsp;
+												<div onClick={() => this.saveReaction('thumbsDown')} 
+														 className={`thumbs ${this.state.currentPod.thumbsDown.find((id) => this.state.cookie.get('reactionID') === id) ? 'thumb-filled' : ''}`}>
+														 	<p><FiThumbsDown />{this.state.currentPod.thumbsDown.length}</p>
+												</div>
 											</div>
 										</div>
 										<Episodes eps={this.state.episodes.filter(ep => ep.podcast === this.state.currentPod.name)} 
