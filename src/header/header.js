@@ -15,8 +15,8 @@ function Header() {
 	}
 
 	const scrollToAbout = () => {
-    	window.scrollTo({ top: window.innerHeight, behavior: 'smooth' });
-  	}
+		window.scrollTo({ top: window.innerHeight, behavior: 'smooth' });
+  }
 
 	return (
 		<div className="header-container" style={{display: display}}>

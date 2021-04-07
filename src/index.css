@@ -150,8 +150,8 @@ td img {
 }
 
 /* REACT TRANSITION CUSTOM CSS */
-.react-tiger-transition--screen {
-  overflow-y: none !important;
+.react-tiger-transition--screen::-webkit-scrollbar {
+  display: none;
 }
 
 /* LOADIN SPINNER */

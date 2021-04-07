@@ -12,16 +12,16 @@ nav a {
 
 .header-container {
 	display: flex;
-    position: fixed;
-    justify-content: space-between;
-    width: 100%;
-    background-color: #003366;
-    z-index: 1;
+  position: fixed;
+  justify-content: space-between;
+  width: 100%;
+  background-color: #003366;
+  z-index: 1;
 }
 
 @media (max-width: 750px) {
 	.header-title {
-	    padding-left: 20px !important;
+	   padding-left: 20px !important;
 	}
 
 	.mobile-icon {

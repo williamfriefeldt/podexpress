@@ -27,7 +27,7 @@ function App() {
           <Route path="/lyssna/:name?">
             <ListenPage />
           </Route>
-          <Route path="/om">
+          <Route path="/om" screen>
             <Start />
             <About />
           </Route>
