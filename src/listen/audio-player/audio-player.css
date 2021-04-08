@@ -1,15 +1,6 @@
 .listen-audio-player-container {
-	position: fixed;
-	bottom: 0px;
-	width: 100%;
 	background-color: wheat;
 	color: #003366;
-	opacity: 0;
-	transition: opacity 1s;
-}
-
-.listen-show-audio-container {
-	opacity: 1;
 }
 
 .listen-show-audio-container img {
@@ -26,8 +17,7 @@
 
 .listen-audio-player-container h4 {
 	position: absolute;
-  bottom: 105px;
-  color: wheat;
+  bottom: 73px;
   text-align: center;
   width: 100%;
   display: none;
@@ -77,5 +67,22 @@
 
 	.listen-audio-player-container h4 {
 		display: block;
+		bottom: 63.5px;
+		margin-left: 100px;
+		text-align: left;
+		padding-left: 30px;
+	}
+
+	.listen-audio-player-container .rhap_volume-controls {
+		display: none;
+	}
+
+	.listen-audio-player-container .rhap_controls-section {
+		justify-content: center;
+	}
+
+	.listen-audio-player-container .rhap_main {
+		margin-bottom: -17.5px;
+		margin-top: 12px;
 	}
 }

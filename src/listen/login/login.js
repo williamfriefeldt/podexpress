@@ -2,6 +2,7 @@ import React from 'react';
 import './login.css';
 import { firestore } from '../../store/services/firebase';
 import { VscLoading } from 'react-icons/vsc';
+import { IoChevronBack } from 'react-icons/io5';
 
 class Login extends React.Component {
 
@@ -42,14 +43,15 @@ class Login extends React.Component {
 
 	setInput( event ) {
  		let inputs = this.state.inputs;
-  		inputs[event.target.name] = event.target.value;
-    	this.setState({ inputs });
+  	inputs[event.target.name] = event.target.value;
+    this.setState({ inputs });
 	}
 
 	async findCompany() {
 		this.setState({loading:true, errorState:{msg:''}});
-		const userRef = firestore.collection('companies').where('companyName', '==', this.state.inputs.companyName );
-	  	const companies =	await userRef.get();
+		/* Fix lowercase company name in FB */
+		const userRef = firestore.collection('companies').where('companyName', '==', this.state.inputs.companyName);
+	  const companies =	await userRef.get();
 	 	companies.forEach( company => {
 	 		window.location = '/lyssna/' + company.data().companyName;
 	 	});
@@ -61,34 +63,47 @@ class Login extends React.Component {
 	}
 
 	login() {
-		if( this.state.inputs.password === this.state.companyInfo.password ) {
-			this.props.sendCompanyInfo(
-				this.state.companyInfo.episodes,
-				this.state.companyInfo.podcasts
-			);
-		} else {
-			let errorState = this.state.errorState;
-			errorState.msg = 'Fel lösenord';
-			this.setState({errorState});
-		}
+		this.setState({loading:true, errorState:{msg:''}});
+		setTimeout( () =>{
+			if( this.state.inputs.password === this.state.companyInfo.password ) {
+				this.props.sendCompanyInfo(
+					this.state.companyInfo.episodes,
+					this.state.companyInfo.podcasts,
+					{loading: false}
+				);
+			} else {
+				let errorState = this.state.errorState;
+				errorState.msg = 'Fel lösenord';
+				this.setState({errorState, loading: false});
+			}
+		}, 500);
 	}
 
 	render() {
 		return (
 			<div className="listen-login-placeholder">
-				<h2> 
-					{this.props.companyName === '' ? 'Hitta företag' : this.props.companyName}
-				</h2>
-				<form className="listen-login-container">
+				<div className="listen-login-title-container">
+					{this.props.companyName !== '' ?
+						<button className="link-button login-back"
+										onClick={() => { window.location.pathname= '' }}>
+											<IoChevronBack />
+						</button> : '' } 
+					<h2> 
+						{this.props.companyName === '' ? 'Hitta företag' : this.props.companyName}
+					</h2>
+				</div>
+				<form className="listen-login-container" onSubmit={e => e.preventDefault()}>
 					{this.props.companyName === '' ?
 						<div className="grid">
 							<label className="login-label"> Företagsnamn </label>
-							<input className="login-input" type="text" onChange={this.setInput} name="companyName"/>
+							<input className="login-input" type="text" onChange={this.setInput} value={this.state.inputs.companyName} name="companyName"
+										 onKeyDown={ e => { if( e.key === 'Enter' ) this.findCompany(); }}/>
 						</div>
 					:
 						<div className="grid">
 							<label className="login-label">	Lösenord </label>
-							<input className="login-input" type="password" onChange={this.setInput} name="password"/>
+							<input className="login-input" type="password" onChange={this.setInput} name="password"
+										 onKeyDown={ e => { if( e.key === 'Enter' ) this.login(); }}/>
 						</div>
 					}
 					<div className={`no-match-text ${ this.state.errorState.msg === '' ? '' : 'show-no-match-text'}`}>

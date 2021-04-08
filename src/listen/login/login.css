@@ -46,3 +46,17 @@
 .show-no-match-text {
 	max-height: 999px;
 }
+
+.listen-login-title-container {
+	position: relative;
+}
+
+.login-back {
+	position: absolute;
+	top: 22px;
+}
+
+.login-back svg {
+	height: 1.2em;
+	width: 1.2em;
+}

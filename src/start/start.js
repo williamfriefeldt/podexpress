@@ -11,6 +11,7 @@ class Start extends React.Component {
     super();
     this.state = {
       opacity: 1,
+      opacitySlogan: [ 0,0,0 ],
       scale: 1
     };
     this.handleScroll = this.handleScroll.bind(this);
@@ -34,10 +35,13 @@ class Start extends React.Component {
   }
 
   componentDidMount() {
+    /* Set viewport of root element */
     let vh = window.innerHeight * 0.01;
     document.documentElement.style.setProperty('--vh', `${vh}px`);
-    //window.addEventListener('scroll', this.handleScroll);
 
+    setTimeout( () => { this.setState({opacitySlogan:[1,0,0]}) }, 1250 );
+    setTimeout( () => { this.setState({opacitySlogan:[1,1,0]}) }, 2250 );
+    setTimeout( () => { this.setState({opacitySlogan:[1,1,1]}) }, 3250 );
 
     /* Try new osberevr thing */
     let options = {
@@ -46,20 +50,7 @@ class Start extends React.Component {
       threshold: this.buildThresholdList(200)
     }
 
-    let callback = (entries, observer) => {
-      entries.forEach(entry => {
-        this.handleScroll(entry.intersectionRatio);
-        // Each entry describes an intersection change for one observed
-        // target element:
-        //   entry.boundingClientRect
-        //   entry.intersectionRatio
-        //   entry.intersectionRect
-        //   entry.isIntersecting
-        //   entry.rootBounds
-        //   entry.target
-        //   entry.time
-      });
-    };
+    let callback = (entries, observer) => entries.forEach(entry => this.handleScroll(entry.intersectionRatio));
 
     let observer = new IntersectionObserver(callback, options);
 
@@ -82,7 +73,11 @@ class Start extends React.Component {
               <div className="intro-container">
                 <h1 className="desktop">Dela podcasts med ditt företag</h1>
                 <h1 className="mobile">Hitta podavsnitt från ditt företag</h1>
-                <h2> Snabbt, smidigt och enkelt. </h2> 
+                <h2> 
+                  <span className="slogan-hidden" style={{opacity:this.state.opacitySlogan[0]}}>Snabbt,</span> 
+                  <span className="slogan-hidden" style={{opacity:this.state.opacitySlogan[1]}}> smidigt </span> 
+                  <span className="slogan-hidden" style={{opacity:this.state.opacitySlogan[2]}}>och enkelt.</span>
+                </h2> 
                 <h3 className="desktop">
                   Skapa ett konto eller hitta 
                   ditt företag för att lyssna på deras podcasts. Prova gratis

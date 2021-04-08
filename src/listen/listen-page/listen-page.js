@@ -7,6 +7,8 @@ import PodexpressAudioPlayer from '../audio-player/audio-player';
 import { firestore } from '../../store/services/firebase';
 import { VscLoading } from 'react-icons/vsc';
 import { FiThumbsUp, FiThumbsDown } from 'react-icons/fi';
+import { IoChevronBack } from 'react-icons/io5';
+import { ImCross } from 'react-icons/im';
 import Cookies from 'universal-cookie';
 
 class ListenPage extends React.Component {
@@ -41,6 +43,7 @@ class ListenPage extends React.Component {
 		 	companies.forEach(company => {
 		 		this.setState({companyName:path[2], loading:false });
 		 	});
+			this.setState({loading:false});
 		} else {
 			this.setState({loading:false})
 		}
@@ -62,15 +65,14 @@ class ListenPage extends React.Component {
 	}
 
 	makeId(length) {
-    var result           = [];
-    var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-    var charactersLength = characters.length;
-    for ( var i = 0; i < length; i++ ) {
-      result.push(characters.charAt(Math.floor(Math.random() * 
- 			charactersLength)));
-   }
-   return result.join('');
-}
+		var result = [];
+		var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+		var charactersLength = characters.length;
+		for ( var i = 0; i < length; i++ ) {
+			result.push(characters.charAt(Math.floor(Math.random() * charactersLength)));
+		}
+   	return result.join('');
+	}	
 
 	async saveReaction(type) {
 		if(!this.state.loadingReaction) {
@@ -82,7 +84,7 @@ class ListenPage extends React.Component {
 			companies.forEach( async company => {
 			 	let podcasts = company.data()['podcasts'];
 			 	if( !isClicked ) {
-			 		reactionID = this.makeId(8);
+			 		reactionID = this.makeId(8); 
 					podcasts[this.state.currentPod.name][type].push( reactionID );
 				} else {
 					podcasts[this.state.currentPod.name][type] = podcasts[this.state.currentPod.name][type].filter( id => id !== reactionID );
@@ -111,7 +113,10 @@ class ListenPage extends React.Component {
 							<h2> {!this.state.currentPod ? 'Podcasts' : this.state.currentPod.name} </h2>
 							{this.state.currentPod ?
 								<button className="link-button podcast-back"
-										onClick={() => {this.setState({currentPod:null})}}>Tillbaka</button> : ''}
+										onClick={() => {this.setState({currentPod:null})}}>
+											<IoChevronBack />
+								</button> 
+								: ''}
 
 							<div className="listen-eps-container">
 								{!this.state.currentPod ?
@@ -152,7 +157,11 @@ class ListenPage extends React.Component {
 						}
 					</div>
 				}
-				{this.state.nowPlayingInfo.name ? <PodexpressAudioPlayer nowPlayingInfo={this.state.nowPlayingInfo} /> : '' }
+				<div className={`listen-audio-container ${this.state.nowPlayingInfo.name ? 'listen-show-audio-container' : ''}`}>
+					<PodexpressAudioPlayer nowPlayingInfo={this.state.nowPlayingInfo} />
+					<button	className={`audio-play-close ${this.state.nowPlayingInfo.name ? 'audio-play-close-show' : ''}`} 
+									onClick={this.hideAudioPlayer}><ImCross /></button>
+				</div>
 			</div>
 		);
 	};

@@ -1,12 +1,10 @@
 .listen-episodes-container {
-	height: calc(100vh - 165px);
-  	position: relative;
-  	overflow: auto;
+	margin-bottom: 115px;
+  position: relative;
+  overflow: auto;
+
 }
 
-.listen-episodes-container-play {
-	height: calc(100vh - 254px) !important;
-}
 .listen-episode {
 	background-color: wheat;
 	color: #003366;

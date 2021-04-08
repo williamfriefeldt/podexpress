@@ -12,8 +12,13 @@
 
 .podcast-back {
 	position: absolute;
-	right: 20%;
+	left: 20%;
 	top: 80px;
+}
+
+.podcast-back svg {
+	height: 1.5em;
+	width: 1.5em;
 }
 
 .listen-eps-container {
@@ -78,9 +83,33 @@
 	border-radius: 120px;
 	color: wheat;
 }
+.listen-audio-container {
+	max-height: 0px;
+	transition: max-height 3s;
+	position: fixed;
+	bottom: 0px;
+	width: 100%;
+}
+.listen-show-audio-container {
+	max-height: 999px;
+}
+.audio-play-close {
+	position: fixed;
+	bottom: 5px;
+	right: 5px;
+	transition: opacity 5s;
+	opacity: 0;
+}
+.audio-play-close-show {
+	opacity: 1;	
+}
 
 @media (max-width: 600px) {
 	.listen-eps-container {
 		margin: 10px;
+	}
+
+	.podcast-back {
+		left: 5px;
 	}
 }

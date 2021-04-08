@@ -9,7 +9,7 @@
 	background-color: wheat;
 	margin: 10px;
 	cursor: pointer;
-    transition: all 0.2s ease-in-out;
+  transition: all 0.2s ease-in-out;
 }
 .listen-podcast:hover {
  	transform: scale(1.05); 
@@ -25,4 +25,11 @@
 	width: 125px;
 	height: 125px;
 	margin-top: 10px;
+}
+
+@media (max-width: 600px) {
+	.listen-podcast {
+		width: 45%;
+		margin: 1.5%;
+	}
 }
