@@ -29,8 +29,6 @@ class Start extends React.Component {
       let ratio = i/numSteps;
       thresholds.push(ratio);
     }
-
-    thresholds.push(0);
     return thresholds;
   }
 
@@ -50,7 +48,11 @@ class Start extends React.Component {
       threshold: this.buildThresholdList(200)
     }
 
-    let callback = (entries, observer) => entries.forEach(entry => this.handleScroll(entry.intersectionRatio));
+
+    let callback = entries => entries.forEach(entry => {
+      let opacity = entry.intersectionRatio;
+      this.handleScroll(opacity);
+    });
 
     let observer = new IntersectionObserver(callback, options);
 
@@ -59,7 +61,7 @@ class Start extends React.Component {
   }
  
   componentWillUnmount() {
-    window.removeEventListener('scroll', this.handleScroll);
+   // window.removeEventListener('scroll', this.handleScroll);
   }
 
   handleScroll(opacity) {

@@ -11,7 +11,9 @@ class CreatePodcast extends React.Component {
       podcastInfo: {
         name: '',
         description: '',
-        img: ''
+        img: '',
+        thumbsUp: [],
+        thumbsDown: []
       }, 
       errors: [],
       loading: false

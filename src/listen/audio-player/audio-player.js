@@ -12,11 +12,17 @@ class PodexpressAudioPlayer extends React.Component {
 
 	render() {
 		return (
-			<div className="flex listen-audio-player-container">
-				<h4>{this.props.nowPlayingInfo.name}</h4>
-				<img src={this.props.nowPlayingInfo.img} alt="Omslagsbild för avsnitt" />
-				<h3>{this.props.nowPlayingInfo.name}</h3>
-				<AudioPlayer src={this.props.nowPlayingInfo.url} />
+			<div>
+				{this.props.nowPlayingInfo.name ?
+					<div className="flex listen-audio-player-container">
+						<h4>{this.props.nowPlayingInfo.name}</h4>
+						<img src={this.props.nowPlayingInfo.img} alt="Omslagsbild för avsnitt" />
+						<h3>{this.props.nowPlayingInfo.name}</h3>
+						<AudioPlayer src={this.props.nowPlayingInfo.url} />
+					</div>
+				:
+					''
+				}
 			</div>
 		)
 	}

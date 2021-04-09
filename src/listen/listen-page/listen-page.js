@@ -84,20 +84,24 @@ class ListenPage extends React.Component {
 			companies.forEach( async company => {
 			 	let podcasts = company.data()['podcasts'];
 			 	if( !isClicked ) {
-			 		reactionID = this.makeId(8); 
+			 		if(!reactionID) reactionID = this.makeId(8); 
 					podcasts[this.state.currentPod.name][type].push( reactionID );
 				} else {
 					podcasts[this.state.currentPod.name][type] = podcasts[this.state.currentPod.name][type].filter( id => id !== reactionID );
 				}
+				const otherType = type === 'thumbsUp' ? 'thumbsDown' : 'thumbsUp';
+				podcasts[this.state.currentPod.name][otherType] = podcasts[this.state.currentPod.name][otherType].filter( id => id !== reactionID );
 	      const userRef = await firestore.doc(`companies/${company.id}`);
 	      await userRef.set({ podcasts }, { merge:true });
 
 				this.state.cookie.set('reactionID', reactionID, { path: '/' });
 
 	      const newData = await userRef.get();
-	      const newThumbsUp = newData.data()['podcasts'][this.state.currentPod.name][type];
+	      const newThumbsUp = newData.data()['podcasts'][this.state.currentPod.name]['thumbsUp'];
+				const newThumbsDown = newData.data()['podcasts'][this.state.currentPod.name]['thumbsDown'];
 	      let currentPod = this.state.currentPod;
-	      currentPod[type] = newThumbsUp;
+	      currentPod['thumbsUp'] = newThumbsUp;
+				currentPod['thumbsDown'] = newThumbsDown;
 	      this.setState({currentPod, loadingReaction:false});
 			});
 		}
@@ -160,7 +164,7 @@ class ListenPage extends React.Component {
 				<div className={`listen-audio-container ${this.state.nowPlayingInfo.name ? 'listen-show-audio-container' : ''}`}>
 					<PodexpressAudioPlayer nowPlayingInfo={this.state.nowPlayingInfo} />
 					<button	className={`audio-play-close ${this.state.nowPlayingInfo.name ? 'audio-play-close-show' : ''}`} 
-									onClick={this.hideAudioPlayer}><ImCross /></button>
+									onClick={() => this.setNowPlaying({})}><ImCross /></button>
 				</div>
 			</div>
 		);

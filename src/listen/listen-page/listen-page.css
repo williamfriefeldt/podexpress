@@ -97,7 +97,7 @@
 	position: fixed;
 	bottom: 5px;
 	right: 5px;
-	transition: opacity 5s;
+	transition: opacity 1s;
 	opacity: 0;
 }
 .audio-play-close-show {

@@ -79,7 +79,7 @@ input.upload-file-input::-webkit-file-upload-button {
 
 .upload-episode {
 	top: 345px;
-	width: 410px;
+	width: 200px;
 	margin-left: 0px;
 	margin-top: 25px;
 }
@@ -93,7 +93,7 @@ input.upload-file-input::-webkit-file-upload-button {
   cursor: pointer;
   opacity: 0;
   height: 20px;
-  width: 470px;
+  width: 210px;
   margin-top: 140px;
 }
 
@@ -129,4 +129,21 @@ input.upload-file-input::-webkit-file-upload-button {
 .upload-success{
   justify-content: center;
   display: contents;
+}
+
+.upload-file-holder {
+	width: 200px;
+}
+
+.upload-select-pod {
+	width: 200px;
+	margin-left: 30px;
+	height: 43px;
+	margin-top: 138px;
+	border-radius: 10px;
+	padding: 3px;
+	border: 2px solid #003366;
+	cursor: pointer;
+	background-color: wheat;
+	color: #003366;
 }

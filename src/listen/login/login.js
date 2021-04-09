@@ -85,8 +85,8 @@ class Login extends React.Component {
 				<div className="listen-login-title-container">
 					{this.props.companyName !== '' ?
 						<button className="link-button login-back"
-										onClick={() => { window.location.pathname= '' }}>
-											<IoChevronBack />
+										onClick={() => { window.location.pathname= '/lyssna' }}>
+											<IoChevronBack size={30}/>
 						</button> : '' } 
 					<h2> 
 						{this.props.companyName === '' ? 'Hitta företag' : this.props.companyName}

@@ -19,8 +19,10 @@ class Upload extends React.Component {
 			},
 			episodeInfo: {
 				episodeName: '',
-				episodeDescription: ''
+				episodeDescription: '',
+				podcast: ''
 			},
+			podcasts: [],
 			fileName: {
 				img: '',
 				episode: ''
@@ -38,6 +40,24 @@ class Upload extends React.Component {
 		this.checkFile = this.checkFile.bind(this);
 		this.checkInputs = this.checkInputs.bind(this);
 		this.uploadFile = this.uploadFile.bind(this);
+	}
+
+	async componentDidMount() {
+		try {
+			const user = auth.currentUser;
+		  const userRef = firestore.doc(`companies/${user.uid}`);
+		  const snapshot = await userRef.get();
+		  let podcasts = this.state.episodes;
+		  const data = snapshot.data()['podcasts'];
+			if( data === undefined ) {
+				podcasts = [];
+			} else {
+				podcasts = Object.values( data );
+			}
+		  this.setState({podcasts});
+		} catch ( error ) {
+			console.log(error);
+		}
 	}
 
 	setHover(type) {
@@ -114,6 +134,7 @@ class Upload extends React.Component {
 							episodes[newEp] =  {
 								name: this.state.episodeInfo.episodeName,
 								description: this.state.episodeInfo.episodeDescription,
+								podcast: this.state.episodeInfo.podcast,
 								img: uploadImgUrl,
 								url: uploadEpUrl
 							}
@@ -138,6 +159,12 @@ class Upload extends React.Component {
   	}
 
 	render() {
+
+		const PodSelect = () => (
+			<select className="upload-select-pod" onChange={this.setInput} name="podcast" value={this.state.episodeInfo.podcast}> 
+					{this.state.podcasts.map( (podcast, index) => <option key={index}>{podcast.name}</option>)}
+			</select>
+		);
 
 		return (
 			<div className="flex upload-flex">
@@ -180,17 +207,22 @@ class Upload extends React.Component {
 						<label className="input-label label-ep-file">
 							Avsnittets ljudfil
 						</label>
-						<div className={`upload-file-placeholder upload-episode
-							${this.state.hover.episode ? 'upload-episode-hover' : ''}`}>
-								{this.state.fileName.episode === '' ?
-									<p><strong> + </strong> Lägg till avsnitt </p>:
-									<p>{this.state.fileName.episode}</p>
-								}
+						<div className="flex">
+							<div className="upload-file-holder">
+								<div className={`upload-file-placeholder upload-episode
+									${this.state.hover.episode ? 'upload-episode-hover' : ''}`}>
+										{this.state.fileName.episode === '' ?
+											<p><strong> + </strong> Lägg till avsnitt </p>:
+											<p>{this.state.fileName.episode}</p>
+										}
+								</div>
+								<input onMouseEnter={() => {this.setHover('episode')}} 
+										onMouseLeave={() => {this.setHover('episode')}}
+										className="episode-file-input" type="file" ref={this.fileEpInput} 
+										onChange={() =>{this.checkFile('episode')}}/>
+							</div>
+							<PodSelect />
 						</div>
-						<input onMouseEnter={() => {this.setHover('episode')}} 
-							   onMouseLeave={() => {this.setHover('episode')}}
-							   className="episode-file-input" type="file" ref={this.fileEpInput} 
-							   onChange={() =>{this.checkFile('episode')}}/>
 
 					</div>	
 
