@@ -6,6 +6,7 @@ import PodcastPassword from './password/podcast-password';
 import SharePodcast from './share/share-podcast';
 import { VscLoading } from 'react-icons/vsc';
 import { AiFillPlayCircle } from 'react-icons/ai';
+import { ImCross } from 'react-icons/im';
 
 class UserEpisodes extends React.Component {
 
@@ -60,6 +61,7 @@ class UserEpisodes extends React.Component {
 						<th> Beskrivning </th>
 						<th> Podcast </th>
 						<th className={"ep-play-title"}> Spela upp </th>
+						<th class="center-text"> Ta bort </th>
 					</tr>
 				</thead>
 				<tbody>
@@ -70,10 +72,15 @@ class UserEpisodes extends React.Component {
 								<td className="ep-description">{episode.description}</td>
 								<td>{episode.podcast ? episode.podcast : 'Ingen'}</td>
 								<td>
-										<button onClick={ ()=> {this.setNowPlaying(episode.url)}} className="ep-btn-play"> 
-											<AiFillPlayCircle className="play-icon" />
-										</button>
-									</td>
+									<button onClick={ ()=> {this.setNowPlaying(episode.url)}} className="ep-btn-play"> 
+										<AiFillPlayCircle className="play-icon" />
+									</button>
+								</td>
+								<td className="center-text">
+									<button onClick={()=>this.removeEp(episode)}>
+										<ImCross />
+									</button>
+								</td>
 						</tr>;
 					})}
 				</tbody>
