@@ -89,7 +89,7 @@ class Login extends React.Component {
 											<IoChevronBack size={30}/>
 						</button> : '' } 
 					<h2> 
-						{this.props.companyName === '' ? 'Hitta företag' : this.props.companyName}
+						{this.props.companyName === '' ? 'Hitta företag' : this.props.companyName.replace('%20',' ')}
 					</h2>
 				</div>
 				<form className="listen-login-container" onSubmit={e => e.preventDefault()}>
