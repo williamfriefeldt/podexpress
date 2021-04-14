@@ -6,14 +6,19 @@
 	margin-top: 80px;
 }
 
+.listen-title-eps {
+	position: relative;
+}
+
 .listen-title-eps h2 {
  	text-align: center;
 }
 
 .podcast-back {
 	position: absolute;
+	top: 1px;
+	height: 45px;
 	left: 20%;
-	top: 80px;
 }
 
 .podcast-back svg {
