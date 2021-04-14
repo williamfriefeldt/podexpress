@@ -23,7 +23,7 @@ class ListenPage extends React.Component {
 			loading: true,
 			currentPod: null,
 			cookie: new Cookies(),
-			loadingReactions: false
+			loadingReaction: false
 		};
 
 		this.getCompanyInfo = this.getCompanyInfo.bind(this);
@@ -79,7 +79,7 @@ class ListenPage extends React.Component {
 			this.setState({loadingReaction:true});
 			let reactionID = this.state.cookie.get('reactionID');
 			const isClicked = this.state.currentPod[type].find( id => id === reactionID );
-			const companyRef = firestore.collection('companies').where('companyName', '==', this.state.companyName );
+			const companyRef = firestore.collection('companies').where('companyName', '==', this.state.companyName.replace('%20',' ') );
 			const companies =	await companyRef.get();
 			companies.forEach( async company => {
 			 	let podcasts = company.data()['podcasts'];
@@ -91,11 +91,12 @@ class ListenPage extends React.Component {
 				}
 				const otherType = type === 'thumbsUp' ? 'thumbsDown' : 'thumbsUp';
 				podcasts[this.state.currentPod.name][otherType] = podcasts[this.state.currentPod.name][otherType].filter( id => id !== reactionID );
+
 	      const userRef = await firestore.doc(`companies/${company.id}`);
 	      await userRef.set({ podcasts }, { merge:true });
 
 				this.state.cookie.set('reactionID', reactionID, { path: '/' });
-
+				
 	      const newData = await userRef.get();
 	      const newThumbsUp = newData.data()['podcasts'][this.state.currentPod.name]['thumbsUp'];
 				const newThumbsDown = newData.data()['podcasts'][this.state.currentPod.name]['thumbsDown'];
