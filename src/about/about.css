@@ -2,12 +2,21 @@
 	margin-left: 20%;
 	width: 60%;
 	text-align: center;
-	padding-top: 45px;
+	height: 100vh;
+	padding-top:100px;
 }
 
 .about-container article {
 	font-size: 20px;
-	margin-bottom: 200px;
+	margin-bottom: 10vh;
+}
+
+.to-contact-container {
+	cursor: pointer;
+}
+
+.to-contact-container h2 {
+	margin: 0px 0px 5px;
 }
 
 @media (max-width: 750px) {

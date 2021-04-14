@@ -1,12 +1,19 @@
 import './about.css';
 import smoothscroll from 'smoothscroll-polyfill';
+import { AiOutlineArrowDown } from "react-icons/ai";
 
 function About() {
 
 	smoothscroll.polyfill();
 
+	const scrollToContact = () => {
+		const contactHeightToTop = document.getElementsByClassName('react-tiger-transition--screen')[0].scrollTop + document.getElementById('contact').getBoundingClientRect().top;
+		console.log(contactHeightToTop);
+		document.getElementsByClassName('react-tiger-transition--screen')[0].scrollTo({ top:contactHeightToTop, behavior: 'smooth' });
+	}
+
 	return(
-		<div className="about-container">
+		<div className="about-container" id="about">
 			<h1>Om Podexpress</h1>
 
 			<article>
@@ -18,6 +25,11 @@ function About() {
 				ladda upp avsnitt från eran podcast och dela den enkelt med era medarbetare lösenordskyddat. Behöver ni hjälp med att producera
 				en podcast? Ingen fara, vi hjälper er!
 			</article>
+
+			<div className="to-contact-container" onClick={ () => { scrollToContact() } }>
+				<h2> Kontakta oss </h2>
+				<AiOutlineArrowDown className="full-width center-text down-icon"/>
+			</div>
 		</div>
 	)
 }

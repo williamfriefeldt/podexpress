@@ -18,7 +18,8 @@ class Start extends React.Component {
   }
 
   scrollToAbout() {
-    window.scrollTo({ top: window.innerHeight, behavior: 'smooth' });
+    const aboutHeightToTop = document.getElementById('about').getBoundingClientRect().top;
+    document.getElementsByClassName('react-tiger-transition--screen')[0].scrollTo({ top: aboutHeightToTop, behavior: 'smooth' });
   }
 
   buildThresholdList(steps) {
@@ -48,9 +49,10 @@ class Start extends React.Component {
       threshold: this.buildThresholdList(200)
     }
 
-
+    let prevIntersect = true;
     let callback = entries => entries.forEach(entry => {
-      let opacity = entry.intersectionRatio;
+      let opacity = prevIntersect && entry.isIntersecting ? entry.intersectionRatio : 0.075;
+      prevIntersect = entry.isIntersecting;
       this.handleScroll(opacity);
     });
 
@@ -58,10 +60,9 @@ class Start extends React.Component {
 
     let target = document.querySelector('#start');
     observer.observe(target);
-  }
- 
-  componentWillUnmount() {
-   // window.removeEventListener('scroll', this.handleScroll);
+
+    if(window.location.pathname === '/om') this.scrollToAbout();
+    
   }
 
   handleScroll(opacity) {
@@ -105,8 +106,7 @@ class Start extends React.Component {
                 <div className="img-container">
                   <img className="speaker-icon" src={speakericon}  alt="Speaker" />
                 </div>
-               </div>
-
+              </div>
 
        	</div>
     )

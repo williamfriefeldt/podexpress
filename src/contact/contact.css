@@ -1,0 +1,10 @@
+.contact-container {
+  padding: 30px;
+  text-align: center;
+  height: 100vh;
+	padding-top:100px;
+}
+
+.contact-container p {
+  font-size: 20px;
+}

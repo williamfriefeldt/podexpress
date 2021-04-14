@@ -17,7 +17,8 @@ class UserEpisodes extends React.Component {
 			nowPlaying: '',
 			loading: true,
 			password: '',
-			copyText: 'Kopiera'
+			copyText: 'Kopiera',
+			podcasts: false
 		}
 
 		this.setNowPlaying = this.setNowPlaying.bind(this);
@@ -30,13 +31,17 @@ class UserEpisodes extends React.Component {
 		  const userRef = firestore.doc(`companies/${user.uid}`);
 		  const snapshot = await userRef.get();
 		  let episodes = this.state.episodes;
-		  const data = snapshot.data()['episodes'];
-			if( data === undefined ) {
-				episodes = [];
+			if(snapshot.data()['podcasts']) {
+				const data = snapshot.data()['episodes'];
+				if( data === undefined ) {
+					episodes = [];
+				} else {
+					episodes = Object.values( data );
+				}
+				this.setState({episodes, loading: false, password: snapshot.data()['password'], podcasts: true});
 			} else {
-				episodes = Object.values( data );
+				this.setState({loading:false});
 			}
-		  this.setState({episodes, loading: false, password: snapshot.data()['password']});
 		} catch ( error ) {
 			console.log(error);
 		}
@@ -79,7 +84,7 @@ class UserEpisodes extends React.Component {
 								<td className="center-text">
 									<button onClick={()=>this.removeEp(episode)}>
 										<ImCross />
-									</button>
+									           </button>
 								</td>
 						</tr>;
 					})}
@@ -103,14 +108,24 @@ class UserEpisodes extends React.Component {
 					
 					{this.state.loading !== true ?
 						<div>
-							{this.state.episodes.length === 0 ? 
+							{!this.state.podcasts ?
 								<div className="no-eps-container grid center-content">
-									<p> Det finns inga avsnitt uppladdade </p>
+									<p> Det finns ingen podcast skapad </p>
 									<button className="upload-eps-btn shift-button"
-													onClick={() =>{ this.props.newRoute({location:'ladda-upp'}) }}> Ladda upp </button>
+													onClick={() =>{ this.props.newRoute({location:'podcast'}) }}> Skapa podcast </button>
 								</div>
-							: 
-								<Episodes />
+							:
+								<div>
+									{this.state.episodes.length === 0 ? 
+									<div className="no-eps-container grid center-content">
+										<p> Det finns inga avsnitt uppladdade </p>
+										<button className="upload-eps-btn shift-button"
+														onClick={() =>{ this.props.newRoute({location:'ladda-upp'}) }}> Ladda upp </button>
+									</div>
+									: 
+										<Episodes />
+									}
+								</div>
 							}
 						</div>
 					:

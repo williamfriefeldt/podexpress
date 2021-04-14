@@ -9,6 +9,7 @@ import ListenPage from './listen/listen-page/listen-page';
 import About from './about/about';
 import Start from './start/start';
 import Header from './header/header';
+import Contact from './contact/contact';
 
 function App() {
 
@@ -30,10 +31,12 @@ function App() {
           <Route path="/om" screen>
             <Start />
             <About />
+            <Contact />
           </Route>
           <Route exact path="/" screen>
             <Start />
             <About />
+            <Contact />
           </Route>
       </Navigation>
 

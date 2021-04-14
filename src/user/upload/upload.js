@@ -54,7 +54,7 @@ class Upload extends React.Component {
 			} else {
 				podcasts = Object.values( data );
 			}
-		  this.setState({podcasts});
+		  this.setState({podcasts, episodeInfo:{podcast:podcasts[0].name}});
 		} catch ( error ) {
 			console.log(error);
 		}
@@ -130,8 +130,7 @@ class Upload extends React.Component {
 						let episodes = userData.data()['episodes'];
 						if( episodes ) {
 							const keys = Object.keys( episodes );
-							const newEp = 'ep' + ( parseInt(keys[keys.length-1].replace('ep','') ) + 1 );
-							episodes[newEp] =  {
+							episodes[this.state.episodeInfo.episodeName] =  {
 								name: this.state.episodeInfo.episodeName,
 								description: this.state.episodeInfo.episodeDescription,
 								podcast: this.state.episodeInfo.podcast,
@@ -140,14 +139,14 @@ class Upload extends React.Component {
 							}
 							await userRef.set({ episodes }, { merge:true });
 						} else {
-							episodes = {
-								ep1: {
+							episodes = {};
+							episodes[this.state.episodeInfo.episodeName] =
+								{
 									name: this.state.episodeInfo.episodeName,
 									description: this.state.episodeInfo.episodeDescription,
 									img: uploadImgUrl,
 									url: uploadEpUrl
-								}
-							};
+								};
 							await userRef.set({ episodes }, { merge:true });
 						};
 						this.setState({loading:false});

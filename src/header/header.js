@@ -15,7 +15,10 @@ function Header() {
 	}
 
 	const scrollToAbout = () => {
-		window.scrollTo({ top: window.innerHeight, behavior: 'smooth' });
+		if(window.location.pathname === '/om') {
+			const aboutHeightToTop = document.getElementById('about').getBoundingClientRect().top
+			document.getElementsByClassName('react-tiger-transition--screen')[0].scrollTo({ top:aboutHeightToTop, behavior: 'smooth' });
+		}
   }
 
 	return (
