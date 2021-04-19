@@ -88,12 +88,15 @@
 	border-radius: 120px;
 	color: wheat;
 }
+/* Variables */
+
 .listen-audio-container {
 	max-height: 0px;
 	transition: max-height 3s;
 	position: fixed;
 	bottom: 0px;
 	width: 100%;
+	z-index: calc(var(--audio-layer, 1));
 }
 .listen-show-audio-container {
 	max-height: 999px;
@@ -109,6 +112,28 @@
 	opacity: 1;	
 }
 
+.comment-btn {
+	height: 25px;
+	padding: 0px 10px;
+	margin-right: 10px;
+}
+
+.listen-comment-container {
+	position: fixed;
+	height: 0vh;
+	background-color:wheat;
+	border-radius: 10px 10px 0px 0px;
+	border-top: 2px solid #003366;
+	bottom: 0px;
+	width: 100%;
+	color: #003366;
+	transition: height 2s;
+}
+
+.show-comments {
+	height: calc(100vh - 100px);
+}
+
 @media (max-width: 600px) {
 	.listen-eps-container {
 		margin: 10px;
@@ -116,5 +141,9 @@
 
 	.podcast-back {
 		left: 5px;
+	}
+
+	.show-comments {
+		height: calc(100vh - 175px);
 	}
 }

@@ -3,6 +3,7 @@ import './listen-page.css';
 import Login from '../login/login';
 import Episodes from '../episodes/episodes';
 import Podcasts from '../podcasts/podcasts';
+import Comments from '../comments/comments';
 import PodexpressAudioPlayer from '../audio-player/audio-player';
 import { firestore } from '../../store/services/firebase';
 import { VscLoading } from 'react-icons/vsc';
@@ -23,18 +24,22 @@ class ListenPage extends React.Component {
 			loading: true,
 			currentPod: null,
 			cookie: new Cookies(),
-			loadingReaction: false
+			loadingReaction: false,
+			openComments: false
 		};
 
 		this.getCompanyInfo = this.getCompanyInfo.bind(this);
 		this.setNowPlaying = this.setNowPlaying.bind(this);
 		this.showEps = this.showEps.bind(this);
 		this.saveReaction = this.saveReaction.bind(this);
+		this.openComments = this.openComments.bind(this);
+		this.closeComments = this.closeComments.bind(this);
 	}
 
 	async componentDidMount() {
 		let vh = window.innerHeight * 0.01;
 		document.documentElement.style.setProperty('--vh', `${vh}px`);
+		document.documentElement.style.setProperty('--audio-layer', 1);
 
 		const path = window.location.pathname.split('/');
 		if( path.length === 3 ) {
@@ -108,6 +113,16 @@ class ListenPage extends React.Component {
 		}
 	}
 
+	openComments() {
+		document.documentElement.style.setProperty('--audio-layer', `0`);
+		this.setState({openComments:true});
+	}
+
+	closeComments() {
+		document.documentElement.style.setProperty('--audio-layer', `1`);
+		this.setState({openComments:false});
+	}
+
 	render() {
 
 		return (
@@ -134,6 +149,7 @@ class ListenPage extends React.Component {
 												{this.state.currentPod.description}
 											</article>
 											<div className="pod-reactions">
+												<button className="shift-button comment-btn" onClick={() => { this.openComments() }}>Kommentarer</button>
 												<div onClick={() => this.saveReaction('thumbsUp')} 
 														 className={`thumbs ${this.state.currentPod.thumbsUp.find((id) => this.state.cookie.get('reactionID') === id) ? 'thumb-filled' : ''}`}>
 														 	<p><FiThumbsUp />{this.state.currentPod.thumbsUp.length}</p>
@@ -145,7 +161,7 @@ class ListenPage extends React.Component {
 											</div>
 										</div>
 										<Episodes eps={this.state.episodes.filter(ep => ep.podcast === this.state.currentPod.name)} 
-											  showEps={this.showEpst}
+											  showEps={this.showEps}
 											  setNowPlaying={this.setNowPlaying} />
 									</div>
 								}
@@ -167,6 +183,11 @@ class ListenPage extends React.Component {
 					<button	className={`audio-play-close ${this.state.nowPlayingInfo.name ? 'audio-play-close-show' : ''}`} 
 									onClick={() => this.setNowPlaying({})}><ImCross /></button>
 				</div>
+
+				<div className={`listen-comment-container ${this.state.openComments ? 'show-comments':''}`}>
+					<Comments openComment={this.state.openComments} closeComments={this.closeComments} currentPod={this.state.currentPod} />
+				</div>
+
 			</div>
 		);
 	};

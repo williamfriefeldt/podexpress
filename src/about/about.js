@@ -8,7 +8,6 @@ function About() {
 
 	const scrollToContact = () => {
 		const contactHeightToTop = document.getElementsByClassName('react-tiger-transition--screen')[0].scrollTop + document.getElementById('contact').getBoundingClientRect().top;
-		console.log(contactHeightToTop);
 		document.getElementsByClassName('react-tiger-transition--screen')[0].scrollTo({ top:contactHeightToTop, behavior: 'smooth' });
 	}
 

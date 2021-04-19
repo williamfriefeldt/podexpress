@@ -19,7 +19,7 @@ function App() {
           <Route path="/logga-in">
             <Login />
           </Route>
-          <Route path="/skapa-konto">
+          <Route path="/skapa-konto" screen>
             <CreateAccount />
           </Route>
           <Route path="/företag/:name">

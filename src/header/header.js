@@ -21,6 +21,12 @@ function Header() {
 		}
   }
 
+	const scrollToContact = () => {
+		const contactHeightToTop = document.getElementById('contact').getBoundingClientRect().top;
+		const screenElement = document.getElementsByClassName('react-tiger-transition--screen')[0];
+		screenElement.scrollTo({ top: contactHeightToTop, behavior: 'smooth' });
+	}
+
 	return (
 		<div className="header-container" style={{display: display}}>
 			<h2 className="header-title">Podexpress</h2>
@@ -28,6 +34,7 @@ function Header() {
 				<Link to="/lyssna" transition='glide-left'> Hitta podcast </Link>
 				<Link to="/logga-in"  transition="glide-left"> Logga in </Link>	
 				<Link to="/om" onClick={ () => { scrollToAbout() } }> Om </Link>	
+				<button className="link-button" onClick={ () => { scrollToContact() } }> Kontakt </button>
 			</nav>
 			<div className="mobile">
  				<img className="mobile speaker-icon mobile-icon" src={speakericon}  alt="Speaker" />

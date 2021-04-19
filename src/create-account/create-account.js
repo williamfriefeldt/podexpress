@@ -50,15 +50,20 @@ class CreateAccount extends React.Component {
 
 	setInput( event ) {
  		let inputs = this.state.inputs;
-	  	inputs[event.target.name] = event.target.value;
+		inputs[event.target.name] = event.target.value;
 
-	  	if( inputs[event.target.name] !== '' ) {
-	  		let validators = this.state.validators;
-	  		validators[event.target.name] = true;
-	  		this.setState({ validators });
-	  	}
+		if( inputs[event.target.name] !== '' ) {
+			let validators = this.state.validators;
+			validators[event.target.name] = true;
+			this.setState({ validators });
+		}
 
-	    this.setState({ inputs });
+		if( event.target.name === 'companyName' ) {
+			inputs['companyNameRegX'] = event.target.value.replace(/ /g,'').toLowerCase();
+			console.log(inputs['companyNameRegX']);
+		}
+
+		this.setState({ inputs });
 	}
 
 	async generateUserInfo( user, companyName ) {
@@ -68,7 +73,7 @@ class CreateAccount extends React.Component {
 	  if (!snapshot.exists) {
 	    const { email } = user;
 	    try {
-	      await userRef.set({ companyName, email, password: 'jW92kLP' });
+	      await userRef.set({ companyName, companyNameRegX: this.state.inputs.companyNameRegX, email, password: 'jW92kLP' });
 	      window.location.href = window.location.href.replace( window.location.pathname, '' ) + '/företag/' + companyName;
 	    } catch (error) {
 	      console.error("Error creating user document", error);
@@ -78,7 +83,7 @@ class CreateAccount extends React.Component {
 	}
 
 	async createAccount() {	
-		let formComplete = 0;
+		let formComplete = -1;
 		let validators = this.state.validators;
 		for( const key in this.state.inputs ) {
 			if( this.state.inputs[key] === '' ) {

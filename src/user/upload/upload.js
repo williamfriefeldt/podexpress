@@ -129,7 +129,6 @@ class Upload extends React.Component {
 						const userData = await userRef.get();
 						let episodes = userData.data()['episodes'];
 						if( episodes ) {
-							const keys = Object.keys( episodes );
 							episodes[this.state.episodeInfo.episodeName] =  {
 								name: this.state.episodeInfo.episodeName,
 								description: this.state.episodeInfo.episodeDescription,

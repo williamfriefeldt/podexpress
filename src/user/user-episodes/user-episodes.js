@@ -55,6 +55,10 @@ class UserEpisodes extends React.Component {
 		this.setState({copyText: 'Kopierat!'})
 	}
 
+	removeEp(ep) {
+		console.log(ep);
+	}
+
 	render() {
 
 		const Episodes = () => (
@@ -66,7 +70,7 @@ class UserEpisodes extends React.Component {
 						<th> Beskrivning </th>
 						<th> Podcast </th>
 						<th className={"ep-play-title"}> Spela upp </th>
-						<th class="center-text"> Ta bort </th>
+						<th className="center-text"> Ta bort </th>
 					</tr>
 				</thead>
 				<tbody>
@@ -84,7 +88,7 @@ class UserEpisodes extends React.Component {
 								<td className="center-text">
 									<button onClick={()=>this.removeEp(episode)}>
 										<ImCross />
-									           </button>
+									</button>
 								</td>
 						</tr>;
 					})}
