@@ -30,6 +30,7 @@ class Start extends React.Component {
       let ratio = i/numSteps;
       thresholds.push(ratio);
     }
+    thresholds.push(0);
     return thresholds;
   }
 
@@ -42,7 +43,7 @@ class Start extends React.Component {
     setTimeout( () => { this.setState({opacitySlogan:[1,1,0]}) }, 2250 );
     setTimeout( () => { this.setState({opacitySlogan:[1,1,1]}) }, 3250 );
 
-    /* Try new osberevr thing */
+    /* Try new observer for scroll */
     let options = {
       root: document.querySelector('#root'),
       rootMargin: '0px',
@@ -51,7 +52,7 @@ class Start extends React.Component {
 
     let prevIntersect = true;
     let callback = entries => entries.forEach(entry => {
-      let opacity = prevIntersect && entry.isIntersecting ? entry.intersectionRatio : 0.075;
+      let opacity = prevIntersect && entry.isIntersecting ? entry.intersectionRatio : 0.1;
       prevIntersect = entry.isIntersecting;
       this.handleScroll(opacity);
     });

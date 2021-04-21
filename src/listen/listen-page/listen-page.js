@@ -34,6 +34,8 @@ class ListenPage extends React.Component {
 		this.saveReaction = this.saveReaction.bind(this);
 		this.openComments = this.openComments.bind(this);
 		this.closeComments = this.closeComments.bind(this);
+		this.sendComment = this.sendComment.bind(this);
+		this.removeComment = this.removeComment.bind(this);
 	}
 
 	async componentDidMount() {
@@ -122,6 +124,48 @@ class ListenPage extends React.Component {
 		document.documentElement.style.setProperty('--audio-layer', `1`);
 		this.setState({openComments:false});
 	}
+	
+	async sendComment(commentInfo) {
+		let reactionID = this.state.cookie.get('reactionID');
+		if( reactionID ) {
+			commentInfo['reactionID'] = reactionID;
+		} else {
+			commentInfo['reactionID'] = this.makeId(8);
+		}
+		const companyRef = firestore.collection('companies').where('companyName', '==', this.state.companyName.replace('%20',' ') );
+		const companies =	await companyRef.get();
+		companies.forEach( async company => {
+			 let podcasts = company.data()['podcasts'];
+			 podcasts[this.state.currentPod.name]['comments'].push(commentInfo);
+
+			 const userRef = await firestore.doc(`companies/${company.id}`);
+			 await userRef.set({ podcasts }, { merge:true });
+
+			 let currentPod = this.state.currentPod;
+			 currentPod['comments'].push(commentInfo);
+			 this.setState({currentPod});
+		});
+	}
+
+	async removeComment(comment) {
+		const companyRef = firestore.collection('companies').where('companyName', '==', this.state.companyName.replace('%20',' ') );
+		const companies =	await companyRef.get();
+		companies.forEach( async company => {
+			 let podcasts = company.data()['podcasts'];
+			 podcasts[this.state.currentPod.name]['comments'] = podcasts[this.state.currentPod.name]['comments'].filter( item => { 
+				 return item.comment !== comment.comment && item.reactionID !== comment.reactionID;
+			 });
+
+			 const userRef = await firestore.doc(`companies/${company.id}`);
+			 await userRef.set({ podcasts }, { merge:true });
+
+			 let currentPod = this.state.currentPod;
+			 currentPod['comments'] = currentPod['comments'].filter( item => { 
+				return item.comment !== comment.comment && item.reactionID !== comment.reactionID;
+			 });
+			 this.setState({currentPod});
+		});
+	}
 
 	render() {
 
@@ -185,7 +229,11 @@ class ListenPage extends React.Component {
 				</div>
 
 				<div className={`listen-comment-container ${this.state.openComments ? 'show-comments':''}`}>
-					<Comments openComment={this.state.openComments} closeComments={this.closeComments} currentPod={this.state.currentPod} />
+					<Comments openComment={this.state.openComments} 
+										closeComments={this.closeComments} 
+										currentPod={this.state.currentPod} 
+										sendComment={this.sendComment}
+										removeComment={this.removeComment}/>
 				</div>
 
 			</div>
