@@ -62,6 +62,9 @@ class Start extends React.Component {
     let target = document.querySelector('#start');
     observer.observe(target);
 
+    const screenContainer = document.getElementsByClassName('react-tiger-transition--screen')[0];
+    screenContainer.onwheel = () => { if( screenContainer.scrollTop < 0.1) this.handleScroll(1) }; 
+
     if(window.location.pathname === '/om') this.scrollToAbout();
     
   }

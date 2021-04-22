@@ -16,15 +16,16 @@ function Header() {
 
 	const scrollToAbout = () => {
 		if(window.location.pathname === '/om') {
-			const aboutHeightToTop = document.getElementById('about').getBoundingClientRect().top
-			document.getElementsByClassName('react-tiger-transition--screen')[0].scrollTo({ top:aboutHeightToTop, behavior: 'smooth' });
+			const startContainerHeight = document.getElementById('start').offsetHeight;
+			document.getElementsByClassName('react-tiger-transition--screen')[0].scrollTo({ top:startContainerHeight, behavior: 'smooth' });
 		}
   }
 
 	const scrollToContact = () => {
-		const contactHeightToTop = document.getElementById('contact').getBoundingClientRect().top;
+		const startContainerHeight = document.getElementById('start').offsetHeight;
+		const aboutContainerHeight = document.getElementById('about').offsetHeight;
 		const screenElement = document.getElementsByClassName('react-tiger-transition--screen')[0];
-		screenElement.scrollTo({ top: contactHeightToTop, behavior: 'smooth' });
+		screenElement.scrollTo({ top: startContainerHeight + aboutContainerHeight, behavior: 'smooth' });
 	}
 
 	return (

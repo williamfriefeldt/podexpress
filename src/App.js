@@ -10,6 +10,7 @@ import About from './about/about';
 import Start from './start/start';
 import Header from './header/header';
 import Contact from './contact/contact';
+import Tutorial from './tutorial/tutorial';
 
 function App() {
 
@@ -31,11 +32,13 @@ function App() {
           <Route path="/om" screen>
             <Start />
             <About />
+            <Tutorial />
             <Contact />
           </Route>
           <Route exact path="/" screen>
             <Start />
             <About />
+            <Tutorial />
             <Contact />
           </Route>
       </Navigation>
