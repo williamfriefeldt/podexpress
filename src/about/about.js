@@ -12,7 +12,7 @@ function About() {
 	}
 
 	return(
-		<div className="about-container" id="about">
+		<div className="about-container" id="om">
 			<h1>Om Podexpress</h1>
 
 			<article>

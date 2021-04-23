@@ -17,11 +17,6 @@ class Start extends React.Component {
     this.handleScroll = this.handleScroll.bind(this);
   }
 
-  scrollToAbout() {
-    const aboutHeightToTop = document.getElementById('about').getBoundingClientRect().top;
-    document.getElementsByClassName('react-tiger-transition--screen')[0].scrollTo({ top: aboutHeightToTop, behavior: 'smooth' });
-  }
-
   buildThresholdList(steps) {
     let thresholds = [];
     let numSteps = steps;
@@ -36,6 +31,7 @@ class Start extends React.Component {
 
   componentDidMount() {
     /* Set viewport of root element */
+    document.getElementsByClassName('react-tiger-transition--screen')[0].scrollTo( {top:0} );
     let vh = window.innerHeight * 0.01;
     document.documentElement.style.setProperty('--vh', `${vh}px`);
 
@@ -52,30 +48,49 @@ class Start extends React.Component {
 
     let prevIntersect = true;
     let callback = entries => entries.forEach(entry => {
+      console.log(entry.isIntersecting)
       let opacity = prevIntersect && entry.isIntersecting ? entry.intersectionRatio : 0.1;
       prevIntersect = entry.isIntersecting;
-      this.handleScroll(opacity);
+      if(window.location.pathname === '/') this.handleScroll(opacity);
     });
 
     let observer = new IntersectionObserver(callback, options);
 
-    let target = document.querySelector('#start');
+    let target = document.querySelector('#hem');
     observer.observe(target);
+
+    this.setState( {observer:observer} );
 
     const screenContainer = document.getElementsByClassName('react-tiger-transition--screen')[0];
     screenContainer.onwheel = () => { if( screenContainer.scrollTop < 0.1) this.handleScroll(1) }; 
 
-    if(window.location.pathname === '/om') this.scrollToAbout();
+    const hasSection = window.location.href.split('#');
+    if(hasSection.length === 2) this.handleSection( hasSection[1] );
     
   }
 
   handleScroll(opacity) {
+  // console.log(opacity)
     this.setState({ opacity: opacity, scale: opacity});
+  }
+
+  handleSection(section) {
+    const sectionList = ['hem','om','sa-funkar-det','kontakt'];
+    let index = sectionList.findIndex( string => string === section );
+    if( index !== -1 ) {
+      let scrollHeight = 0;
+      for( let i = 0; i < index; i++) {
+        scrollHeight += document.getElementById(sectionList[i]).offsetHeight;
+      }
+      document.getElementsByClassName('react-tiger-transition--screen')[0].scrollTo({ top: scrollHeight, behavior: 'smooth' });
+    } else {
+      window.location.href = window.location.origin + '#hem';
+    }
   }
 
   render() {
   	return(
-  		  <div id="start" className="start-container" style={{ opacity: this.state.opacity,
+  		  <div id="hem" className="start-container" style={{ opacity: this.state.opacity,
                                               transform: 'scale('+this.state.scale+')'}}>
               <div className="intro-container">
                 <h1 className="desktop">Dela podcasts med ditt företag</h1>

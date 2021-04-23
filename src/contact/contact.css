@@ -16,3 +16,13 @@
   width: 100%;
   padding: 0px !important;
 }
+
+@media (max-width: 750px) {
+  .contact-container {
+    margin-left: 5%;
+    width: 90%;
+  }
+  .podexpress-footer {
+    bottom: 15%;
+  }
+}

@@ -29,12 +29,6 @@ function App() {
           <Route path="/lyssna/:name?" screen>
             <ListenPage />
           </Route>
-          <Route path="/om" screen>
-            <Start />
-            <About />
-            <Tutorial />
-            <Contact />
-          </Route>
           <Route exact path="/" screen>
             <Start />
             <About />
