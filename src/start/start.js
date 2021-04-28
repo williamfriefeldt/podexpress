@@ -48,7 +48,6 @@ class Start extends React.Component {
 
     let prevIntersect = true;
     let callback = entries => entries.forEach(entry => {
-      console.log(entry.isIntersecting)
       let opacity = prevIntersect && entry.isIntersecting ? entry.intersectionRatio : 0.1;
       prevIntersect = entry.isIntersecting;
       if(window.location.pathname === '/') this.handleScroll(opacity);
@@ -59,10 +58,13 @@ class Start extends React.Component {
     let target = document.querySelector('#hem');
     observer.observe(target);
 
-    this.setState( {observer:observer} );
-
     const screenContainer = document.getElementsByClassName('react-tiger-transition--screen')[0];
-    screenContainer.onwheel = () => { if( screenContainer.scrollTop < 0.1) this.handleScroll(1) }; 
+    screenContainer.onwheel = () => {
+      if( screenContainer.scrollTop < 0.1) { 
+        window.location.hash = '#hem';
+        this.handleScroll(1); 
+      }
+    }; 
 
     const hasSection = window.location.href.split('#');
     if(hasSection.length === 2) this.handleSection( hasSection[1] );
@@ -70,8 +72,7 @@ class Start extends React.Component {
   }
 
   handleScroll(opacity) {
-  // console.log(opacity)
-    this.setState({ opacity: opacity, scale: opacity});
+    this.setState({ opacity: opacity, scale: opacity });
   }
 
   handleSection(section) {
@@ -115,7 +116,7 @@ class Start extends React.Component {
                    <Link to="/lyssna" transition='glide-left'><button className="intro-btn"> Hitta ditt företag </button></Link>
                  </div> 
 
-                <div className="mobile about-scroll-container" onClick={ () => { this.scrollToAbout() } }>
+                <div className="mobile about-scroll-container" onClick={ () => { this.handleSection('om') } }>
                   <h2> Läs mer </h2>
                   <AiOutlineArrowDown className="full-width center-text down-icon"/>
                 </div>

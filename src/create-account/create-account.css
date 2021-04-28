@@ -2,6 +2,7 @@
 	display: grid;
 	justify-content: center;
 	padding-top: 60px;
+	margin-bottom: 50px;
 }
 
 .create-account-placeholder h2 {
@@ -48,4 +49,9 @@
 
 .create-account-placeholder p {
 	margin-top: 10px;
+}
+
+.create-back {
+	position: absolute;
+	top: 30px;
 }

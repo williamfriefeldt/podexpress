@@ -6,9 +6,10 @@ function About() {
 
 	smoothscroll.polyfill();
 
-	const scrollToContact = () => {
-		const contactHeightToTop = document.getElementsByClassName('react-tiger-transition--screen')[0].scrollTop + document.getElementById('contact').getBoundingClientRect().top;
+	const scrollToHowItWorks= () => {
+		const contactHeightToTop = document.getElementById('hem').offsetHeight + document.getElementById('om').offsetHeight;
 		document.getElementsByClassName('react-tiger-transition--screen')[0].scrollTo({ top:contactHeightToTop, behavior: 'smooth' });
+		setTimeout( () => window.location.hash ='#sa-funkar-det', 600);
 	}
 
 	return(
@@ -25,8 +26,8 @@ function About() {
 				en podcast? Ingen fara, vi hjälper er!
 			</article>
 
-			<div className="to-contact-container" onClick={ () => { scrollToContact() } }>
-				<h2> Kontakta oss </h2>
+			<div className="to-contact-container" onClick={ () => { scrollToHowItWorks() } }>
+				<h2> Så funkar det </h2>
 				<AiOutlineArrowDown className="full-width center-text down-icon"/>
 			</div>
 		</div>

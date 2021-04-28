@@ -1,0 +1,44 @@
+.show-pod-info-container {
+  padding: 20px;
+}
+
+.show-pod-menu-item {
+  background-color: wheat;
+  color: #003366;
+  font-weight: bold;
+  margin: -1px 10px;
+  padding: 5px 10px;
+  border-radius: 10px 10px 0px 0px;
+  cursor: pointer;
+}
+.show-pod-menu-item-not {
+  background-color: #003366;
+  color: wheat;
+  margin: 0px 10px;
+}
+
+.show-pod-current-info {
+  border-radius: 10px;
+  background-color: wheat;
+  color: #003366;
+  padding: 10px;
+  height: 250px;
+}
+
+.show-pod-ep-title {
+  padding: 5px;
+  font-weight: bold;
+  border-bottom: 1px solid #003366;
+}
+.show-pod-ep-title:last-child {
+  border-bottom: none;
+}
+
+.show-pod-comment-name {
+  width: 20%;
+  font-weight: 600;
+}
+
+.show-pod-reaction {
+  padding: 12.5px 20px 0px 0px;
+}

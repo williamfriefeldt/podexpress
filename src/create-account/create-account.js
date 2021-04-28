@@ -3,7 +3,8 @@ import React from 'react';
 import { auth, firestore } from '../store/services/firebase';
 import ErrorHandler from './errorHandler.js';
 import { VscLoading } from 'react-icons/vsc';
-
+import { IoChevronBack } from 'react-icons/io5';
+import { Link } from 'react-tiger-transition';
 
 class CreateAccount extends React.Component {
 
@@ -12,6 +13,7 @@ class CreateAccount extends React.Component {
 		this.state = {
 			inputs: {
 				companyName: '',
+				companyNameRegX: '',
 				email: '',
 				password: '',
 				repeatPass: ''
@@ -25,7 +27,8 @@ class CreateAccount extends React.Component {
 			errorState: {
 				msg: ''
 			},
-			loading: false
+			loading: false,
+			companyExists: false,
 		}
 
 		this.checkPassword = this.checkPassword.bind(this);
@@ -60,10 +63,13 @@ class CreateAccount extends React.Component {
 
 		if( event.target.name === 'companyName' ) {
 			inputs['companyNameRegX'] = event.target.value.replace(/ /g,'').toLowerCase();
-			console.log(inputs['companyNameRegX']);
 		}
 
-		this.setState({ inputs });
+		this.setState({ inputs, companyExists: false });
+	}
+
+	scrollIntoInput( height ) {
+		document.getElementsByClassName('react-tiger-transition--screen')[0].scrollTo({ top:height, behavior: 'smooth' });
 	}
 
 	async generateUserInfo( user, companyName ) {
@@ -83,14 +89,16 @@ class CreateAccount extends React.Component {
 	}
 
 	async createAccount() {	
-		let formComplete = -1;
+		let formComplete = 0;
 		let validators = this.state.validators;
 		for( const key in this.state.inputs ) {
-			if( this.state.inputs[key] === '' ) {
-				validators[key] = false;
-			} else {
-				formComplete++;
-			}	
+			if( key !== 'companyNameRegX') {
+				if( this.state.inputs[key] === '' || ( key === 'repeatPass' && validators[key] === false )) {
+					validators[key] = false;
+				} else {
+					formComplete++;
+				}	
+			}
 		}
 
 		this.setState({ validators });
@@ -98,38 +106,53 @@ class CreateAccount extends React.Component {
 		if( formComplete === 4 ) {
 			this.setState({ loading: true });
 			let inputs = this.state.inputs;
-			try{
-	      	const {user} = await auth.createUserWithEmailAndPassword(inputs['email'], inputs['password']);
-	      	this.generateUserInfo( user, inputs.companyName );
-	    	}
-	    	catch(error) {
-	    		let errorState = this.state.errorState;
-	    		errorState['msg'] = ErrorHandler( error.code );
-        	this.setState({ errorState, loading: false });
-	    	}
-		}	
+
+			const companyRef = firestore.collection('companies').where('companyNameRegX', '==', inputs.companyNameRegX );
+			const companies =	await companyRef.get();
+			let companyExists = false;
+			await companies.forEach( async company => companyExists = true );
+
+			if(!companyExists) {
+				try{
+					const {user} = await auth.createUserWithEmailAndPassword(inputs['email'], inputs['password']);
+					this.generateUserInfo( user, inputs.companyName );
+				}
+				catch(error) {
+					let errorState = this.state.errorState;
+					errorState['msg'] = ErrorHandler( error.code );
+					this.setState({ errorState, loading: false });
+				}
+			} else {
+				this.setState({loading: false, companyExists: true });
+			}
+		}
 	}
 
 	render() {
 
 		return (
 			<div className="create-account-placeholder">
-
-				<h2> Skapa konto </h2>
+				<div className="listen-login-title-container">
+						<Link to="/" transition='glide-left' className="link-button create-back">
+											<IoChevronBack size={30}/>
+						</Link>
+						<h2> Skapa konto </h2>
+				</div>
+				
 				<form className="create-account-container">
 
 					<label className="create-account-label">
 						Företagsnamn
 					</label>
-					<input className="create-account-input" type="text" onChange={this.setInput} name="companyName" />
-					<div className={`no-match no-match-text ${ this.state.validators.companyName ? '' : 'show-no-match-text'}`}>
-						<p> Fyll i ett företagsnamn </p>
+					<input className="create-account-input" type="text" onChange={this.setInput} onFocus={ () => { this.scrollIntoInput(0) }} name="companyName" />
+					<div className={`no-match no-match-text ${ this.state.validators.companyName && !this.state.companyExists ? '' : 'show-no-match-text'}`}>
+						{this.state.companyExists ? <p>Ett företag med det namnet finns redan</p> : <p> Fyll i ett företagsnamn </p>}
 					</div>
 
 					<label className="create-account-label create-account-label-not-first">
 						Email
 					</label>
-					<input className="create-account-input" type="email" onChange={this.setInput} name="email"/>
+					<input className="create-account-input" type="email" onChange={this.setInput} onFocus={ () => { this.scrollIntoInput(50) }} name="email"/>
 					<div className={`no-match no-match-text ${ this.state.validators.email ? '' : 'show-no-match-text'}`}>
 						<p> Fyll i en emailadress</p>
 					</div>
@@ -137,8 +160,8 @@ class CreateAccount extends React.Component {
 					<label className="create-account-label create-account-label-not-first">
 						Lösenord
 					</label>
-					<input className="create-account-input" type="password" onChange={this.setInput} name="password"/>
-					<div className={`no-match no-match-text ${ this.state.validators.password ? '' : 'show-no-match-text'}`}>
+					<input className="create-account-input" type="password" onChange={this.setInput} onFocus={ () => { this.scrollIntoInput(100) }} name="password"/>
+					<div className={`no-match no-match-text ${ this.state.validators.password ? '' : 'show-no-match-text' }`}>
 						<p> Fyll i ett lösenord</p>
 					</div>
 
@@ -149,6 +172,8 @@ class CreateAccount extends React.Component {
 						   type="password" 
 						   value={this.state.repeatPass} name="repeatPass"
 						   onChange={this.setInput}
+							 onKeyDown={ e => { if( e.key === 'Enter' ) this.createAccount(); }}
+							 onFocus={ () => { this.scrollIntoInput(150) }} 
 						   onBlur={this.checkPassword} />
 
 					<div className={`no-match no-match-text ${ this.state.validators.repeatPass ? '' : 'show-no-match-text'}`}>

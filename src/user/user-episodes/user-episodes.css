@@ -1,7 +1,7 @@
 .episodes-container {
 	height: calc(100vh - 100px);
-  	position: relative;
-  	overflow: auto;
+  position: relative;
+  overflow: auto;
 }
 
 .episodes-container-play {
@@ -34,8 +34,13 @@
 	margin-right: 10px;
 }
 
+.ep-description-title {
+	padding-left: 20px;
+}
+
 .ep-description {
 	width: 300px;
+	padding: 20px
 }
 
 .no-eps-container p {
@@ -54,4 +59,30 @@
 
 .ep-loading {
 	margin-top: 120px;
+}
+
+.cover-title {
+	padding-left: 10px;
+}
+
+/* width */
+.episodes-container::-webkit-scrollbar {
+  width: 12.5px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: wheat;
+  border-radius: 10px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #003366;
+  border-radius: 10px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
 }

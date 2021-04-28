@@ -38,8 +38,9 @@ class UserPodcast extends React.Component {
     const userRef = firestore.doc(`companies/${userID}`);
     const userData = await userRef.get();
     let podcasts = userData.data()['podcasts'];
+    let episodes = userData.data()['episodes'];
     if(!podcasts) podcasts = [];
-    this.setState({ podcasts: Object.values( podcasts ), loading: false });
+    this.setState({ podcasts: Object.values( podcasts ), episodes: episodes, loading: false });
   }
 
   openModal(index) {
@@ -53,7 +54,7 @@ class UserPodcast extends React.Component {
   render() {
 
     const Podcasts = () => (
-      <div className="podcasts">
+      <div className="podcasts flex">
         {this.state.podcasts.map( (podcast, index) => {
           return <div className="podcast grid center-content" key={index} onClick={()=> this.openModal(index) }>
                     <img className="podcast-img" src={podcast.img} alt="podcast cover" />
@@ -98,6 +99,7 @@ class UserPodcast extends React.Component {
           isOpen={this.state.modal} 
           closeModal={this.closeModal} 
           podcast={this.state.openPod}
+          episodes={this.state.episodes}
         />
 
       </div>

@@ -19,7 +19,7 @@
   width: 400px;
 }
 .podcasts {
-  display: flex;
+  flex-wrap: wrap;
 }
 .podcast {
    width: 225px;

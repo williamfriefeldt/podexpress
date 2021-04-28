@@ -46,7 +46,7 @@ class UserMenu extends React.Component {
 				<nav className="menu-items">
 
 						<Link to={`/företag/${this.state.companyName}/avsnitt`} onClick={ () => { this.route('avsnitt') }}> Avsnitt </Link>
-						<Link to={`/företag/${this.state.companyName}/podcast`} onClick={ () => { this.route('podcast') }}> Podcast</Link>
+						<Link to={`/företag/${this.state.companyName}/podcasts`} onClick={ () => { this.route('podcasts') }}> Podcasts </Link>
 						<Link to={`/företag/${this.state.companyName}/ladda-upp`} onClick={ () => { this.route('ladda-upp') }}> Ladda upp </Link>
 						<Link to={`/företag/${this.state.companyName}/installningar`} onClick={ () => { this.route('installningar') }}> Inställningar </Link>
 						<button onClick={ () => this.logout() } className="link-button"> Logga ut </button>

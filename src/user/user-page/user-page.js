@@ -15,7 +15,7 @@ var RouteComponent = function( state ) {
 	switch ( state.location ) {
 		case 'avsnitt':
 			return <UserEpisodes newRoute={this.changeRoute} />;
-		case 'podcast':
+		case 'podcasts':
 			return <UserPodcast />
 		case 'ladda-upp':
 			return <Upload newRoute={this.changeRoute} />;
@@ -55,16 +55,18 @@ class UserPage extends React.Component {
 	  	const userData = await userRef.get();
 
 	  	const companyName = userData.data()['companyName'];
+			const companyNameRegX = userData.data()['companyNameRegX'];
 
 	 	  const path = window.location.pathname.split('/');
 			
-	 	  if( companyName.toLowerCase() !== path[2].replace(/%20/g, ' ').toLocaleLowerCase() ) {
+	 	  if( companyNameRegX !== path[2].replace(/%20/g, ' ').toLocaleLowerCase() ) {
 	 	  	await auth.signOut();
 	 	  	window.location = '/logga-in';
 	 	  }
 
   		user['email'] = userData.data()['email']; 
   		user['companyName'] = companyName;
+			user['companyNameRegX'] = companyNameRegX;
 
 	  	let location = this.state.location;
 			if( path.length === 4 ) {
@@ -91,9 +93,9 @@ class UserPage extends React.Component {
 			<div>
 				{this.state.loading !== true ?
 					<div>
-						<UserHeader />
+						<UserHeader name={this.state.user.companyName} />
 						<div className={`user-page-container ${ this.state.user.uid ? 'show-header' : '' }`}>
-							<UserMenu companyName={this.state.user.companyName} newRoute={this.changeRoute} />
+							<UserMenu companyName={this.state.user.companyNameRegX} newRoute={this.changeRoute} />
 							<div className="user-route-container">
 								<RouteComponent location={this.state.location} />
 							</div>

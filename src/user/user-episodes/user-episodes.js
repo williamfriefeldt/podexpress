@@ -4,6 +4,7 @@ import { auth, firestore } from '../../store/services/firebase';
 import PodexpressAudioPlayer from '../audio-player/audio-player';	
 import PodcastPassword from './password/podcast-password';
 import SharePodcast from './share/share-podcast';
+import RemoveEp from './remove-ep/remove-ep';
 import { VscLoading } from 'react-icons/vsc';
 import { AiFillPlayCircle } from 'react-icons/ai';
 import { ImCross } from 'react-icons/im';
@@ -14,15 +15,19 @@ class UserEpisodes extends React.Component {
 		super(props);
 		this.state = {
 			episodes: [],
+			deleteEP: null,
 			nowPlaying: '',
 			loading: true,
 			password: '',
 			copyText: 'Kopiera',
-			podcasts: false
+			podcasts: false,
+			modal: false
 		}
 
 		this.setNowPlaying = this.setNowPlaying.bind(this);
 		this.changeCopyText = this.changeCopyText.bind(this);
+		this.openCloseModal = this.openCloseModal.bind(this);
+		this.removeEp = this.removeEp.bind(this);
 	}
 
 	async componentDidMount() {
@@ -55,8 +60,21 @@ class UserEpisodes extends React.Component {
 		this.setState({copyText: 'Kopierat!'})
 	}
 
-	removeEp(ep) {
-		console.log(ep);
+	openCloseModal(status, episode) {
+		this.setState({modal: status, deleteEP: episode});
+	}
+
+	async removeEp() {
+		const epToDelete = this.state.deleteEP;
+		
+		const oldEpisodes = this.state.episodes;
+		const episodes = oldEpisodes.filter( ep => ep.name !== epToDelete.name);
+
+		const user = auth.currentUser;
+		const userRef = firestore.doc(`companies/${user.uid}`);
+		await userRef.set({ episodes }, { merge:true });
+
+		this.setState({episodes, modal: false});
 	}
 
 	render() {
@@ -65,11 +83,11 @@ class UserEpisodes extends React.Component {
 			<table>
 				<thead>
 					<tr>
-						<th> Omslag </th>
+						<th className="cover-title"> Omslag </th>
 						<th> Namn </th>
-						<th> Beskrivning </th>
+						<th className="ep-description-title"> Beskrivning </th>
 						<th> Podcast </th>
-						<th className={"ep-play-title"}> Spela upp </th>
+						<th className="ep-play-title"> Spela upp </th>
 						<th className="center-text"> Ta bort </th>
 					</tr>
 				</thead>
@@ -86,7 +104,7 @@ class UserEpisodes extends React.Component {
 									</button>
 								</td>
 								<td className="center-text">
-									<button onClick={()=>this.removeEp(episode)}>
+									<button onClick={()=>this.openCloseModal(true,episode)}>
 										<ImCross />
 									</button>
 								</td>
@@ -140,6 +158,14 @@ class UserEpisodes extends React.Component {
 				</div>
 
 				<PodexpressAudioPlayer src={this.state.nowPlaying} />
+				
+				<RemoveEp
+				  isOpen={this.state.modal} 
+					closeModal={() => this.openCloseModal(false)}
+					episode={this.state.deleteEP}
+					removeEP={this.removeEp}
+				/>
+
 			</div>
 
 

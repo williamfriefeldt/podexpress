@@ -1,0 +1,17 @@
+.settings-input {
+  margin-top: 10px;
+  margin-bottom: 15px;
+  width: 250px;
+}
+
+.change-info-btn {
+  width: 275px;
+}
+.change-info-btn:disabled {
+  opacity: 0.4;
+}
+.change-info-btn:disabled:hover {
+  transform: none;
+  box-shadow: none;
+  cursor: not-allowed;
+}

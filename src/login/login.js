@@ -3,6 +3,8 @@ import './login.css';
 import { auth, firestore } from '../store/services/firebase';
 import ErrorHandler from './errorHandler';
 import { VscLoading } from 'react-icons/vsc';
+import { IoChevronBack } from 'react-icons/io5';
+import { Link } from 'react-tiger-transition';
 
 class Login extends React.Component {
 
@@ -44,28 +46,34 @@ class Login extends React.Component {
 			}
 
 			const userRef = firestore.doc(`companies/${user.uid}`);
-	  		userRef.get().then( res => {
-	  			const companyName = res.data()['companyName'];
-	  			window.location.href = window.location.href.replace( window.location.pathname, '' ) + '/företag/' + companyName;
-	  		});
+			userRef.get().then( res => {
+				const companyName = res.data()['companyNameRegX'];
+				window.location.href = window.location.href.replace( window.location.pathname, '' ) + '/företag/' + companyName;
+			});
 		} catch ( error ) {
     		let errorState = this.state.errorState;
     		errorState['msg'] = ErrorHandler( error.code );
-      		this.setState({ errorState, loading: false });
+      	this.setState({ errorState, loading: false });
 		}
 	}
 
 	render() {
 		return (
 			<div className="login-placeholder">
-				<h2> Logga in </h2>
+				<div className="listen-login-title-container">
+					<Link to="/" transition='glide-left' className="link-button create-back">
+											<IoChevronBack size={30}/>
+					</Link>
+					<h2> Logga in	</h2>
+				</div>
 				<form className="login-container">
 
 					<label className="login-label"> Emailadress	</label>
 					<input className="login-input" type="email" onChange={this.setInput} name="email"/>
 
 					<label className="login-label login-label-not-first">	Lösenord </label>
-					<input className="login-input" type="password" onChange={this.setInput} name="password"/>
+					<input className="login-input" type="password" onChange={this.setInput} name="password"
+								 onKeyDown={ e => { if( e.key === 'Enter' ) this.login(); }}/>
 
 					<div className={`no-match-text ${ this.state.errorState.msg === '' ? '' : 'show-no-match-text'}`}>
 						<p> {this.state.errorState.msg} </p>

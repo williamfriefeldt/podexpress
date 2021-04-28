@@ -22,6 +22,7 @@ class Upload extends React.Component {
 				episodeDescription: '',
 				podcast: ''
 			},
+			podcastInfo: '',
 			podcasts: [],
 			fileName: {
 				img: '',
@@ -54,7 +55,7 @@ class Upload extends React.Component {
 			} else {
 				podcasts = Object.values( data );
 			}
-		  this.setState({podcasts, episodeInfo:{podcast:podcasts[0].name}});
+		  this.setState({podcasts, podcastInfo:{podcast:podcasts[0].name}});
 		} catch ( error ) {
 			console.log(error);
 		}
@@ -132,7 +133,7 @@ class Upload extends React.Component {
 							episodes[this.state.episodeInfo.episodeName] =  {
 								name: this.state.episodeInfo.episodeName,
 								description: this.state.episodeInfo.episodeDescription,
-								podcast: this.state.episodeInfo.podcast,
+								podcast: this.state.podcastInfo.podcast,
 								img: uploadImgUrl,
 								url: uploadEpUrl
 							}
@@ -143,6 +144,7 @@ class Upload extends React.Component {
 								{
 									name: this.state.episodeInfo.episodeName,
 									description: this.state.episodeInfo.episodeDescription,
+									podcast: this.state.podcastInfo.podcast,
 									img: uploadImgUrl,
 									url: uploadEpUrl
 								};
@@ -159,7 +161,7 @@ class Upload extends React.Component {
 	render() {
 
 		const PodSelect = () => (
-			<select className="upload-select-pod" onChange={this.setInput} name="podcast" value={this.state.episodeInfo.podcast}> 
+			<select className="upload-select-pod" onChange={this.setInput} name="podcast" value={this.state.podcastInfo.podcast}> 
 					{this.state.podcasts.map( (podcast, index) => <option key={index}>{podcast.name}</option>)}
 			</select>
 		);
