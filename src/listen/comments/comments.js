@@ -48,15 +48,20 @@ class Comments extends React.Component {
       <div className="comments-list">
         {input.comments.currentPod ?
           <div>
-            {input.comments.currentPod.comments.map( (item, index) => { 
-              return <div className="comment" key={index}>
-                      <p className={`${ this.state.cookie.get('reactionID') === item.reactionID ? 'own-comment' : '' }`}>
-                        <strong>{item.name}:</strong> &nbsp; {item.comment}
-                        { this.state.cookie.get('reactionID') === item.reactionID ?
-                          <ImCross onClick={ () => { this.removeComment(item) }}/> : '' }
-                      </p>
-                     </div>     
-            })} 
+            {input.comments.currentPod.comments ?
+              <div>
+                {input.comments.currentPod.comments.map( (item, index) => { 
+                  return <div className="comment" key={index}>
+                          <p className={`${ this.state.cookie.get('reactionID') === item.reactionID ? 'own-comment' : '' }`}>
+                            <strong>{item.name}:</strong> &nbsp; {item.comment}
+                            { this.state.cookie.get('reactionID') === item.reactionID ?
+                              <ImCross onClick={ () => { this.removeComment(item) }}/> : '' }
+                          </p>
+                        </div>     
+                })} 
+              </div>
+            :
+              <p>Inga kommentarer</p> }
           </div>
         :
          ''

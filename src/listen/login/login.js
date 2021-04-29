@@ -27,12 +27,13 @@ class Login extends React.Component {
 
 	async componentDidUpdate() {
 		if(!this.state.companyInfo.companyName ) {
-			const userRef = firestore.collection('companies').where('companyName', '==', this.props.companyName.replace('%20',' ') );
+			const userRef = firestore.collection('companies').where('companyNameRegX', '==', this.props.companyName.replace(/\s/g,'').toLowerCase() );
 		  const companies =	await userRef.get();
 		 	companies.forEach( company => {
 		 		const data = company.data();
 		 		let companyInfo = this.state.companyInfo;
 		 		companyInfo['companyName'] = data.companyName;
+				//companyInfo['companyNameRegX'] = data.companyNameReg;
 		 		companyInfo['episodes'] = data.episodes;
 		 		companyInfo['password'] = data.password;
 		 		companyInfo['podcasts'] = data.podcasts;
@@ -50,10 +51,10 @@ class Login extends React.Component {
 	async findCompany() {
 		this.setState({loading:true, errorState:{msg:''}});
 		/* Fix lowercase company name in FB */
-		const userRef = firestore.collection('companies').where('companyName', '==', this.state.inputs.companyName);
+		const userRef = firestore.collection('companies').where('companyNameRegX', '==', this.state.inputs.companyName.replace(/\s/g,'').toLowerCase());
 	  const companies =	await userRef.get();
 	 	companies.forEach( company => {
-	 		window.location = '/lyssna/' + company.data().companyName;
+	 		window.location = '/lyssna/' + company.data().companyName.toLowerCase();
 	 	});
 		setTimeout( () => {
 			let errorState = this.state.errorState;

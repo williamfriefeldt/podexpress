@@ -9,10 +9,13 @@ function Header() {
 
 	const [open, setOpen] = useState(false);	
 	const pathList = window.location.pathname.split('/');
+	const hash = window.location.hash;
+
+	console.log(hash);
 
 	let display;
 
-	if( (pathList.length === 3 || pathList.length === 4) && (pathList[1] === "f%C3%B6retag" /* Uncomment when header listen is done || pathList[1] === "lyssna" */ )) {
+	if((pathList.length === 3 || pathList.length === 4) && pathList[1] === "f%C3%B6retag") {
 		display = 'none';
 	} else {
 		display = 'flex';

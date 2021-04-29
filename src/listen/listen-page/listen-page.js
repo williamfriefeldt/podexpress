@@ -1,9 +1,12 @@
 import React from 'react';
 import './listen-page.css';
+import "react-tiger-transition/styles/main.min.css";
+import { Navigation, Route, glide } from "react-tiger-transition";
 import Login from '../login/login';
 import Episodes from '../episodes/episodes';
 import Podcasts from '../podcasts/podcasts';
 import Comments from '../comments/comments';
+import ListenHeader from '../listen-header/listen-header';
 import PodexpressAudioPlayer from '../audio-player/audio-player';
 import { firestore } from '../../store/services/firebase';
 import { VscLoading } from 'react-icons/vsc';
@@ -25,7 +28,8 @@ class ListenPage extends React.Component {
 			currentPod: null,
 			cookie: new Cookies(),
 			loadingReaction: false,
-			openComments: false
+			openComments: false,
+			loggedIn: false
 		};
 
 		this.getCompanyInfo = this.getCompanyInfo.bind(this);
@@ -44,11 +48,11 @@ class ListenPage extends React.Component {
 		document.documentElement.style.setProperty('--audio-layer', 1);
 
 		const path = window.location.pathname.split('/');
-		if( path.length === 3 ) {
-			const userRef = firestore.collection('companies').where('companyName', '==', path[2].replace('%20',' ') );
+		if( path.length >= 3 ) {
+			const userRef = firestore.collection('companies').where('companyNameRegX', '==', path[2].replace(/%20/g,'').toLowerCase() );
 		  const companies =	await userRef.get();
 		 	companies.forEach(company => {
-		 		this.setState({companyName:path[2], loading:false });
+		 		this.setState({companyName:company.data()['companyName'], loading:false });
 		 	});
 			this.setState({loading:false});
 		} else {
@@ -59,8 +63,10 @@ class ListenPage extends React.Component {
 	getCompanyInfo( episodes, podcasts ) {
 		this.setState({
 			episodes: Object.values(episodes),
-			podcasts: Object.values(podcasts)
+			podcasts: Object.values(podcasts), 
+			loggedIn: true
 		});
+		window.location.hash = 'podcasts';
 	}
 
 	setNowPlaying( prop ) {
@@ -131,18 +137,27 @@ class ListenPage extends React.Component {
 			commentInfo['reactionID'] = reactionID;
 		} else {
 			commentInfo['reactionID'] = this.makeId(8);
+			this.state.cookie.set('reactionID', commentInfo['reactionID'], { path: '/' });
 		}
 		const companyRef = firestore.collection('companies').where('companyName', '==', this.state.companyName.replace('%20',' ') );
 		const companies =	await companyRef.get();
 		companies.forEach( async company => {
 			 let podcasts = company.data()['podcasts'];
-			 podcasts[this.state.currentPod.name]['comments'].push(commentInfo);
+			 if( podcasts[this.state.currentPod.name]['comments'] ) {
+				podcasts[this.state.currentPod.name]['comments'].push(commentInfo);
+			 } else {
+				podcasts[this.state.currentPod.name]['comments'] = [commentInfo];
+			 }
 
 			 const userRef = await firestore.doc(`companies/${company.id}`);
 			 await userRef.set({ podcasts }, { merge:true });
 
 			 let currentPod = this.state.currentPod;
-			 currentPod['comments'].push(commentInfo);
+			 if( currentPod['comments'] ) {
+				currentPod['comments'].push(commentInfo);
+			 } else {
+				currentPod['comments'] = [commentInfo];
+			 }
 			 this.setState({currentPod});
 		});
 	}
@@ -170,9 +185,14 @@ class ListenPage extends React.Component {
 	render() {
 
 		return (
-			<div className="listen-container">
-
-				{this.state.episodes.length !== 0 ? 
+			<Navigation>
+				  <Route path="/lyssna">
+            <Login companyName={this.state.companyName} sendCompanyInfo={this.getCompanyInfo} />
+          </Route>
+			</Navigation>
+/* 			<div className="listen-container"> 
+				<ListenHeader name={this.state.companyName} loggedIn={this.state.loggedIn} />
+				{this.state.loggedIn ? 
 					<div className="listen-title-eps">
 							<h2> {!this.state.currentPod ? 'Podcasts' : this.state.currentPod.name} </h2>
 							{this.state.currentPod ?
@@ -236,7 +256,7 @@ class ListenPage extends React.Component {
 										removeComment={this.removeComment}/>
 				</div>
 
-			</div>
+			</div>*/
 		);
 	};
 
