@@ -70,12 +70,15 @@ function ShowPodcast(props) {
         >
           <div className="flex space">
             <h2 ref={_subtitle => (subtitle = _subtitle)}>{props.podcast.name}</h2>
-            {props.podcast.thumbsUp ?
                 <div className="flex">
-                  <p className="show-pod-reaction"><FiThumbsUp /> {props.podcast.thumbsUp.length}</p>
-                  <p className="show-pod-reaction"><FiThumbsDown /> {props.podcast.thumbsDown.length}</p>
+                  {props.podcast.thumbsUp ?
+                    <div className="flex">
+                      <p className="show-pod-reaction"><FiThumbsUp /> {props.podcast.thumbsUp.length}</p>
+                      <p className="show-pod-reaction"><FiThumbsDown /> {props.podcast.thumbsDown.length}</p>
+                    </div>
+                  : ''}
                   <button onClick={props.closeModal}>Stäng</button>
-                </div> : ''}
+                </div> 
           </div>
 
           <p>{props.podcast.description}</p>

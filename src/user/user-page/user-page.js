@@ -20,7 +20,7 @@ var RouteComponent = function( state ) {
 		case 'ladda-upp':
 			return <Upload newRoute={this.changeRoute} />;
 		case 'installningar':
-			return <UserSettings />;
+			return <UserSettings updateTitle={this.setTitle} />;
 		default:
 			return 'Laddar...';
 	}
@@ -39,6 +39,7 @@ class UserPage extends React.Component {
 		}	
 
 		this.changeRoute = this.changeRoute.bind(this);
+		this.setTitle = this.setTitle.bind(this);
 		RouteComponent = RouteComponent.bind(this);
 
 	}
@@ -86,6 +87,12 @@ class UserPage extends React.Component {
   	location = state.location;	
   	this.setState({location});
   }
+
+	setTitle(title) {
+		let user = this.state.user;
+		user['companyName'] = title;
+		this.setState({user});
+	}
 
 	render() { 
 

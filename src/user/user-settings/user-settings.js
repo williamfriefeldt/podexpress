@@ -1,21 +1,27 @@
 import React from 'react';
 import './user-settings.css';
 import { auth, firestore } from '../../store/services/firebase';
+import { VscLoading } from 'react-icons/vsc';
 
 class UserSettings extends React.Component {
 
-	constructor() {
-		super();
+	constructor(props) {
+		super(props);
 		this.state = {
 			companyName: '',
 			companyNameRegX: '',
 			email: '',
-			password: '',
-			infoChange: false
+			infoChange: false,
+			errors: {
+				companyExists: false,
+				wrongEmail: false
+			},
+			passwordReset: false,
 		}
 
 		this.setInput = this.setInput.bind(this);
 		this.updateInfo = this.updateInfo.bind(this);
+		this.sendPasswordReset = this.sendPasswordReset.bind(this);
 	}
 
 	async componentDidMount() {
@@ -34,20 +40,60 @@ class UserSettings extends React.Component {
 		let state = this.state;
 		state[event.target.name] = event.target.value;
 		state['infoChange'] = true;
+		state['errors'] = { companyExists: false, wrongEmail: false };
 		this.setState( state );
 	}
 
 	async updateInfo() {
-		const { companyName, email, password, companyNameRegX } = this.state;
-		console.log(companyName);
-		console.log(companyName.replace(/\s/g,'').toLowerCase() )
+		this.setState({loading: true});
+		const { companyName, email, companyNameRegX } = this.state;
+		const userID = auth.currentUser.uid;
+		const userRef = firestore.doc(`companies/${userID}`);
 		if( companyName.replace(/\s/g,'').toLowerCase() !== companyNameRegX ) {
-			console.log('Ändrat företagsnamn!')
+			const newCompanyNameRegX = companyName.replace(/\s/g,'').toLowerCase();
+			const companyRef = firestore.collection('companies').where('companyNameRegX', '==', newCompanyNameRegX );
+			const companies =	await companyRef.get();
+			let companyExists = false;
+			await companies.forEach( async company => companyExists = true );
+			if(!companyExists) {
+				await userRef.set({ companyName: companyName, companyNameRegX: newCompanyNameRegX }, { merge:true });
+				this.props.updateTitle(companyName);
+			}else{
+				let errors = this.state.errors;
+				errors['companyExists'] = true;
+				this.setState({errors});
+			}
 		} else {
-			console.log('Inte ändrat')
-		}
+			await userRef.set({ companyName: companyName }, { merge:true });
+			this.props.updateTitle(companyName);
+		} 
 
+		if( email !== auth.currentUser.email ) {
+			try {
+				await auth.currentUser.updateEmail( email );
+			} catch( e ) {				
+				if( e.code === "auth/requires-recent-login") {
+					
+				} else {
+					let errors = this.state.errors;
+					errors['wrongEmail'] = true;
+					this.setState({errors});
+				}
+			}
+		}		
+
+		this.setState({loading:false});
 	}
+
+	async sendPasswordReset() {
+		try {
+			auth.sendPasswordResetEmail(this.state.email);
+			this.setState({passwordReset:true});
+		} catch( e ) {
+			console.log(e);
+		}
+	}
+
 	render() {
 		return (
       <div className="user-settings">
@@ -59,6 +105,9 @@ class UserSettings extends React.Component {
 					</label>
 					<input className="settings-input" autoComplete="off" value={this.state.companyName}
 											type="text" onChange={this.setInput} name="companyName" />
+					<div className={`no-match no-match-text ${ !this.state.errors.companyExists ? '' : 'show-no-match-text'}`}>
+						<p>Ett företag med det namnet finns redan</p>
+					</div>
 				</div>
 
 				<div className="grid">
@@ -67,19 +116,30 @@ class UserSettings extends React.Component {
 					</label>
 					<input className="settings-input" autoComplete="off" value={this.state.email}
 											type="text" onChange={this.setInput} name="email" />
+					<div className={`no-match no-match-text ${ !this.state.errors.wrongEmail ? '' : 'show-no-match-text'}`}>
+						<p>Felaktigt emailadress</p>
+					</div>
 				</div>
 
 				<div className="grid">
-					<label className="input-label">
-						Ändra lösenord (till företagskontot)
-					</label>
-					<input className="settings-input" autoComplete="off" value={this.state.password}
-											type="text" onChange={this.setInput} name="password" />
-				</div>
 
-				<button className={`shift-button change-info-btn ${!this.state.infoChange ? 'change-info-btn-disabled' : ''}`}
-							  disabled={!this.state.infoChange} onClick={this.updateInfo}>Ändra information</button>
-
+					<button className="shift-button change-info-btn"
+									disabled={!this.state.infoChange || this.state.companyName === ''} onClick={this.updateInfo}>
+										{this.state.loading ?
+											<span className="loading"><VscLoading /></span> 
+										:	 
+											'Ändra information'
+										}
+					</button>
+					<button className="shift-button change-info-btn"
+									disabled={this.state.passwordReset} onClick={this.sendPasswordReset}>
+										{this.state.passwordReset ?
+											'Email har skickats'
+										:	 
+											'Ändra lösenord'
+										}
+					</button>
+				  </div>
 
 			</div>
 		);
