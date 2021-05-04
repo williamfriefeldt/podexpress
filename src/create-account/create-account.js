@@ -149,7 +149,7 @@ class CreateAccount extends React.Component {
 						{this.state.companyExists ? <p>Ett företag med det namnet finns redan</p> : <p> Fyll i ett företagsnamn </p>}
 					</div>
 
-					<label className="create-account-label create-account-label-not-first">
+					<label className="create-account-label">
 						Email
 					</label>
 					<input className="create-account-input" type="email" onChange={this.setInput} onFocus={ () => { this.scrollIntoInput(50) }} name="email"/>
@@ -157,7 +157,7 @@ class CreateAccount extends React.Component {
 						<p> Fyll i en emailadress</p>
 					</div>
 
-					<label className="create-account-label create-account-label-not-first">
+					<label className="create-account-label">
 						Lösenord
 					</label>
 					<input className="create-account-input" type="password" onChange={this.setInput} onFocus={ () => { this.scrollIntoInput(100) }} name="password"/>
@@ -165,7 +165,7 @@ class CreateAccount extends React.Component {
 						<p> Fyll i ett lösenord</p>
 					</div>
 
-					<label className="create-account-label create-account-label-not-first" >
+					<label className="create-account-label" >
 						Upprepa lösenord
 					</label>
 					<input className={`create-account-input ${ this.state.validators.password ? '' : 'no-match' }`} 

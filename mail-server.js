@@ -1,4 +1,5 @@
 const express = require('express');
+const cors = require('cors');
 const nodemailer = require("nodemailer");
 
 // App
@@ -7,44 +8,53 @@ const app = express();
 // Set port
 app.set("port", 5000);
 
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }))
+
 // Mail request
 app.get("/send_mail", async (req, res) => {
-
   /* Allow cors headers */
-  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Origin", "http://localhost:3000");
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-	
-  console.log('Get request');
 
-  // create reusable transporter object using the default SMTP transport
+  /* Handle queries */
+  const { email, header, text } = req.query;
+
+  /* Create transporter object using SMTP transport */
   let transporter = nodemailer.createTransport({
     host: "mail.poddsok.nu",
     port: 465,
     secure: true, // true for 465, false for other ports
     auth: {
-      user: "kontakt@poddsok.nu", // generated ethereal user
-      pass: "Bajsapa123", // generated ethereal password
+      user: "kontakt@poddsok.nu", 
+      pass: "nybrogatan57a", 
     },
+    tls: {
+        rejectUnauthorized: false
+    }
   });
 
-  console.log('Transport created');
-
   // Send mail 
-  let info = await transporter.sendMail({
-    from: '"Fred Foo 👻" <kontakt@poddsok.nu>', // sender address
+  await transporter.sendMail({
+    from: email, // sender address
     to: "kontakt@poddsok.nu", // list of receivers
-    subject: "Hello ✔", // Subject line
-    text: "Hello world?", // plain text body
+    subject: header, // Subject line
+    text: text, // plain text body
     html: "<b>Hello world?</b>", // html body
   }, (error, info) => {
             if (error) {
+                console.log(error.message);
                 res.json('Något gick fel: ' + error.message);
                 return;
             }
-            res.json('Emailet har skickats med id: ' + info.messageId);
+            console.log(info.messageId);
+            const sucessData = {
+              sent: true,
+              mailID: info.messageId
+            };
+            res.json( sucessData );
             done();
         });
-
 });
 
 // Server

@@ -11,8 +11,6 @@ function Header() {
 	const pathList = window.location.pathname.split('/');
 	const hash = window.location.hash;
 
-	console.log(hash);
-
 	let display;
 
 	if((pathList.length === 3 || pathList.length === 4) && pathList[1] === "f%C3%B6retag") {
