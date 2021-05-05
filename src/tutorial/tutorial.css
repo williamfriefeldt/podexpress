@@ -1,5 +1,5 @@
 .tutorial-container {
-  padding-top:100px;
+  padding-top: 100px;
 }
 
 .tutorial-circle {
@@ -64,6 +64,10 @@
 }
 .go-to-create-account:hover {
   text-shadow: none;
+}
+
+.to-contact {
+  margin-top: 10vh;
 }
 
 @media (max-width: 600px) {

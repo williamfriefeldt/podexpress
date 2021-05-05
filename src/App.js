@@ -26,7 +26,7 @@ function App() {
           <Route path="/företag/:name">
             <UserPage />
           </Route>
-          <Route path="/lyssna/:name?" screen>
+          <Route path="/lyssna" screen>
             <ListenPage />
           </Route>
           <Route exact path="/" screen>

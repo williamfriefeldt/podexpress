@@ -34,6 +34,8 @@ app.get("/send_mail", async (req, res) => {
     }
   });
 
+  console.log('Transport created');
+
   // Send mail 
   await transporter.sendMail({
     from: email, // sender address

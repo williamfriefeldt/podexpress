@@ -1,4 +1,5 @@
 import './tutorial.css';
+import { AiOutlineArrowDown } from "react-icons/ai";
 
 function Tutorial() {
 
@@ -19,8 +20,15 @@ function Tutorial() {
     </div>
   );
 
+	const scrollToContact= () => {
+		const contactHeightToTop = document.getElementById('hem').offsetHeight + document.getElementById('om').offsetHeight + document.getElementById('sa-funkar-det').offsetHeight;
+		document.getElementsByClassName('react-tiger-transition--screen')[0].scrollTo({ top:contactHeightToTop, behavior: 'smooth' });
+		setTimeout( () => window.location.hash ='#kontakt', 600);
+	}
+
   return (
-    <div className="tutorial-container grid center-content" id="sa-funkar-det">
+    <div className="full-height" id="sa-funkar-det">
+    <div className="tutorial-container grid center-content">
       <h2 className="center-text">Så funkar det</h2>
 
       {instructions.map( (instruction, key) => (
@@ -47,6 +55,12 @@ function Tutorial() {
       <div className="start-listen grid center-content">
         <p className="center-text full-width">Börja lyssna!</p>
       </div>
+
+      <div className="pointer to-contact" onClick={ () => { scrollToContact() } }>
+				<h2 className="center-text"> Kontakta oss </h2>
+				<AiOutlineArrowDown className="full-width center-text down-icon"/>
+			</div>
+    </div>
     </div>
   )
 }

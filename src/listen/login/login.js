@@ -3,6 +3,7 @@ import './login.css';
 import { firestore } from '../../store/services/firebase';
 import { VscLoading } from 'react-icons/vsc';
 import { IoChevronBack } from 'react-icons/io5';
+import Cookies from 'universal-cookie';
 
 class Login extends React.Component {
 
@@ -16,8 +17,8 @@ class Login extends React.Component {
 			errorState: {
 				msg: ''
 			},
-			companyInfo: {},
-			loading: false
+			loading: false,
+			cookie: new Cookies()
 		};
 
 		this.setInput = this.setInput.bind(this);
@@ -25,21 +26,23 @@ class Login extends React.Component {
 		this.findCompany = this.findCompany.bind(this);
 	}
 
+	componentDidMount() {
+		console.log(this.props.companyInfo);
+		console.log(window.location.pathname)
+	}
+
 	async componentDidUpdate() {
-		if(!this.state.companyInfo.companyName ) {
+		console.log(window.location.pathname);
+		/*if(!this.state.companyInfo.companyName ) {
 			const userRef = firestore.collection('companies').where('companyNameRegX', '==', this.props.companyName.replace(/\s/g,'').toLowerCase() );
 		  const companies =	await userRef.get();
 		 	companies.forEach( company => {
 		 		const data = company.data();
-		 		let companyInfo = this.state.companyInfo;
-		 		companyInfo['companyName'] = data.companyName;
-				//companyInfo['companyNameRegX'] = data.companyNameReg;
-		 		companyInfo['episodes'] = data.episodes;
-		 		companyInfo['password'] = data.password;
-		 		companyInfo['podcasts'] = data.podcasts;
-		 		this.setState({companyInfo, loading:false});	
+				window.location.href += data.companyName;
 		 	});
-		}
+		} else {
+			console.log(this.state.companyName);*/
+		//}
 	}
 
 	setInput( event ) {
@@ -50,7 +53,6 @@ class Login extends React.Component {
 
 	async findCompany() {
 		this.setState({loading:true, errorState:{msg:''}});
-		/* Fix lowercase company name in FB */
 		const userRef = firestore.collection('companies').where('companyNameRegX', '==', this.state.inputs.companyName.replace(/\s/g,'').toLowerCase());
 	  const companies =	await userRef.get();
 	 	companies.forEach( company => {
@@ -66,12 +68,10 @@ class Login extends React.Component {
 	login() {
 		this.setState({loading:true, errorState:{msg:''}});
 		setTimeout( () =>{
-			if( this.state.inputs.password === this.state.companyInfo.password ) {
-				this.props.sendCompanyInfo(
-					this.state.companyInfo.episodes,
-					this.state.companyInfo.podcasts,
-					{loading: false}
-				);
+			console.log(this.props);
+			if( this.state.inputs.password === this.props.companyInfo.password ) {
+				this.state.cookie.set( this.props.companyInfo.companyNameRegX, this.props.password, { path: '/' });
+				window.location.href = this.props.companyInfo.companyNameRegX.toLowerCase() + '/podcasts';
 			} else {
 				let errorState = this.state.errorState;
 				errorState.msg = 'Fel lösenord';
@@ -84,17 +84,17 @@ class Login extends React.Component {
 		return (
 			<div className="listen-login-placeholder">
 				<div className="listen-login-title-container">
-					{this.props.companyName !== '' ?
+					{this.props.companyInfo.companyName !== '' ?
 						<button className="link-button login-back"
 										onClick={() => { window.location.pathname= '/lyssna' }}>
 											<IoChevronBack size={30}/>
 						</button> : '' } 
 					<h2> 
-						{this.props.companyName === '' ? 'Hitta företag' : this.props.companyName.replace('%20',' ')}
+						{this.props.companyInfo.companyName === '' ? 'Hitta företag' : this.props.companyInfo.companyName.replace('%20',' ')}
 					</h2>
 				</div>
 				<form className="listen-login-container" onSubmit={e => e.preventDefault()}>
-					{this.props.companyName === '' ?
+					{this.props.companyInfo.companyName === '' ?
 						<div className="grid">
 							<label className="login-label"> Företagsnamn </label>
 							<input className="login-input" type="text" onChange={this.setInput} value={this.state.inputs.companyName} name="companyName"
@@ -112,14 +112,14 @@ class Login extends React.Component {
 					</div>
 
 					<button type="button" className="shift-button" onClick={ () => {
-							if( this.props.companyName === '' ) {
+							if( this.props.companyInfo.companyName === '' ) {
 								this.findCompany();
 							} else {
 								this.login();
 							}
 						}}>
 						{!this.state.loading ?
-							<span>{this.props.companyName === '' ? 'Hitta företag' : 'Logga in' }</span>
+							<span>{this.props.companyInfo.companyName === '' ? 'Hitta företag' : 'Logga in' }</span>
 							:
 							<span className="loading"><VscLoading /></span> 
 						}

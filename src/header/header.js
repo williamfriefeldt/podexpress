@@ -9,7 +9,6 @@ function Header() {
 
 	const [open, setOpen] = useState(false);	
 	const pathList = window.location.pathname.split('/');
-	const hash = window.location.hash;
 
 	let display;
 
@@ -27,13 +26,14 @@ function Header() {
 			for( let i = 0; i < index; i++) {
 				scrollHeight += document.getElementById(sectionList[i]).offsetHeight;
 			}
+			console.log(scrollHeight);
 			document.getElementsByClassName('react-tiger-transition--screen')[0].scrollTo({ top: scrollHeight, behavior: 'smooth' });
 		}
   }
 
 	return (
 		<div className="header-container" style={{display: display}}>
-			<h2 className="header-title pointer" onClick={ () => { scrollTo('hem') }}>Podexpress</h2>
+			<Link to="/#hem"><h2 className="header-title pointer" onClick={ () => { scrollTo('hem') }}>Podexpress</h2></Link> 
 			<nav className="desktop">
 				<Link to="/lyssna" transition='glide-left'> Hitta podcast </Link>
 				<Link to="/logga-in"  transition="glide-left"> Logga in </Link>	

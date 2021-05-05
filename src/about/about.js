@@ -26,7 +26,7 @@ function About() {
 				en podcast? Ingen fara, vi hjälper er!
 			</article>
 
-			<div className="to-contact-container" onClick={ () => { scrollToHowItWorks() } }>
+			<div className="pointer" onClick={ () => { scrollToHowItWorks() } }>
 				<h2> Så funkar det </h2>
 				<AiOutlineArrowDown className="full-width center-text down-icon"/>
 			</div>

@@ -20,16 +20,14 @@ class ListenPage extends React.Component {
 	constructor() {
 		super();
 		this.state = {
-			companyName: '',
+			companyInfo: {companyName:''},
 			episodes: [],
 			podcasts: [],
 			nowPlayingInfo: {},
-			loading: true,
 			currentPod: null,
 			cookie: new Cookies(),
 			loadingReaction: false,
-			openComments: false,
-			loggedIn: false
+			openComments: false
 		};
 
 		this.getCompanyInfo = this.getCompanyInfo.bind(this);
@@ -43,21 +41,49 @@ class ListenPage extends React.Component {
 	}
 
 	async componentDidMount() {
+
 		let vh = window.innerHeight * 0.01;
 		document.documentElement.style.setProperty('--vh', `${vh}px`);
 		document.documentElement.style.setProperty('--audio-layer', 1);
 
 		const path = window.location.pathname.split('/');
-		if( path.length >= 3 ) {
+		
+		if( path.length > 2 ) {
+			const data = await this.getData( path[2].replace(/%20/g,'').toLowerCase() );
+			if( data ) {
+				this.setState({companyInfo:data});
+			} else {
+				window.location.href = '/lyssna';
+			}
+		}
+
+
+		/*switch( path.length ) {
+			case 3:
+
+		}*/
+		/*if( path.length === 3 ) {
+
+
+		} else if( path.length === 4 || path.length === 5 ) {
 			const userRef = firestore.collection('companies').where('companyNameRegX', '==', path[2].replace(/%20/g,'').toLowerCase() );
 		  const companies =	await userRef.get();
 		 	companies.forEach(company => {
-		 		this.setState({companyName:company.data()['companyName'], loading:false });
+				console.log(company.data())
+		 		this.setState({companyInfo:company.data(), loading:false });
 		 	});
-			this.setState({loading:false});
 		} else {
+			console.log(this.state.companyName)
 			this.setState({loading:false})
-		}
+		}*/
+	}
+
+	async getData( companyNameRegX ) {
+		let companyData = null;
+		const userRef = firestore.collection('companies').where('companyNameRegX', '==', companyNameRegX );
+		const companies =	await userRef.get();
+		await companies.forEach( async company => companyData = company.data() );
+		return companyData;
 	}
 
 	getCompanyInfo( episodes, podcasts ) {
@@ -66,7 +92,7 @@ class ListenPage extends React.Component {
 			podcasts: Object.values(podcasts), 
 			loggedIn: true
 		});
-		window.location.hash = 'podcasts';
+		window.location.href = this.state.companyName.toLowerCase()+ '/podcasts';
 	}
 
 	setNowPlaying( prop ) {
@@ -74,6 +100,7 @@ class ListenPage extends React.Component {
 	}
 
 	showEps(pod) {
+		console.log(pod)
 		this.setState({currentPod:pod});
 	}
 
@@ -185,81 +212,97 @@ class ListenPage extends React.Component {
 	render() {
 
 		return (
-			<Navigation>
-				  <Route path="/lyssna">
-            <Login companyName={this.state.companyName} sendCompanyInfo={this.getCompanyInfo} />
-          </Route>
-			</Navigation>
-/* 			<div className="listen-container"> 
-				<ListenHeader name={this.state.companyName} loggedIn={this.state.loggedIn} />
-				{this.state.loggedIn ? 
-					<div className="listen-title-eps">
-							<h2> {!this.state.currentPod ? 'Podcasts' : this.state.currentPod.name} </h2>
-							{this.state.currentPod ?
-								<button className="link-button podcast-back"
-										onClick={() => {this.setState({currentPod:null})}}>
-											<IoChevronBack />
-								</button> 
-								: ''}
+		
+			<div className="listen-container"> 
 
-							<div className="listen-eps-container">
-								{!this.state.currentPod ?
-									<Podcasts podcasts={this.state.podcasts} showEps={this.showEps} />
-								:
-									<div>
-										<div className="pod-info-container">
-											<img src={this.state.currentPod.img} alt="Podcast cover" />
-											<article>
-												{this.state.currentPod.description}
-											</article>
-											<div className="pod-reactions">
-												<button className="shift-button comment-btn" onClick={() => { this.openComments() }}>Kommentarer</button>
-												<div onClick={() => this.saveReaction('thumbsUp')} 
-														 className={`thumbs ${this.state.currentPod.thumbsUp.find((id) => this.state.cookie.get('reactionID') === id) ? 'thumb-filled' : ''}`}>
-														 	<p><FiThumbsUp />{this.state.currentPod.thumbsUp.length}</p>
-												</div>&nbsp;&nbsp;
-												<div onClick={() => this.saveReaction('thumbsDown')} 
-														 className={`thumbs ${this.state.currentPod.thumbsDown.find((id) => this.state.cookie.get('reactionID') === id) ? 'thumb-filled' : ''}`}>
-														 	<p><FiThumbsDown />{this.state.currentPod.thumbsDown.length}</p>
+				<Navigation>
+						<Route exact path="/lyssna">
+							<Login companyInfo={this.state.companyInfo} />
+						</Route>
+						<Route exact path="/lyssna/:name">
+							<Login companyInfo={this.state.companyInfo} />
+						</Route>
+						<Route path="/lyssna/:name/podcasts">
+							<Podcasts podcasts={this.state.companyInfo.podcasts} showEps={this.showEps} />
+						</Route>
+						<Route path="/lyssna/:name/:pod/avsnitt">
+								<div className="listen-title-eps">
+										<h2> {!this.state.currentPod ? 'Podcasts' : this.state.currentPod.name} </h2>
+										{this.state.currentPod ?
+											<button className="link-button podcast-back"
+													onClick={() => {this.setState({currentPod:null})}}>
+														<IoChevronBack />
+											</button> 
+											: ''}
+
+										<div className="listen-eps-container">
+											{!this.state.currentPod ?
+												''
+											:
+												<div>
+													<div className="pod-info-container">
+														<img src={this.state.currentPod.img} alt="Podcast cover" />
+														<article>
+															{this.state.currentPod.description}
+														</article>
+														<div className="pod-reactions">
+															<button className="shift-button comment-btn" onClick={() => { this.openComments() }}>Kommentarer</button>
+															<div onClick={() => this.saveReaction('thumbsUp')} 
+																	className={`thumbs ${this.state.currentPod.thumbsUp.find((id) => this.state.cookie.get('reactionID') === id) ? 'thumb-filled' : ''}`}>
+																		<p><FiThumbsUp />{this.state.currentPod.thumbsUp.length}</p>
+															</div>&nbsp;&nbsp;
+															<div onClick={() => this.saveReaction('thumbsDown')} 
+																	className={`thumbs ${this.state.currentPod.thumbsDown.find((id) => this.state.cookie.get('reactionID') === id) ? 'thumb-filled' : ''}`}>
+																		<p><FiThumbsDown />{this.state.currentPod.thumbsDown.length}</p>
+															</div>
+														</div>
+													</div>
+													<Episodes eps={this.state.episodes.filter(ep => ep.podcast === this.state.currentPod.name)} 
+															showEps={this.showEps}
+															setNowPlaying={this.setNowPlaying} />
 												</div>
-											</div>
+											}
 										</div>
-										<Episodes eps={this.state.episodes.filter(ep => ep.podcast === this.state.currentPod.name)} 
-											  showEps={this.showEps}
-											  setNowPlaying={this.setNowPlaying} />
-									</div>
-								}
-							</div>
-					</div>
-				:
-					<div>
-						{!this.state.loading ?
-							<Login companyName={this.state.companyName} sendCompanyInfo={this.getCompanyInfo} />
-						:
-							<div className="flex center-content">
-								<span className="big-loading"><VscLoading /></span> 
-							</div>
-						}
-					</div>
-				}
-				<div className={`listen-audio-container ${this.state.nowPlayingInfo.name ? 'listen-show-audio-container' : ''}`}>
-					<PodexpressAudioPlayer nowPlayingInfo={this.state.nowPlayingInfo} />
-					<button	className={`audio-play-close ${this.state.nowPlayingInfo.name ? 'audio-play-close-show' : ''}`} 
-									onClick={() => this.setNowPlaying({})}><ImCross /></button>
-				</div>
+								</div>
+						</Route>
+				</Navigation>
 
-				<div className={`listen-comment-container ${this.state.openComments ? 'show-comments':''}`}>
-					<Comments openComment={this.state.openComments} 
-										closeComments={this.closeComments} 
-										currentPod={this.state.currentPod} 
-										sendComment={this.sendComment}
-										removeComment={this.removeComment}/>
-				</div>
+			</div>	
 
-			</div>*/
 		);
 	};
 
 };
 
 export default ListenPage;
+/*
+					
+							<ListenHeader name={this.state.companyName} loggedIn={this.state.loggedIn} />
+							{this.state.loggedIn ? 
+
+							:
+								<div>
+									{!this.state.loading ?
+										<Login companyName={this.state.companyName} sendCompanyInfo={this.getCompanyInfo} />
+									:
+										<div className="flex center-content">
+											<span className="big-loading"><VscLoading /></span> 
+										</div>
+									}
+								</div>
+							}
+							<div className={`listen-audio-container ${this.state.nowPlayingInfo.name ? 'listen-show-audio-container' : ''}`}>
+								<PodexpressAudioPlayer nowPlayingInfo={this.state.nowPlayingInfo} />
+								<button	className={`audio-play-close ${this.state.nowPlayingInfo.name ? 'audio-play-close-show' : ''}`} 
+												onClick={() => this.setNowPlaying({})}><ImCross /></button>
+							</div>
+
+							<div className={`listen-comment-container ${this.state.openComments ? 'show-comments':''}`}>
+								<Comments openComment={this.state.openComments} 
+													closeComments={this.closeComments} 
+													currentPod={this.state.currentPod} 
+													sendComment={this.sendComment}
+													removeComment={this.removeComment}/>
+							</div>
+
+						</div> */

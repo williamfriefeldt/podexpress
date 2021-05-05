@@ -80,6 +80,7 @@ input:-webkit-autofill:hover,
 input:-webkit-autofill:focus, 
 input:-webkit-autofill:active
 {
+  box-shadow: 0 0 0 30px wheat inset !important;
  -webkit-box-shadow: 0 0 0 30px wheat inset !important;
 }
 
@@ -142,6 +143,14 @@ td img {
 
 .pointer {
   cursor: pointer;
+}
+
+.full-height {
+  height: 100vh
+}
+
+.relative {
+  position: relative;
 }
 
 @media (max-width: 750px) {

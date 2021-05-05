@@ -1,3 +1,9 @@
 .slogan-hidden {
 	transition: opacity 1s;
 }
+
+@media( min-width: 1440px ) {
+	.start-container {
+		padding-top: 100px;
+	}
+}

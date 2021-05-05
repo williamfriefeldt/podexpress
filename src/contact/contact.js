@@ -13,7 +13,8 @@ class Contact extends React.Component {
       validEmail: true,
       loading: false,
       noInput: false,
-      emailSent: false
+      emailSent: false,
+      emailError: false
     }
 
     this.setInput = this.setInput.bind(this);
@@ -46,7 +47,7 @@ class Contact extends React.Component {
       state['loading'] = false;
       this.setState(state);
     } else {
-
+      console.log(state);
       await fetch( 'http://localhost:5000/send_mail?email=' + state['email'] + '&header=' + state['header'] + '&text=' + state['text'], {
         method: 'GET',
         mode: 'cors',
@@ -54,6 +55,7 @@ class Contact extends React.Component {
         credentials: 'same-origin'
       })
       .then(response => {
+        console.log(response);
         return response.json()
       })
       .then((data) => {
@@ -62,7 +64,7 @@ class Contact extends React.Component {
       })
       .catch((error) => {
         console.log(error);
-        this.setState({loading: false});
+        this.setState({loading: false, emailError: true});
       })
     }
 
@@ -78,50 +80,56 @@ class Contact extends React.Component {
 
   render() {
     return(
-      <div className="contact-container grid center-content" id="kontakt">
-        <h2>Kontakta oss</h2>
+      <div className="full-height relative" id="kontakt">
+        <div className="contact-container grid center-content">
+          <h2>Kontakta oss</h2>
 
-        <form className="contact-form-container">
+          <form className="contact-form-container">
 
-          <label className="contact-form-label">
-            Email
-          </label>
-          <input className="contact-form-input" type="email" onChange={this.setInput} onFocus={ () => { this.scrollIntoInput(0) }} name="email" />
-          <div className={`no-match no-match-text ${ this.state.validEmail ? '' : 'show-no-match-text'}`}>
-            <p> Ogiltig emailadress </p>
-          </div>
+            <label className="contact-form-label">
+              Email
+            </label>
+            <input className="contact-form-input" type="email" onChange={this.setInput} onFocus={ () => { this.scrollIntoInput(0) }} name="email" />
+            <div className={`no-match no-match-text ${ this.state.validEmail ? '' : 'show-no-match-text'}`}>
+              <p> Ogiltig emailadress </p>
+            </div>
 
-          <label className="contact-form-label contact-form-label-not-first">
-            Rubrik
-          </label>
-          <input className="contact-form-input" type="text" onChange={this.setInput} onFocus={ () => { this.scrollIntoInput(50) }} name="header"/>
+            <label className="contact-form-label contact-form-label-not-first">
+              Rubrik
+            </label>
+            <input className="contact-form-input" type="text" onChange={this.setInput} onFocus={ () => { this.scrollIntoInput(50) }} name="header"/>
 
-          <label className="contact-form-label contact-form-label-not-first">
-            Text
-          </label>
-          <textarea className="input-textarea contact-form-textearea" onChange={this.setInput} onFocus={ () => { this.scrollIntoInput(100) }} name="text" />
+            <label className="contact-form-label contact-form-label-not-first">
+              Text
+            </label>
+            <textarea className="input-textarea contact-form-textearea" onChange={this.setInput} onFocus={ () => { this.scrollIntoInput(100) }} name="text" />
 
-					<div className={`no-match no-match-text ${ !this.state.noInput ? '' : 'show-no-match-text'}`}>
-						<p> Saknar rubrik och/eller text </p>
-					</div>
+            <div className={`no-match no-match-text ${ !this.state.noInput ? '' : 'show-no-match-text'}`}>
+              <p> Saknar rubrik och/eller text </p>
+            </div>
 
-          <button type="button" className="contact-form-button shift-button" onClick={this.sendEmail}>
-            {this.state.loading ?
-              <span className="loading"><VscLoading /></span> 
-            : 
-              'Skicka mail'   
-            }						
-          </button>
-          
+            <button type="button" className="contact-form-button shift-button" onClick={this.sendEmail}>
+              {this.state.loading ?
+                <span className="loading"><VscLoading /></span> 
+              : 
+                'Skicka mail'   
+              }						
+            </button>
+            
             <div className={`contact-form-mail-success ${this.state.emailSent ? 'contact-form-mail-success-show' : ''}`}>
               <p>Mailet har skickats!<br/>Vi svarar inom 3 arbetsdagar.</p>
             </div>
-        </form>
 
+            <div className={`contact-form-mail-success ${this.state.emailError ? 'contact-form-mail-success-show' : ''}`}>
+              <p className="no-match"> Något gick fel... Klicka <a href="mailto:hej@hej.se">här</a> för att maila oss istället</p>
+            </div>
+          </form>
+        </div>
 
         <footer className="podexpress-footer">
           © 2021 Podexpress
         </footer>
+
       </div>
     )
   }

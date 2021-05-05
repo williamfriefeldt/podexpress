@@ -6,6 +6,7 @@ import { VscLoading } from 'react-icons/vsc';
 import { IoChevronBack } from 'react-icons/io5';
 import { Link } from 'react-tiger-transition';
 
+
 class Login extends React.Component {
 
 	constructor() {
@@ -32,8 +33,8 @@ class Login extends React.Component {
 
 	setInput( event ) {
  		let inputs = this.state.inputs;
-  		inputs[event.target.name] = event.target.value;
-    	this.setState({ inputs });
+		inputs[event.target.name] = event.target.value;
+		this.setState({ inputs });
 	}
 
 	async login() {

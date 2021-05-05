@@ -1,7 +1,6 @@
 .contact-container {
   text-align: center;
 	padding-top: 100px;
-  position: relative;
 }
 
 .contact-container p {
@@ -54,6 +53,11 @@
 .contact-form-mail-success-show {
   transform: scale(1);
   height: 45px;
+}
+
+.no-match a {
+  color: red;
+  text-decoration: revert;
 }
 
 @media (max-width: 750px) {
