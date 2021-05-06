@@ -1,7 +1,7 @@
 import React from 'react';
 import './listen-page.css';
 import "react-tiger-transition/styles/main.min.css";
-import { Navigation, Route, glide } from "react-tiger-transition";
+import { Navigation, Route, Link, glide } from "react-tiger-transition";
 import Login from '../login/login';
 import Episodes from '../episodes/episodes';
 import Podcasts from '../podcasts/podcasts';
@@ -21,13 +21,13 @@ class ListenPage extends React.Component {
 		super();
 		this.state = {
 			companyInfo: {companyName:''},
-			episodes: [],
 			podcasts: [],
 			nowPlayingInfo: {},
 			currentPod: null,
 			cookie: new Cookies(),
 			loadingReaction: false,
-			openComments: false
+			openComments: false,
+			loading: true
 		};
 
 		this.getCompanyInfo = this.getCompanyInfo.bind(this);
@@ -41,7 +41,6 @@ class ListenPage extends React.Component {
 	}
 
 	async componentDidMount() {
-
 		let vh = window.innerHeight * 0.01;
 		document.documentElement.style.setProperty('--vh', `${vh}px`);
 		document.documentElement.style.setProperty('--audio-layer', 1);
@@ -51,7 +50,7 @@ class ListenPage extends React.Component {
 		if( path.length > 2 ) {
 			const data = await this.getData( path[2].replace(/%20/g,'').toLowerCase() );
 			if( data ) {
-				this.setState({companyInfo:data});
+				this.setState({companyInfo:data, loading:false});
 			} else {
 				window.location.href = '/lyssna';
 			}
@@ -220,7 +219,13 @@ class ListenPage extends React.Component {
 							<Login companyInfo={this.state.companyInfo} />
 						</Route>
 						<Route exact path="/lyssna/:name">
-							<Login companyInfo={this.state.companyInfo} />
+							{!this.state.loading ?
+								<Login companyInfo={this.state.companyInfo} />
+							:
+								<div className="flex center-content">
+									<span className="big-loading"><VscLoading /></span> 
+								</div>
+							}
 						</Route>
 						<Route path="/lyssna/:name/podcasts">
 							<Podcasts podcasts={this.state.companyInfo.podcasts} showEps={this.showEps} />
@@ -229,10 +234,10 @@ class ListenPage extends React.Component {
 								<div className="listen-title-eps">
 										<h2> {!this.state.currentPod ? 'Podcasts' : this.state.currentPod.name} </h2>
 										{this.state.currentPod ?
-											<button className="link-button podcast-back"
+											<Link to={`/lyssna/${this.state.companyInfo.companyName.toLowerCase().replace(/\s/g,'')}/podcasts`} className="link-button podcast-back"
 													onClick={() => {this.setState({currentPod:null})}}>
 														<IoChevronBack />
-											</button> 
+											</Link> 
 											: ''}
 
 										<div className="listen-eps-container">
@@ -257,13 +262,27 @@ class ListenPage extends React.Component {
 															</div>
 														</div>
 													</div>
-													<Episodes eps={this.state.episodes.filter(ep => ep.podcast === this.state.currentPod.name)} 
+													<Episodes eps={this.state.companyInfo.episodes.filter(ep => ep.podcast === this.state.currentPod.name)} 
 															showEps={this.showEps}
 															setNowPlaying={this.setNowPlaying} />
 												</div>
 											}
 										</div>
 								</div>
+
+								<div className={`listen-audio-container ${this.state.nowPlayingInfo.name ? 'listen-show-audio-container' : ''}`}>
+														<PodexpressAudioPlayer nowPlayingInfo={this.state.nowPlayingInfo} />
+														<button	className={`audio-play-close ${this.state.nowPlayingInfo.name ? 'audio-play-close-show' : ''}`} 
+																	onClick={() => this.setNowPlaying({})}><ImCross /></button>
+													</div>
+
+													<div className={`listen-comment-container ${this.state.openComments ? 'show-comments':''}`}>
+														<Comments openComment={this.state.openComments} 
+																			closeComments={this.closeComments} 
+																			currentPod={this.state.currentPod} 
+																			sendComment={this.sendComment}
+																			removeComment={this.removeComment}/>
+													</div>
 						</Route>
 				</Navigation>
 
@@ -285,24 +304,10 @@ export default ListenPage;
 									{!this.state.loading ?
 										<Login companyName={this.state.companyName} sendCompanyInfo={this.getCompanyInfo} />
 									:
-										<div className="flex center-content">
-											<span className="big-loading"><VscLoading /></span> 
-										</div>
+
 									}
 								</div>
 							}
-							<div className={`listen-audio-container ${this.state.nowPlayingInfo.name ? 'listen-show-audio-container' : ''}`}>
-								<PodexpressAudioPlayer nowPlayingInfo={this.state.nowPlayingInfo} />
-								<button	className={`audio-play-close ${this.state.nowPlayingInfo.name ? 'audio-play-close-show' : ''}`} 
-												onClick={() => this.setNowPlaying({})}><ImCross /></button>
-							</div>
 
-							<div className={`listen-comment-container ${this.state.openComments ? 'show-comments':''}`}>
-								<Comments openComment={this.state.openComments} 
-													closeComments={this.closeComments} 
-													currentPod={this.state.currentPod} 
-													sendComment={this.sendComment}
-													removeComment={this.removeComment}/>
-							</div>
 
 						</div> */
