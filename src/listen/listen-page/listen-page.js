@@ -1,11 +1,12 @@
 import React from 'react';
 import './listen-page.css';
 import "react-tiger-transition/styles/main.min.css";
-import { Navigation, Route, Link, glide } from "react-tiger-transition";
+import { Navigation, Route, Link } from "react-tiger-transition";
 import Login from '../login/login';
 import Episodes from '../episodes/episodes';
 import Podcasts from '../podcasts/podcasts';
 import Comments from '../comments/comments';
+import AboutCompany from '../about-company/about-company';
 import ListenHeader from '../listen-header/listen-header';
 import PodexpressAudioPlayer from '../audio-player/audio-player';
 import { firestore } from '../../store/services/firebase';
@@ -50,31 +51,18 @@ class ListenPage extends React.Component {
 		if( path.length > 2 ) {
 			const data = await this.getData( path[2].replace(/%20/g,'').toLowerCase() );
 			if( data ) {
-				this.setState({companyInfo:data, loading:false});
+				const password = this.state.cookie.get( data.companyNameRegX );
+				this.setState({companyInfo:data});
+				if( password !== data.password && path.length !== 3) {
+					window.location.href = '/lyssna/' + data.companyNameRegX;
+				} else {
+					this.setState({loading:false});
+				}
 			} else {
 				window.location.href = '/lyssna';
 			}
 		}
 
-
-		/*switch( path.length ) {
-			case 3:
-
-		}*/
-		/*if( path.length === 3 ) {
-
-
-		} else if( path.length === 4 || path.length === 5 ) {
-			const userRef = firestore.collection('companies').where('companyNameRegX', '==', path[2].replace(/%20/g,'').toLowerCase() );
-		  const companies =	await userRef.get();
-		 	companies.forEach(company => {
-				console.log(company.data())
-		 		this.setState({companyInfo:company.data(), loading:false });
-		 	});
-		} else {
-			console.log(this.state.companyName)
-			this.setState({loading:false})
-		}*/
 	}
 
 	async getData( companyNameRegX ) {
@@ -82,6 +70,10 @@ class ListenPage extends React.Component {
 		const userRef = firestore.collection('companies').where('companyNameRegX', '==', companyNameRegX );
 		const companies =	await userRef.get();
 		await companies.forEach( async company => companyData = company.data() );
+		if(companyData) companyData.description = {
+			title: 'Podexpress, här för att stanna!',
+			text: 'Vi vill att du som anställd ska få en inblick i företaget, på alla olika nivåer. Vi erbjuder företag nästa generation av informationsspriding och utbildning.'
+		};
 		return companyData;
 	}
 
@@ -99,7 +91,6 @@ class ListenPage extends React.Component {
 	}
 
 	showEps(pod) {
-		console.log(pod)
 		this.setState({currentPod:pod});
 	}
 
@@ -211,103 +202,101 @@ class ListenPage extends React.Component {
 	render() {
 
 		return (
+
+			<div>
+				<ListenHeader company={this.state.companyInfo} />
 		
-			<div className="listen-container"> 
+				<div className="listen-container"> 
 
-				<Navigation>
-						<Route exact path="/lyssna">
-							<Login companyInfo={this.state.companyInfo} />
-						</Route>
-						<Route exact path="/lyssna/:name">
-							{!this.state.loading ?
+					<Navigation>
+							<Route exact path="/lyssna">
 								<Login companyInfo={this.state.companyInfo} />
-							:
-								<div className="flex center-content">
-									<span className="big-loading"><VscLoading /></span> 
-								</div>
-							}
-						</Route>
-						<Route path="/lyssna/:name/podcasts">
-							<Podcasts podcasts={this.state.companyInfo.podcasts} showEps={this.showEps} />
-						</Route>
-						<Route path="/lyssna/:name/:pod/avsnitt">
-								<div className="listen-title-eps">
-										<h2> {!this.state.currentPod ? 'Podcasts' : this.state.currentPod.name} </h2>
-										{this.state.currentPod ?
-											<Link to={`/lyssna/${this.state.companyInfo.companyName.toLowerCase().replace(/\s/g,'')}/podcasts`} className="link-button podcast-back"
-													onClick={() => {this.setState({currentPod:null})}}>
-														<IoChevronBack />
-											</Link> 
-											: ''}
-
-										<div className="listen-eps-container">
-											{!this.state.currentPod ?
-												''
-											:
+							</Route>
+							<Route exact path="/lyssna/:name">
+								{!this.state.loading ?
+									<Login companyInfo={this.state.companyInfo} />
+								:
+									<div className="flex center-content">
+										<span className="big-loading"><VscLoading /></span> 
+									</div>
+								}
+							</Route>
+							<Route path="/lyssna/:name/podcasts">
+								{!this.state.loading ?
+									<Podcasts podcasts={this.state.companyInfo.podcasts} showEps={this.showEps} />
+								:
+									<div className="flex center-content">
+										<span className="big-loading"><VscLoading /></span> 
+									</div>
+								}
+							</Route>
+							<Route path="/lyssna/:name/om">
+								<AboutCompany description={this.state.companyInfo.description} />
+							</Route>
+							<Route path="/lyssna/:name/:pod/avsnitt">
+									<div className="listen-title-eps">
+											{this.state.currentPod ?
 												<div>
-													<div className="pod-info-container">
-														<img src={this.state.currentPod.img} alt="Podcast cover" />
-														<article>
-															{this.state.currentPod.description}
-														</article>
-														<div className="pod-reactions">
-															<button className="shift-button comment-btn" onClick={() => { this.openComments() }}>Kommentarer</button>
-															<div onClick={() => this.saveReaction('thumbsUp')} 
-																	className={`thumbs ${this.state.currentPod.thumbsUp.find((id) => this.state.cookie.get('reactionID') === id) ? 'thumb-filled' : ''}`}>
-																		<p><FiThumbsUp />{this.state.currentPod.thumbsUp.length}</p>
-															</div>&nbsp;&nbsp;
-															<div onClick={() => this.saveReaction('thumbsDown')} 
-																	className={`thumbs ${this.state.currentPod.thumbsDown.find((id) => this.state.cookie.get('reactionID') === id) ? 'thumb-filled' : ''}`}>
-																		<p><FiThumbsDown />{this.state.currentPod.thumbsDown.length}</p>
+													<h2> {this.state.currentPod.name} </h2>
+													<Link to={`/lyssna/${this.state.companyInfo.companyName.toLowerCase().replace(/\s/g,'')}/podcasts`} 
+																className="link-button podcast-back"
+																transition='glide-right'
+													>
+														<IoChevronBack />
+													</Link> 
+												</div> : ''}
+
+											<div className="listen-eps-container">
+												{!this.state.currentPod ?
+													''
+												:
+													<div>
+														<div className="pod-info-container">
+															<img src={this.state.currentPod.img} alt="Podcast cover" />
+															<article>
+																{this.state.currentPod.description}
+															</article>
+															<div className="pod-reactions">
+																<button className="shift-button comment-btn" onClick={() => { this.openComments() }}>Kommentarer</button>
+																<div onClick={() => this.saveReaction('thumbsUp')} 
+																		className={`thumbs ${this.state.currentPod.thumbsUp.find((id) => this.state.cookie.get('reactionID') === id) ? 'thumb-filled' : ''}`}>
+																			<p><FiThumbsUp />{this.state.currentPod.thumbsUp.length}</p>
+																</div>&nbsp;&nbsp;
+																<div onClick={() => this.saveReaction('thumbsDown')} 
+																		className={`thumbs ${this.state.currentPod.thumbsDown.find((id) => this.state.cookie.get('reactionID') === id) ? 'thumb-filled' : ''}`}>
+																			<p><FiThumbsDown />{this.state.currentPod.thumbsDown.length}</p>
+																</div>
 															</div>
 														</div>
+														<Episodes eps={this.state.companyInfo.episodes.filter(ep => ep.podcast === this.state.currentPod.name)} 
+																showEps={this.showEps}
+																setNowPlaying={this.setNowPlaying} />
 													</div>
-													<Episodes eps={this.state.companyInfo.episodes.filter(ep => ep.podcast === this.state.currentPod.name)} 
-															showEps={this.showEps}
-															setNowPlaying={this.setNowPlaying} />
-												</div>
-											}
-										</div>
-								</div>
+												}
+											</div>
+									</div>
 
-								<div className={`listen-audio-container ${this.state.nowPlayingInfo.name ? 'listen-show-audio-container' : ''}`}>
-														<PodexpressAudioPlayer nowPlayingInfo={this.state.nowPlayingInfo} />
-														<button	className={`audio-play-close ${this.state.nowPlayingInfo.name ? 'audio-play-close-show' : ''}`} 
-																	onClick={() => this.setNowPlaying({})}><ImCross /></button>
-													</div>
+									<div className={`listen-audio-container ${this.state.nowPlayingInfo.name ? 'listen-show-audio-container' : ''}`}>
+										<PodexpressAudioPlayer nowPlayingInfo={this.state.nowPlayingInfo} />
+										<button	className={`audio-play-close ${this.state.nowPlayingInfo.name ? 'audio-play-close-show' : ''}`} 
+													onClick={() => this.setNowPlaying({})}><ImCross /></button>
+									</div>
 
-													<div className={`listen-comment-container ${this.state.openComments ? 'show-comments':''}`}>
-														<Comments openComment={this.state.openComments} 
-																			closeComments={this.closeComments} 
-																			currentPod={this.state.currentPod} 
-																			sendComment={this.sendComment}
-																			removeComment={this.removeComment}/>
-													</div>
-						</Route>
-				</Navigation>
+									<div className={`listen-comment-container ${this.state.openComments ? 'show-comments':''}`}>
+										<Comments openComment={this.state.openComments} 
+															closeComments={this.closeComments} 
+															currentPod={this.state.currentPod} 
+															sendComment={this.sendComment}
+															removeComment={this.removeComment}/>
+									</div>
+							</Route>
+					</Navigation>
 
-			</div>	
-
+				</div>	
+			</div>
 		);
 	};
 
 };
 
 export default ListenPage;
-/*
-					
-							<ListenHeader name={this.state.companyName} loggedIn={this.state.loggedIn} />
-							{this.state.loggedIn ? 
-
-							:
-								<div>
-									{!this.state.loading ?
-										<Login companyName={this.state.companyName} sendCompanyInfo={this.getCompanyInfo} />
-									:
-
-									}
-								</div>
-							}
-
-
-						</div> */

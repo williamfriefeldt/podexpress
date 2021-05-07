@@ -27,40 +27,40 @@ function Tutorial() {
 	}
 
   return (
-    <div className="full-height" id="sa-funkar-det">
-    <div className="tutorial-container grid center-content">
-      <h2 className="center-text">Så funkar det</h2>
+    <div className="full-height-min" id="sa-funkar-det">
+      <div className="tutorial-container grid center-content">
+        <h2 className="center-text">Så funkar det</h2>
 
-      {instructions.map( (instruction, key) => (
-        <div key={key}>
-          <TagWrapper html={
-              <div>
-                <div className="grid center-content instruction-connect">
-                  <div className="tutorial-circle"><p>{instruction.number}</p></div>
-                </div>
-                <div className="grid center-content instruction-connect">
-                  <div className="tutorial-instruction">
-                    {key === 0 ?
-                      <p>Skapa först ett konto för ert företag <u>här</u>. Fyll namnet på företaget och era kontaktuppgifter.</p>
-                    :
-                      <p>{instruction.text}</p> }
+        {instructions.map( (instruction, key) => (
+          <div key={key}>
+            <TagWrapper html={
+                <div>
+                  <div className="grid center-content instruction-connect">
+                    <div className="tutorial-circle"><p>{instruction.number}</p></div>
+                  </div>
+                  <div className="grid center-content instruction-connect">
+                    <div className="tutorial-instruction">
+                      {key === 0 ?
+                        <p>Skapa först ett konto för ert företag <u>här</u>. Fyll namnet på företaget och era kontaktuppgifter.</p>
+                      :
+                        <p>{instruction.text}</p> }
+                    </div>
                   </div>
                 </div>
-              </div>
-          } keys={key} />
+            } keys={key} />
 
-        </div> ))
-      }
+          </div> ))
+        }
 
-      <div className="start-listen grid center-content">
-        <p className="center-text full-width">Börja lyssna!</p>
+        <div className="start-listen grid center-content">
+          <p className="center-text full-width">Börja lyssna!</p>
+        </div>
+
+        <div className="pointer to-contact" onClick={ () => { scrollToContact() } }>
+          <h2 className="center-text"> Kontakta oss </h2>
+          <AiOutlineArrowDown className="full-width center-text down-icon"/>
+        </div>
       </div>
-
-      <div className="pointer to-contact" onClick={ () => { scrollToContact() } }>
-				<h2 className="center-text"> Kontakta oss </h2>
-				<AiOutlineArrowDown className="full-width center-text down-icon"/>
-			</div>
-    </div>
     </div>
   )
 }

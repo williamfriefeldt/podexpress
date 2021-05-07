@@ -137,16 +137,20 @@ td img {
   width: 100%;
 }
 
+.full-height {
+  height: 100vh
+}
+
+.full-height-min {
+  min-height: 100vh;
+}
+
 .center-text {
   text-align: center;
 }
 
 .pointer {
   cursor: pointer;
-}
-
-.full-height {
-  height: 100vh
 }
 
 .relative {

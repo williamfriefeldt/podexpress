@@ -1,7 +1,7 @@
 import React from 'react';
 import './App.css';
 import "react-tiger-transition/styles/main.min.css";
-import { Navigation, Route, glide } from "react-tiger-transition";
+import { Navigation, Route, glide, flip } from "react-tiger-transition";
 import Login from './login/login';
 import CreateAccount from './create-account/create-account';
 import UserPage from './user/user-page/user-page';
@@ -44,6 +44,17 @@ function App() {
 glide({
   name: "glide-left",
   direction: "left"
+});
+
+glide({
+  name: "glide-right",
+  direction: "right"
+});
+
+flip({
+  name: "flip-right",
+  direction: "right",
+  duration: 200
 });
 
 export default App;

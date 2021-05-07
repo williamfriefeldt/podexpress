@@ -1,3 +1,7 @@
+.listen-header-container {
+  position: fixed;
+  top: 0px;
+}
 
 .listen-mobile-icon {
   width: 35px;
@@ -7,4 +11,8 @@
 
 .listen-header-title {
   padding-left: 25px;
+}
+
+.listen-header-menu a {
+  margin: 25px 17.5px;
 }

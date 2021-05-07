@@ -61,10 +61,12 @@ class Contact extends React.Component {
       .then((data) => {
         console.log(data);
         this.setState({loading: false, emailSent: true});
+        this.scrollIntoRes()
       })
       .catch((error) => {
         console.log(error);
         this.setState({loading: false, emailError: true});
+        this.scrollIntoRes()
       })
     }
 
@@ -72,15 +74,14 @@ class Contact extends React.Component {
 
   }
 
-  scrollIntoInput( height ) {
-		//document.getElementsByClassName('react-tiger-transition--screen')[0].scrollTo({ top:height, behavior: 'smooth' });
+  scrollIntoRes() {
+    const height = document.getElementsByClassName('react-tiger-transition--screen')[0].scrollHeight;
+		document.getElementsByClassName('react-tiger-transition--screen')[0].scrollTo({ top:height, behavior: 'smooth' });
 	}
-
-  /*        <p>Maila oss på <a href="mailto:hej">kontakt@podexpress.se</a> för att skräddarsy en lösning för just ert företag.</p> */
 
   render() {
     return(
-      <div className="full-height relative" id="kontakt">
+      <div className="full-height-min relative" id="kontakt">
         <div className="contact-container grid center-content">
           <h2>Kontakta oss</h2>
 
@@ -89,7 +90,7 @@ class Contact extends React.Component {
             <label className="contact-form-label">
               Email
             </label>
-            <input className="contact-form-input" type="email" onChange={this.setInput} onFocus={ () => { this.scrollIntoInput(0) }} name="email" />
+            <input className="contact-form-input" type="email" onChange={this.setInput} name="email" />
             <div className={`no-match no-match-text ${ this.state.validEmail ? '' : 'show-no-match-text'}`}>
               <p> Ogiltig emailadress </p>
             </div>
@@ -97,12 +98,12 @@ class Contact extends React.Component {
             <label className="contact-form-label contact-form-label-not-first">
               Rubrik
             </label>
-            <input className="contact-form-input" type="text" onChange={this.setInput} onFocus={ () => { this.scrollIntoInput(50) }} name="header"/>
+            <input className="contact-form-input" type="text" onChange={this.setInput} name="header"/>
 
             <label className="contact-form-label contact-form-label-not-first">
               Text
             </label>
-            <textarea className="input-textarea contact-form-textearea" onChange={this.setInput} onFocus={ () => { this.scrollIntoInput(100) }} name="text" />
+            <textarea className="input-textarea contact-form-textearea" onChange={this.setInput} name="text" />
 
             <div className={`no-match no-match-text ${ !this.state.noInput ? '' : 'show-no-match-text'}`}>
               <p> Saknar rubrik och/eller text </p>
