@@ -3,12 +3,12 @@
 }
 
 .listen-container {
-	margin-top: 80px;
-	height: 100vh;
+  height: calc(var(--vh, 1vh) * 100);
 }
 
 .listen-title-eps {
 	position: relative;
+	margin-top: 80px;
 }
 
 .listen-title-eps h2 {

@@ -4,7 +4,7 @@ import { Link } from "react-tiger-transition";
 function Podcasts(props) {
 
 	return (
-		<div>
+		<div className="listen-podcasts-container">
 			<h2 className="center-text">Podcasts</h2>
 			{props.podcasts ?
 				<div className="listen-podcasts flex center-content">

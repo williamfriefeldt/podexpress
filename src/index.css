@@ -157,6 +157,10 @@ td img {
   position: relative;
 }
 
+.top-padding {
+  padding: 80px;  
+}
+
 @media (max-width: 750px) {
   .desktop {
     display: none;

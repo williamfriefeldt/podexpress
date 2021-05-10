@@ -6,6 +6,7 @@ import Login from '../login/login';
 import Episodes from '../episodes/episodes';
 import Podcasts from '../podcasts/podcasts';
 import Comments from '../comments/comments';
+import ContactCompany from '../contact-company/contact-company';
 import AboutCompany from '../about-company/about-company';
 import ListenHeader from '../listen-header/listen-header';
 import PodexpressAudioPlayer from '../audio-player/audio-player';
@@ -31,7 +32,6 @@ class ListenPage extends React.Component {
 			loading: true
 		};
 
-		this.getCompanyInfo = this.getCompanyInfo.bind(this);
 		this.setNowPlaying = this.setNowPlaying.bind(this);
 		this.showEps = this.showEps.bind(this);
 		this.saveReaction = this.saveReaction.bind(this);
@@ -46,7 +46,7 @@ class ListenPage extends React.Component {
 		document.documentElement.style.setProperty('--vh', `${vh}px`);
 		document.documentElement.style.setProperty('--audio-layer', 1);
 
-		const path = window.location.pathname.split('/');
+		const path = decodeURIComponent(window.location.pathname).split('/');
 		
 		if( path.length > 2 ) {
 			const data = await this.getData( path[2].replace(/%20/g,'').toLowerCase() );
@@ -56,7 +56,11 @@ class ListenPage extends React.Component {
 				if( password !== data.password && path.length !== 3) {
 					window.location.href = '/lyssna/' + data.companyNameRegX;
 				} else {
-					this.setState({loading:false});
+					let currentPod = null;
+					if(path[3] !== 'podcasts') {
+						currentPod = Object.values(data.podcasts).find( pod => pod.name.replace(/\s/g,'').toLowerCase()  === path[3] );
+					}
+					this.setState({loading:false, currentPod: currentPod});
 				}
 			} else {
 				window.location.href = '/lyssna';
@@ -75,15 +79,6 @@ class ListenPage extends React.Component {
 			text: 'Vi vill att du som anställd ska få en inblick i företaget, på alla olika nivåer. Vi erbjuder företag nästa generation av informationsspriding och utbildning.'
 		};
 		return companyData;
-	}
-
-	getCompanyInfo( episodes, podcasts ) {
-		this.setState({
-			episodes: Object.values(episodes),
-			podcasts: Object.values(podcasts), 
-			loggedIn: true
-		});
-		window.location.href = this.state.companyName.toLowerCase()+ '/podcasts';
 	}
 
 	setNowPlaying( prop ) {
@@ -109,7 +104,7 @@ class ListenPage extends React.Component {
 			this.setState({loadingReaction:true});
 			let reactionID = this.state.cookie.get('reactionID');
 			const isClicked = this.state.currentPod[type].find( id => id === reactionID );
-			const companyRef = firestore.collection('companies').where('companyName', '==', this.state.companyName.replace('%20',' ') );
+			const companyRef = firestore.collection('companies').where('companyName', '==', this.state.companyInfo.companyName.replace('%20',' ') );
 			const companies =	await companyRef.get();
 			companies.forEach( async company => {
 			 	let podcasts = company.data()['podcasts'];
@@ -156,7 +151,7 @@ class ListenPage extends React.Component {
 			commentInfo['reactionID'] = this.makeId(8);
 			this.state.cookie.set('reactionID', commentInfo['reactionID'], { path: '/' });
 		}
-		const companyRef = firestore.collection('companies').where('companyName', '==', this.state.companyName.replace('%20',' ') );
+		const companyRef = firestore.collection('companies').where('companyNameRegX', '==', this.state.companyInfo.companyNameRegX );
 		const companies =	await companyRef.get();
 		companies.forEach( async company => {
 			 let podcasts = company.data()['podcasts'];
@@ -180,7 +175,7 @@ class ListenPage extends React.Component {
 	}
 
 	async removeComment(comment) {
-		const companyRef = firestore.collection('companies').where('companyName', '==', this.state.companyName.replace('%20',' ') );
+		const companyRef = firestore.collection('companies').where('companyNameRegX', '==', this.state.companyInfo.companyNameRegX );
 		const companies =	await companyRef.get();
 		companies.forEach( async company => {
 			 let podcasts = company.data()['podcasts'];
@@ -202,98 +197,95 @@ class ListenPage extends React.Component {
 	render() {
 
 		return (
+			<div className="listen-container"> 
+				<Navigation>
+					<ListenHeader company={this.state.companyInfo} />
+					<Route exact path="/lyssna">
+						<Login companyInfo={this.state.companyInfo} />
+					</Route>
+					<Route exact path="/lyssna/:name">
+						{!this.state.loading ?
+							<Login companyInfo={this.state.companyInfo} />
+						:
+							<div className="flex center-content top-padding">
+								<span className="big-loading"><VscLoading /></span> 
+							</div>
+						}
+					</Route>
+					<Route path="/lyssna/:name/podcasts">
+						{!this.state.loading ?
+							<Podcasts podcasts={this.state.companyInfo.podcasts} showEps={this.showEps} />
+						:
+							<div className="flex center-content">
+								<span className="big-loading"><VscLoading /></span> 
+							</div>
+						}
+					</Route>
+					<Route path="/lyssna/:name/om">
+						<AboutCompany description={this.state.companyInfo.description} companyName={this.state.companyInfo.companyNameRegX} />
+					</Route>
+					<Route path="/lyssna/:name/kontakt">
+						<ContactCompany companyName={this.state.companyInfo.companyName} />
+					</Route>
+					<Route path="/lyssna/:name/:pod/avsnitt">
+						<div className="listen-title-eps">
+							{this.state.currentPod ?
+								<div>
+									<h2> {this.state.currentPod.name} </h2>
+									<Link to={`/lyssna/${this.state.companyInfo.companyName.toLowerCase().replace(/\s/g,'')}/podcasts`} 
+												className="link-button podcast-back"
+												transition='glide-right'
+									>
+										<IoChevronBack />
+									</Link> 
+								</div> : ''}
 
-			<div>
-				<ListenHeader company={this.state.companyInfo} />
-		
-				<div className="listen-container"> 
-
-					<Navigation>
-							<Route exact path="/lyssna">
-								<Login companyInfo={this.state.companyInfo} />
-							</Route>
-							<Route exact path="/lyssna/:name">
-								{!this.state.loading ?
-									<Login companyInfo={this.state.companyInfo} />
-								:
-									<div className="flex center-content">
-										<span className="big-loading"><VscLoading /></span> 
-									</div>
-								}
-							</Route>
-							<Route path="/lyssna/:name/podcasts">
-								{!this.state.loading ?
-									<Podcasts podcasts={this.state.companyInfo.podcasts} showEps={this.showEps} />
-								:
-									<div className="flex center-content">
-										<span className="big-loading"><VscLoading /></span> 
-									</div>
-								}
-							</Route>
-							<Route path="/lyssna/:name/om">
-								<AboutCompany description={this.state.companyInfo.description} />
-							</Route>
-							<Route path="/lyssna/:name/:pod/avsnitt">
-									<div className="listen-title-eps">
-											{this.state.currentPod ?
-												<div>
-													<h2> {this.state.currentPod.name} </h2>
-													<Link to={`/lyssna/${this.state.companyInfo.companyName.toLowerCase().replace(/\s/g,'')}/podcasts`} 
-																className="link-button podcast-back"
-																transition='glide-right'
-													>
-														<IoChevronBack />
-													</Link> 
-												</div> : ''}
-
-											<div className="listen-eps-container">
-												{!this.state.currentPod ?
-													''
-												:
-													<div>
-														<div className="pod-info-container">
-															<img src={this.state.currentPod.img} alt="Podcast cover" />
-															<article>
-																{this.state.currentPod.description}
-															</article>
-															<div className="pod-reactions">
-																<button className="shift-button comment-btn" onClick={() => { this.openComments() }}>Kommentarer</button>
-																<div onClick={() => this.saveReaction('thumbsUp')} 
-																		className={`thumbs ${this.state.currentPod.thumbsUp.find((id) => this.state.cookie.get('reactionID') === id) ? 'thumb-filled' : ''}`}>
-																			<p><FiThumbsUp />{this.state.currentPod.thumbsUp.length}</p>
-																</div>&nbsp;&nbsp;
-																<div onClick={() => this.saveReaction('thumbsDown')} 
-																		className={`thumbs ${this.state.currentPod.thumbsDown.find((id) => this.state.cookie.get('reactionID') === id) ? 'thumb-filled' : ''}`}>
-																			<p><FiThumbsDown />{this.state.currentPod.thumbsDown.length}</p>
-																</div>
-															</div>
-														</div>
-														<Episodes eps={this.state.companyInfo.episodes.filter(ep => ep.podcast === this.state.currentPod.name)} 
-																showEps={this.showEps}
-																setNowPlaying={this.setNowPlaying} />
+								<div className="listen-eps-container">
+									{!this.state.currentPod ?
+										''
+									:
+										<div>
+											<div className="pod-info-container">
+												<img src={this.state.currentPod.img} alt="Podcast cover" />
+												<article>
+													{this.state.currentPod.description}
+												</article>
+												<div className="pod-reactions">
+													<button className="shift-button comment-btn" onClick={() => { this.openComments() }}>Kommentarer</button>
+													<div onClick={() => this.saveReaction('thumbsUp')} 
+															className={`thumbs ${this.state.currentPod.thumbsUp.find((id) => this.state.cookie.get('reactionID') === id) ? 'thumb-filled' : ''}`}>
+																<p><FiThumbsUp />{this.state.currentPod.thumbsUp.length}</p>
+													</div>&nbsp;&nbsp;
+													<div onClick={() => this.saveReaction('thumbsDown')} 
+															className={`thumbs ${this.state.currentPod.thumbsDown.find((id) => this.state.cookie.get('reactionID') === id) ? 'thumb-filled' : ''}`}>
+																<p><FiThumbsDown />{this.state.currentPod.thumbsDown.length}</p>
 													</div>
-												}
+												</div>
 											</div>
-									</div>
+											<Episodes eps={this.state.companyInfo.episodes.filter(ep => ep.podcast === this.state.currentPod.name)} 
+													showEps={this.showEps}
+													setNowPlaying={this.setNowPlaying} />
+										</div>
+									}
+								</div>
+							</div>
 
-									<div className={`listen-audio-container ${this.state.nowPlayingInfo.name ? 'listen-show-audio-container' : ''}`}>
-										<PodexpressAudioPlayer nowPlayingInfo={this.state.nowPlayingInfo} />
-										<button	className={`audio-play-close ${this.state.nowPlayingInfo.name ? 'audio-play-close-show' : ''}`} 
-													onClick={() => this.setNowPlaying({})}><ImCross /></button>
-									</div>
+							<div className={`listen-audio-container ${this.state.nowPlayingInfo.name ? 'listen-show-audio-container' : ''}`}>
+								<PodexpressAudioPlayer nowPlayingInfo={this.state.nowPlayingInfo} />
+								<button	className={`audio-play-close ${this.state.nowPlayingInfo.name ? 'audio-play-close-show' : ''}`} 
+											onClick={() => this.setNowPlaying({})}><ImCross /></button>
+							</div>
 
-									<div className={`listen-comment-container ${this.state.openComments ? 'show-comments':''}`}>
-										<Comments openComment={this.state.openComments} 
-															closeComments={this.closeComments} 
-															currentPod={this.state.currentPod} 
-															sendComment={this.sendComment}
-															removeComment={this.removeComment}/>
-									</div>
-							</Route>
-					</Navigation>
-
-				</div>	
-			</div>
+							<div className={`listen-comment-container ${this.state.openComments ? 'show-comments':''}`}>
+								<Comments openComment={this.state.openComments} 
+													closeComments={this.closeComments} 
+													currentPod={this.state.currentPod} 
+													sendComment={this.sendComment}
+													removeComment={this.removeComment}/>
+							</div>
+					</Route>
+				</Navigation>
+			</div>	
 		);
 	};
 

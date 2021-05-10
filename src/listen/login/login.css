@@ -1,6 +1,7 @@
 .listen-login-placeholder {
 	display: grid;
 	justify-content: center;
+	padding-top: 80px;
 }
 
 .listen-login-placeholder h2 {

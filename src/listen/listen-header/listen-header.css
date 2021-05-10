@@ -1,6 +1,7 @@
 .listen-header-container {
   position: fixed;
   top: 0px;
+  z-index: 1;
 }
 
 .listen-mobile-icon {

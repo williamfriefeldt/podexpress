@@ -1,0 +1,60 @@
+.contact-about-container {
+  text-align: center;
+	padding-top: 100px;
+}
+
+.contact-about-container p {
+  font-size: 20px;
+}
+
+.contact-about-form-container {
+	background-color: wheat;
+	color: #003366;
+	padding: 20px;
+	border-radius: 20px;
+	display: grid;
+  width: 400px;
+  margin-bottom: 100px;
+}
+
+.contact-about-form-label {
+	padding-bottom: 10px;
+  padding-top: 10px;
+}
+
+.contact-about-form-input {
+	width: 375px;
+}
+
+.contact-about-form-textearea {
+  width: 355px;
+  margin-top: 0px;
+}
+
+.contact-about-form-button {
+  margin-top: 20px;
+}
+
+.contact-about-form-mail-success {
+  margin-top: 15px;
+  transform: scale(0);
+  height: 0px;
+  transition: height 0.75s, transform 0.75s ease-in-out 0.5s;
+}
+
+.contact-about-form-mail-success-show {
+  transform: scale(1);
+  height: 45px;
+}
+
+.no-match a {
+  color: red;
+  text-decoration: revert;
+}
+
+@media (max-width: 750px) {
+  .contact-about-container {
+    margin-left: 5%;
+    width: 90%;
+  }
+}
