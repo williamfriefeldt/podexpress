@@ -2,9 +2,9 @@
 	background-color: wheat;
  	display: flex;
  	position: absolute;
-  	top: 0px;
-  	width: 100%;
-  	bottom: 0px;
+	top: 0px;
+	width: 100%;
+	bottom: 0px;
 	transition: top 1s;
 }
 

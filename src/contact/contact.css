@@ -61,11 +61,14 @@
 }
 
 @media (max-width: 750px) {
-  .contact-container {
-    margin-left: 5%;
-    width: 90%;
+  .contact-form-container {
+    width: 260px;
   }
-  .podexpress-footer {
-    bottom: 15%;
+  .contact-form-input {
+    width: 235px;
+  }
+  .contact-form-textearea {
+    width: 215px;
+    margin-top: 0px;
   }
 }

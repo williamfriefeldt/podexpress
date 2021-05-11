@@ -1,6 +1,8 @@
 .listen-header-container {
   position: fixed;
   top: 0px;
+  background-color: #003366;
+	transition: transform 0.75s ease-in-out;
   z-index: 1;
 }
 
@@ -16,4 +18,10 @@
 
 .listen-header-menu a {
   margin: 25px 17.5px;
+}
+
+@media( max-width: 750px ) {
+  .listen-header-title {
+    font-size: 22.5px;
+  }
 }

@@ -45,12 +45,12 @@ function Header() {
 			<div className="mobile">
 				<div className="flex">
  					<img className="mobile speaker-icon mobile-icon" src={speakericon}  alt="Speaker" />
-					<div onClick={ () => { setOpen(!open) }}><GiHamburgerMenu size={35} className="menu-icon pointer" /></div>
+					<div onClick={ () => { setOpen(!open) }}><GiHamburgerMenu size={30} className="menu-icon pointer" /></div>
 				</div>
 
 				<div className={`mobile-menu ${open ? 'open-mobile-menu' : '' }`}>
 					<div className="close-container">
-						<ImCross size={30} className="pointer" onClick={ () => { setOpen(!open) }} />
+						<ImCross size={25} className="pointer" onClick={ () => { setOpen(!open) }} />
 					</div>
 
 					<div className="grid center-text mobile-menu-items">

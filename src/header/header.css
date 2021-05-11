@@ -55,11 +55,12 @@ nav a {
 @media (max-width: 750px) {
 	.header-title {
 	   padding-left: 20px !important;
+		 font-size: 22.5px;
 	}
 
 	.mobile-icon {
-		width: 35px;
-		height: 35px;
+		width: 30px;
+		height: 30px;
 		margin: 17.5px;
 	}
 }

@@ -199,7 +199,9 @@ class ListenPage extends React.Component {
 		return (
 			<div className="listen-container"> 
 				<Navigation>
-					<ListenHeader company={this.state.companyInfo} />
+					{this.state.companyInfo.companyName !== '' ? 
+						<ListenHeader company={this.state.companyInfo} comments={this.state.openComments} /> 
+					: '' }
 					<Route exact path="/lyssna">
 						<Login companyInfo={this.state.companyInfo} />
 					</Route>
@@ -227,8 +229,8 @@ class ListenPage extends React.Component {
 					<Route path="/lyssna/:name/kontakt">
 						<ContactCompany companyName={this.state.companyInfo.companyName} />
 					</Route>
-					<Route path="/lyssna/:name/:pod/avsnitt">
-						<div className="listen-title-eps">
+					<Route path="/lyssna/:name/:pod/avsnitt" screen>
+						<div className="listen-title-eps" style={{ 	marginTop: this.state.openComments ? '10px' : '90px'}}>
 							{this.state.currentPod ?
 								<div>
 									<h2> {this.state.currentPod.name} </h2>

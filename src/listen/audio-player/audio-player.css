@@ -1,6 +1,7 @@
 .listen-audio-player-container {
 	background-color: wheat;
 	color: #003366;
+	border-top: 2px solid #003366;
 }
 
 .listen-show-audio-container img {
@@ -27,6 +28,10 @@
 	background-color: wheat !important;
 	padding: 20px;
 	box-shadow: none !important;
+}
+
+.listen-audio-player-container .rhap_container:focus {
+	outline: none !important;
 }
 
 .listen-audio-player-container .rhap_time, 

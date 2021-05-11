@@ -49,8 +49,8 @@ class Comments extends React.Component {
         {input.comments.currentPod ?
           <div>
             {input.comments.currentPod.comments ?
-              <div>
-                {input.comments.currentPod.comments.map( (item, index) => { 
+              <div id="comments-list">
+                {input.comments.currentPod.comments.map( (item, index) => {
                   return <div className="comment" key={index}>
                           <p className={`${ this.state.cookie.get('reactionID') === item.reactionID ? 'own-comment' : '' }`}>
                             <strong>{item.name}:</strong> &nbsp; {item.comment}

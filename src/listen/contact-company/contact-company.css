@@ -1,6 +1,7 @@
 .contact-about-container {
   text-align: center;
 	padding-top: 100px;
+  margin-bottom: 15px;
 }
 
 .contact-about-container p {
@@ -10,7 +11,7 @@
 .contact-about-form-container {
 	background-color: wheat;
 	color: #003366;
-	padding: 20px;
+	padding: 10px 20px;
 	border-radius: 20px;
 	display: grid;
   width: 400px;
@@ -54,7 +55,17 @@
 
 @media (max-width: 750px) {
   .contact-about-container {
-    margin-left: 5%;
-    width: 90%;
+    text-align: center;
+    padding-top: 55px;
+  }  
+  .contact-about-form-container {
+    width: 260px;
+  }
+  .contact-about-form-input {
+    width: 235px;
+  }
+  .contact-about-form-textearea {
+    width: 215px;
+    margin-top: 0px;
   }
 }

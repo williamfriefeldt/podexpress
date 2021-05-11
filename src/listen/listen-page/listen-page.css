@@ -3,12 +3,13 @@
 }
 
 .listen-container {
-  height: calc(var(--vh, 1vh) * 100);
+  height: 100%;
+  overflow-y: auto;
 }
 
 .listen-title-eps {
 	position: relative;
-	margin-top: 80px;
+	transition: margin-top 0.75s ease-in-out;
 }
 
 .listen-title-eps h2 {
@@ -73,14 +74,16 @@
 	transition: 0.2s ease-in-out;
 }
 
-.thumbs:hover {
-	border: 1px solid #003366;
-	border-radius: 120px;
-	cursor: pointer;
-	padding: 2.5px;
-	padding-right: 6.5px;
-	background-color: #003366;
-	color: wheat;
+@media (hover: hover) and (pointer: fine) { /*Applies only on desktop */
+	.thumbs:hover {
+		border: 1px solid #003366;
+		border-radius: 120px;
+		cursor: pointer;
+		padding: 2.5px;
+		padding-right: 6.5px;
+		background-color: #003366;
+		color: wheat;
+	}
 }
 
 .thumb-filled {
@@ -89,7 +92,6 @@
 	border-radius: 120px;
 	color: wheat;
 }
-/* Variables */
 
 .listen-audio-container {
 	max-height: 0px;
@@ -145,6 +147,10 @@
 	}
 
 	.show-comments {
-		height: calc(100vh - 175px);
+		height: calc(100vh - 80px);
+	}
+
+	.listen-comment-container {
+		border-radius: 0;
 	}
 }

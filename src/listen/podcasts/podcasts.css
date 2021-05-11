@@ -19,6 +19,7 @@
 .listen-podcast:hover {
  	transform: scale(1.05); 
  	box-shadow: 0 4px 17px rgba(0, 0, 0, 0.35);
+	text-shadow: none;
 }
 .listen-podcast h3 {
 	white-space: nowrap;
@@ -28,17 +29,28 @@
 	margin: 10px;
 	text-align: center;
 }
-.listen-podcast-img {
+.listen-podcast-img, .listen-podcast-img-placeholder {
   display: block;
   margin-left: auto;
   margin-right: auto;
   width: 50%;
 	margin-top: 10px;
 }
+.listen-podcast-img-placeholder {
+	height: 100px;
+}
+.listen-podcast-img-placeholder .loading svg {
+	height: 100px;
+	width:  100px;
+}
 
 @media (max-width: 600px) {
+	.listen-podcasts-container {
+		padding-top: 50px;
+	}
+	
 	.listen-podcast {
 		width: 45%;
-		margin: 1.5%;
+		margin: 2.5%;
 	}
 }
