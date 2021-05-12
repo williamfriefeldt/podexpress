@@ -27,7 +27,6 @@ function Header() {
 			for( let i = 0; i < index; i++) {
 				scrollHeight += document.getElementById(sectionList[i]).offsetHeight;
 			}
-			console.log(scrollHeight);
 			document.getElementsByClassName('react-tiger-transition--screen')[0].scrollTo({ top: scrollHeight, behavior: 'smooth' });
 		}
   }

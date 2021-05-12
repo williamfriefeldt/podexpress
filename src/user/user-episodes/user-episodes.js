@@ -15,6 +15,7 @@ class UserEpisodes extends React.Component {
 		super(props);
 		this.state = {
 			episodes: [],
+			podcastsNames: [],
 			deleteEP: null,
 			nowPlaying: '',
 			loading: true,
@@ -28,6 +29,7 @@ class UserEpisodes extends React.Component {
 		this.changeCopyText = this.changeCopyText.bind(this);
 		this.openCloseModal = this.openCloseModal.bind(this);
 		this.removeEp = this.removeEp.bind(this);
+		this.setInput = this.setInput.bind(this);
 	}
 
 	async componentDidMount() {
@@ -43,7 +45,9 @@ class UserEpisodes extends React.Component {
 				} else {
 					episodes = Object.values( data );
 				}
-				this.setState({episodes, loading: false, password: snapshot.data()['password'], podcasts: true});
+				const podcastsNames = [];
+				snapshot.data()['podcasts'].map( pod => podcastsNames.push(pod.name) );
+				this.setState({episodes, loading: false, password: snapshot.data()['password'], podcasts: true, podcastsNames: podcastsNames});
 			} else {
 				this.setState({loading:false});
 			}
@@ -77,6 +81,21 @@ class UserEpisodes extends React.Component {
 		this.setState({episodes, modal: false});
 	}
 
+	 async setInput(event) {
+		let episodes = this.state.episodes;
+		episodes.map( (ep, index) => {
+			if(ep.name === event.target.name) {
+				episodes[index].podcast = event.target.value;
+			}
+		});
+
+		const user = auth.currentUser;
+		const userRef = firestore.doc(`companies/${user.uid}`);
+		await userRef.set({ episodes }, { merge:true });
+		
+		this.setState({episodes});
+	}
+
 	render() {
 
 		const Episodes = () => (
@@ -97,7 +116,11 @@ class UserEpisodes extends React.Component {
 							  <td><img src={episode.img} alt="Episode cover" /></td>
 								<td><h3>{episode.name}</h3></td>
 								<td className="ep-description">{episode.description}</td>
-								<td>{episode.podcast ? episode.podcast : 'Ingen'}</td>
+								<td className="ep-select-container">
+									<select className="episodes-select-pod" onChange={this.setInput} name={episode.name} value={episode.podcast}> 
+										{this.state.podcastsNames.map( (name, index) => <option key={index}>{name}</option>)}
+									</select>
+								</td>
 								<td>
 									<button onClick={ ()=> {this.setNowPlaying(episode.url)}} className="ep-btn-play"> 
 										<AiFillPlayCircle className="play-icon" />

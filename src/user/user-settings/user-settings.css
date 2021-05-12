@@ -16,3 +16,8 @@
   box-shadow: none;
   cursor: not-allowed;
 }
+
+.description-area {
+  width: 230px !important;
+  margin-bottom: 30px;
+}

@@ -11,6 +11,7 @@ class UserSettings extends React.Component {
 			companyName: '',
 			companyNameRegX: '',
 			email: '',
+			description: '',
 			infoChange: false,
 			errors: {
 				companyExists: false,
@@ -33,6 +34,7 @@ class UserSettings extends React.Component {
 		state['companyName'] = userData.data()['companyName'];
 		state['email'] = email;
 		state['companyNameRegX'] = userData.data()['companyNameRegX'];
+		state['description'] = userData.data()['description'];
 		this.setState( state );
 	}
 
@@ -46,7 +48,7 @@ class UserSettings extends React.Component {
 
 	async updateInfo() {
 		this.setState({loading: true});
-		const { companyName, email, companyNameRegX } = this.state;
+		const { companyName, email, companyNameRegX, description } = this.state;
 		const userID = auth.currentUser.uid;
 		const userRef = firestore.doc(`companies/${userID}`);
 		if( companyName.replace(/\s/g,'').toLowerCase() !== companyNameRegX ) {
@@ -54,9 +56,10 @@ class UserSettings extends React.Component {
 			const companyRef = firestore.collection('companies').where('companyNameRegX', '==', newCompanyNameRegX );
 			const companies =	await companyRef.get();
 			let companyExists = false;
+
 			await companies.forEach( async company => companyExists = true );
 			if(!companyExists) {
-				await userRef.set({ companyName: companyName, companyNameRegX: newCompanyNameRegX }, { merge:true });
+				await userRef.set({ companyName: companyName, companyNameRegX: newCompanyNameRegX, description: description }, { merge:true });
 				this.props.updateTitle(companyName);
 			}else{
 				let errors = this.state.errors;
@@ -64,9 +67,9 @@ class UserSettings extends React.Component {
 				this.setState({errors});
 			}
 		} else {
-			await userRef.set({ companyName: companyName }, { merge:true });
+			await userRef.set({ companyName: companyName, description: description }, { merge:true });
 			this.props.updateTitle(companyName);
-		} 
+		}
 
 		if( email !== auth.currentUser.email ) {
 			try {
@@ -122,9 +125,16 @@ class UserSettings extends React.Component {
 				</div>
 
 				<div className="grid">
+					<label className="input-label">
+						Företagsbeskrivning
+					</label>
+					<textarea className="input-textarea description-area" onChange={this.setInput} name="description" value={this.state.description}/>
+				</div>
+
+				<div className="grid">
 
 					<button className="shift-button change-info-btn"
-									disabled={!this.state.infoChange || this.state.companyName === ''} onClick={this.updateInfo}>
+									disabled={!this.state.infoChange || this.state.companyName === '' || this.state.description === ''} onClick={this.updateInfo}>
 										{this.state.loading ?
 											<span className="loading"><VscLoading /></span> 
 										:	 

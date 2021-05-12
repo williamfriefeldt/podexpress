@@ -1,5 +1,4 @@
 function ErrorHandler( errorCode ) {
-	console.log( errorCode)
 	switch ( errorCode ) {
 		case 'auth/wrong-password':
 			return 'Fel lösenord';

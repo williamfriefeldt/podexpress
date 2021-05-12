@@ -15,11 +15,13 @@ function AboutCompany( input ) {
           >
             <IoChevronBack />
           </Link> 
-          <h2 className="center-text">{input.description.title}</h2>
+          <h2 className="center-text">Podexpress, här för att stanna!</h2>
 
-          <article className="center-text">
-            {input.description.text}
-          </article>
+          <div className="flex center-content">
+            <article className="center-text description-width">
+              {input.description}
+            </article>
+          </div>
         </div>
       :
         <div className="flex center-content">

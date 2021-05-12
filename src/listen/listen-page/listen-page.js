@@ -74,10 +74,6 @@ class ListenPage extends React.Component {
 		const userRef = firestore.collection('companies').where('companyNameRegX', '==', companyNameRegX );
 		const companies =	await userRef.get();
 		await companies.forEach( async company => companyData = company.data() );
-		if(companyData) companyData.description = {
-			title: 'Podexpress, här för att stanna!',
-			text: 'Vi vill att du som anställd ska få en inblick i företaget, på alla olika nivåer. Vi erbjuder företag nästa generation av informationsspriding och utbildning.'
-		};
 		return companyData;
 	}
 

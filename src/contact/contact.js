@@ -47,7 +47,6 @@ class Contact extends React.Component {
       state['loading'] = false;
       this.setState(state);
     } else {
-      console.log(state);
       await fetch( 'http://localhost:5000/send_mail?email=' + state['email'] + '&header=' + state['header'] + '&text=' + state['text'], {
         method: 'GET',
         mode: 'cors',

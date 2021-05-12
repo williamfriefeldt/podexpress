@@ -129,27 +129,15 @@ class Upload extends React.Component {
 						const userRef = firestore.doc(`companies/${userID}`);
 						const userData = await userRef.get();
 						let episodes = userData.data()['episodes'];
-						if( episodes ) {
-							episodes[this.state.episodeInfo.episodeName] =  {
-								name: this.state.episodeInfo.episodeName,
-								description: this.state.episodeInfo.episodeDescription,
-								podcast: this.state.podcastInfo.podcast,
-								img: uploadImgUrl,
-								url: uploadEpUrl
-							}
-							await userRef.set({ episodes }, { merge:true });
-						} else {
-							episodes = {};
-							episodes[this.state.episodeInfo.episodeName] =
-								{
-									name: this.state.episodeInfo.episodeName,
-									description: this.state.episodeInfo.episodeDescription,
-									podcast: this.state.podcastInfo.podcast,
-									img: uploadImgUrl,
-									url: uploadEpUrl
-								};
-							await userRef.set({ episodes }, { merge:true });
-						};
+						if( !episodes )	episodes = [];
+						episodes.push({
+							name: this.state.episodeInfo.episodeName,
+							description: this.state.episodeInfo.episodeDescription,
+							podcast: this.state.episodeInfo.podcast,
+							img: uploadImgUrl,
+							url: uploadEpUrl
+						});
+						await userRef.set({ episodes }, { merge:true });
 						this.setState({loading:false});
        		});
 
@@ -161,7 +149,7 @@ class Upload extends React.Component {
 	render() {
 
 		const PodSelect = () => (
-			<select className="upload-select-pod" onChange={this.setInput} name="podcast" value={this.state.podcastInfo.podcast}> 
+			<select className="upload-select-pod" onChange={this.setInput} name="podcast" value={this.state.episodeInfo.podcast}> 
 					{this.state.podcasts.map( (podcast, index) => <option key={index}>{podcast.name}</option>)}
 			</select>
 		);

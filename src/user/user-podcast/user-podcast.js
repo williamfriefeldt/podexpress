@@ -21,6 +21,7 @@ class UserPodcast extends React.Component {
     this.getPodcasts = this.getPodcasts.bind(this);
     this.openModal = this.openModal.bind(this);
     this.closeModal = this.closeModal.bind(this);
+    this.removePod = this.removePod.bind(this);
   }
 
   componentDidMount() {
@@ -30,6 +31,20 @@ class UserPodcast extends React.Component {
   openCreatePod() {
     let createPodOpen = !this.state.createPodOpen;
     this.setState({createPodOpen});
+  }
+
+  async removePod(pod) {
+    let podcasts = this.state.podcasts;
+    podcasts = podcasts.filter( podcast => podcast.name !== pod );
+
+    const userID = auth.currentUser.uid;
+    const userRef = firestore.doc(`companies/${userID}`);
+    await userRef.set({ podcasts }, { merge:true });
+
+    const userData = await userRef.get();
+    podcasts = userData.data()['podcasts'];
+    if(!podcasts) podcasts = [];
+    this.setState({ podcasts: Object.values( podcasts ), modal: false });
   }
 
   async getPodcasts() {
@@ -96,6 +111,7 @@ class UserPodcast extends React.Component {
         </div>
 
         <ShowPodcast 
+          removePod={this.removePod}
           isOpen={this.state.modal} 
           closeModal={this.closeModal} 
           podcast={this.state.openPod}

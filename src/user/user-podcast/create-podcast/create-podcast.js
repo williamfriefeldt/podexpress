@@ -63,10 +63,10 @@ class CreatePodcast extends React.Component {
       const userData = await userRef.get();
       let podcasts = userData.data()['podcasts'];
       if( !podcasts ) {
-        podcasts = {};
+        podcasts = [];
       }
-      podcasts[this.state.podcastInfo.name] = Object.assign({},podcastInfo);
-      podcasts[this.state.podcastInfo.name]['img'] = uploadImgUrl;
+      podcasts.push( Object.assign({},podcastInfo) );
+      podcasts[podcasts.length-1]['img'] = uploadImgUrl;
       await userRef.set({ podcasts }, { merge:true });
       this.setState({loading:false});
       this.props.getPodcasts();

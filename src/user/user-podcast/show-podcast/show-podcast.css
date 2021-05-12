@@ -42,3 +42,16 @@
 .show-pod-reaction {
   padding: 12.5px 20px 0px 0px;
 }
+
+.remove-pod-btn {
+  margin-right: 10px;
+}
+
+.remove-pod-container{
+  height: 365px;
+}
+
+.to-episodes-btn {
+  margin-top: 20px;
+  width: 300px;
+}

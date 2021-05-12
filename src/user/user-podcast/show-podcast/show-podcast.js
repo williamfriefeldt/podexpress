@@ -23,14 +23,15 @@ function ShowPodcast(props) {
 
 	var subtitle;
   const [info, setInfo] = useState('avsnitt');
+  const [openRemove, setOpenRemove] = useState(false);
 
   const Episodes = (input) => (
     <div>
       {input ?
         <div>
-          {Object.values(input.episodes).map( ep => { 
+          {Object.values(input.episodes).map( (ep, index) => { 
             if(ep.podcast === props.podcast.name) {
-              return <p className="show-pod-ep-title">{ep.name}</p>
+              return <p className="show-pod-ep-title" key={index}>{ep.name}</p>
             } else {
               return '';
             }
@@ -56,6 +57,12 @@ function ShowPodcast(props) {
         </div> : <p>Inga kommentarer finns</p>}
     </div>
   )
+
+  const toEpisodes = () => {
+    let pathList = window.location.pathname.split('/');
+    pathList[3] = 'avsnitt';
+    window.location.pathname = pathList.join('/');
+  }
 	 
 	function afterOpenModal() {
 	  subtitle.style.color = 'wheat';
@@ -77,30 +84,55 @@ function ShowPodcast(props) {
                       <p className="show-pod-reaction"><FiThumbsDown /> {props.podcast.thumbsDown.length}</p>
                     </div>
                   : ''}
+                  <button onClick={ () => { setOpenRemove(!openRemove) }} className="remove-pod-btn">
+                    {!openRemove ? 'Ta bort' : 'Tillbaka'}
+                  </button>
                   <button onClick={props.closeModal}>Stäng</button>
                 </div> 
           </div>
+ 
+          {!openRemove ?
+            <div>
+              <p>{props.podcast.description}</p>
 
-          <p>{props.podcast.description}</p>
+              <div className="show-pod-info-container">
+                  <div className="flex">
+                    <div className={`show-pod-menu-item ${info === 'avsnitt' ? '' : 'show-pod-menu-item-not'}`}
+                        onClick={ () => setInfo('avsnitt')}>Avsnitt</div>
+                    <div className={`show-pod-menu-item ${info === 'kommentarer' ? '' : 'show-pod-menu-item-not'}`}
+                        onClick={ () => setInfo('kommentarer')}>Kommentarer</div>
+                  </div>
 
-          <div className="show-pod-info-container">
-              <div className="flex">
-                <div className={`show-pod-menu-item ${info === 'avsnitt' ? '' : 'show-pod-menu-item-not'}`}
-                     onClick={ () => setInfo('avsnitt')}>Avsnitt</div>
-                <div className={`show-pod-menu-item ${info === 'kommentarer' ? '' : 'show-pod-menu-item-not'}`}
-                     onClick={ () => setInfo('kommentarer')}>Kommentarer</div>
+                  {info === 'avsnitt' ?
+                    <div className="show-pod-current-info">
+                      <Episodes episodes={props.episodes} />
+                    </div>
+                  :
+                    <div className="show-pod-current-info">
+                      <Comments comments={props.podcast.comments} />
+                    </div>
+                  }
               </div>
-
-              {info === 'avsnitt' ?
-                <div className="show-pod-current-info">
-                  <Episodes episodes={props.episodes} />
-                </div>
+            </div>
+          :
+            <div className="remove-pod-container">
+              { Object.values(props.episodes).filter( ep => ep.podcast === props.podcast.name ).length === 0 ?
+                <div className="grid center-content">
+                  Är du helt säker på att du vill ta bort den här podcasten?
+                  <div className="flex center-content">
+                    <button onClick={() => props.removePod(props.podcast.name)} className="to-episodes-btn">Ta bort podcasten</button>
+                  </div>
+                </div>  
               :
-                <div className="show-pod-current-info">
-                  <Comments comments={props.podcast.comments} />
+                <div className="grid center-content">
+                  För att ta bort podcasten måste du först ta bort alla avsnitt kopplat till den eller koppla dem till en annan podcast.
+                  <div className="flex center-content">
+                    <button onClick={toEpisodes} className="to-episodes-btn">Till avsnitten</button>
+                  </div>
                 </div>
               }
-          </div>
+            </div>
+          }
         </Modal>
 	)
 
