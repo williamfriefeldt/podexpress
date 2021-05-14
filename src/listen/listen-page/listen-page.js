@@ -49,7 +49,7 @@ class ListenPage extends React.Component {
 		const path = decodeURIComponent(window.location.pathname).split('/');
 		
 		if( path.length > 2 ) {
-			const data = await this.getData( path[2].replace(/%20/g,'').toLowerCase() );
+			const data = await this.getData( path[2].replace(/[%20\s]/g,'').toLowerCase() );
 			if( data ) {
 				const password = this.state.cookie.get( data.companyNameRegX );
 				this.setState({companyInfo:data});
@@ -104,14 +104,21 @@ class ListenPage extends React.Component {
 			const companies =	await companyRef.get();
 			companies.forEach( async company => {
 			 	let podcasts = company.data()['podcasts'];
+				let indexPod = null;
+				if( typeof podcasts === 'object' ) {
+					podcasts = Object.values(podcasts);
+					podcasts.find( (pod,index) => {
+						if(pod.name === this.state.currentPod.name) indexPod = index;
+					});
+				}
 			 	if( !isClicked ) {
-			 		if(!reactionID) reactionID = this.makeId(8); 
-					podcasts[this.state.currentPod.name][type].push( reactionID );
+			 		if( !reactionID ) reactionID = this.makeId(8); 
+					podcasts[indexPod][type].push( reactionID );
 				} else {
-					podcasts[this.state.currentPod.name][type] = podcasts[this.state.currentPod.name][type].filter( id => id !== reactionID );
+					podcasts[indexPod][type] = podcasts[indexPod][type].filter( id => id !== reactionID );
 				}
 				const otherType = type === 'thumbsUp' ? 'thumbsDown' : 'thumbsUp';
-				podcasts[this.state.currentPod.name][otherType] = podcasts[this.state.currentPod.name][otherType].filter( id => id !== reactionID );
+				podcasts[indexPod][otherType] = podcasts[indexPod][otherType].filter( id => id !== reactionID );
 
 	      const userRef = await firestore.doc(`companies/${company.id}`);
 	      await userRef.set({ podcasts }, { merge:true });
@@ -119,8 +126,8 @@ class ListenPage extends React.Component {
 				this.state.cookie.set('reactionID', reactionID, { path: '/' });
 				
 	      const newData = await userRef.get();
-	      const newThumbsUp = newData.data()['podcasts'][this.state.currentPod.name]['thumbsUp'];
-				const newThumbsDown = newData.data()['podcasts'][this.state.currentPod.name]['thumbsDown'];
+	      const newThumbsUp = newData.data()['podcasts'][indexPod]['thumbsUp'];
+				const newThumbsDown = newData.data()['podcasts'][indexPod]['thumbsDown'];
 	      let currentPod = this.state.currentPod;
 	      currentPod['thumbsUp'] = newThumbsUp;
 				currentPod['thumbsDown'] = newThumbsDown;
@@ -150,11 +157,17 @@ class ListenPage extends React.Component {
 		const companyRef = firestore.collection('companies').where('companyNameRegX', '==', this.state.companyInfo.companyNameRegX );
 		const companies =	await companyRef.get();
 		companies.forEach( async company => {
-			 let podcasts = company.data()['podcasts'];
-			 if( podcasts[this.state.currentPod.name]['comments'] ) {
-				podcasts[this.state.currentPod.name]['comments'].push(commentInfo);
+			 let podcasts = company.data()['podcasts'], indexPod;
+			 if( typeof podcasts === 'object' ) {
+				podcasts = Object.values(podcasts);
+				podcasts.find( (pod,index) => {
+					if(pod.name === this.state.currentPod.name) indexPod = index;
+				});
+			 }
+			 if( podcasts[indexPod]['comments'] ) {
+				podcasts[indexPod]['comments'].push(commentInfo);
 			 } else {
-				podcasts[this.state.currentPod.name]['comments'] = [commentInfo];
+				podcasts[indexPod]['comments'] = [commentInfo];
 			 }
 
 			 const userRef = await firestore.doc(`companies/${company.id}`);
@@ -174,8 +187,14 @@ class ListenPage extends React.Component {
 		const companyRef = firestore.collection('companies').where('companyNameRegX', '==', this.state.companyInfo.companyNameRegX );
 		const companies =	await companyRef.get();
 		companies.forEach( async company => {
-			 let podcasts = company.data()['podcasts'];
-			 podcasts[this.state.currentPod.name]['comments'] = podcasts[this.state.currentPod.name]['comments'].filter( item => { 
+			 let podcasts = company.data()['podcasts'], indexPod;
+			 if( typeof podcasts === 'object' ) {
+				podcasts = Object.values(podcasts);
+				podcasts.find( (pod,index) => {
+					if(pod.name === this.state.currentPod.name) indexPod = index;
+				});
+			 }
+			 podcasts[indexPod]['comments'] = podcasts[indexPod]['comments'].filter( item => { 
 				 return item.comment !== comment.comment && item.reactionID !== comment.reactionID;
 			 });
 
@@ -260,7 +279,13 @@ class ListenPage extends React.Component {
 													</div>
 												</div>
 											</div>
-											<Episodes eps={this.state.companyInfo.episodes.filter(ep => ep.podcast === this.state.currentPod.name)} 
+											<Episodes 
+													eps = {
+																	typeof this.state.companyInfo.episodes === 'array' ?
+																		this.state.companyInfo.episodes.filter(ep => ep.podcast === this.state.currentPod.name)
+																	:
+																		Object.values(this.state.companyInfo.episodes).filter(ep => ep.podcast === this.state.currentPod.name)
+																}	 
 													showEps={this.showEps}
 													setNowPlaying={this.setNowPlaying} />
 										</div>
