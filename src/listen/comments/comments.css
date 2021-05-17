@@ -54,7 +54,7 @@
   display: grid;
   padding: 20px;
   width: calc(100% - 40px);
-  transition: visibility 3s linear, opacity 3s linear;;
+  transition: visibility 3s linear, opacity 3s linear;
 }
 
 .comment-box label {

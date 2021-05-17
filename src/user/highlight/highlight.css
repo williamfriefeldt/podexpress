@@ -1,0 +1,28 @@
+.highlight-box {
+  background-color: teal;
+  width: 200px;
+  border-radius: 10px;
+  padding: 10px;
+  position: absolute;
+  margin-left: -109px;
+  top: -62px;
+}
+
+.highlight-box::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  margin-left: -20px;
+  border-width: 20px;
+  border-style: solid;
+  border-color: teal transparent transparent transparent;
+}
+
+.highlight-component {
+  position: relative;
+}
+
+.highlight-component .rhap_container {
+  margin-top: 70px;
+}

@@ -5,6 +5,7 @@ import PodexpressAudioPlayer from '../audio-player/audio-player';
 import PodcastPassword from './password/podcast-password';
 import SharePodcast from './share/share-podcast';
 import RemoveEp from './remove-ep/remove-ep';
+import Highlight from '../highlight/highlight';
 import { VscLoading } from 'react-icons/vsc';
 import { AiFillPlayCircle } from 'react-icons/ai';
 import { ImCross } from 'react-icons/im';
@@ -30,6 +31,7 @@ class UserEpisodes extends React.Component {
 		this.openCloseModal = this.openCloseModal.bind(this);
 		this.removeEp = this.removeEp.bind(this);
 		this.setInput = this.setInput.bind(this);
+		this.showHighlight = this.showHighlight.bind(this);
 	}
 
 	async componentDidMount() {
@@ -43,7 +45,8 @@ class UserEpisodes extends React.Component {
 				if( data === undefined ) {
 					episodes = [];
 				} else {
-					episodes = Object.values( data );
+					episodes = Object.values( data ).map( item => ({...item, showHighlight: true}));
+					console.log( episodes );
 				}
 				const podcastsNames = [];
 				snapshot.data()['podcasts'].map( pod => podcastsNames.push(pod.name) );
@@ -81,18 +84,29 @@ class UserEpisodes extends React.Component {
 		this.setState({episodes, modal: false});
 	}
 
-	 async setInput(event) {
+	async setInput(event) {
 		let episodes = this.state.episodes;
+
 		episodes.map( (ep, index) => {
+			delete episodes[index].showHighlight;
 			if(ep.name === event.target.name) {
 				episodes[index].podcast = event.target.value;
 			}
-		});
+		});		
 
 		const user = auth.currentUser;
 		const userRef = firestore.doc(`companies/${user.uid}`);
 		await userRef.set({ episodes }, { merge:true });
+
+		episodes = episodes.map( item => ({...item, showHighlight: false}));
 		
+		this.setState({episodes});
+	}
+
+	showHighlight(index) {
+		let episodes = this.state.episodes;
+		episodes[index].showHighlight = !episodes[index].showHighlight;
+		console.log(episodes);
 		this.setState({episodes});
 	}
 
@@ -106,32 +120,47 @@ class UserEpisodes extends React.Component {
 						<th> Namn </th>
 						<th className="ep-description-title"> Beskrivning </th>
 						<th> Podcast </th>
+						<th className="center-text ep-highlight-container"> Höjdpunkter </th>
 						<th className="ep-play-title"> Spela upp </th>
 						<th className="center-text"> Ta bort </th>
 					</tr>
 				</thead>
 				<tbody>
 					{this.state.episodes.map( (episode, index) => {
-						return <tr key={index} className="episode">
-							  <td><img src={episode.img} alt="Episode cover" /></td>
-								<td><h3>{episode.name}</h3></td>
-								<td className="ep-description">{episode.description}</td>
-								<td className="ep-select-container">
-									<select className="episodes-select-pod" onChange={this.setInput} name={episode.name} value={episode.podcast}> 
-										{this.state.podcastsNames.map( (name, index) => <option key={index}>{name}</option>)}
-									</select>
-								</td>
-								<td>
-									<button onClick={ ()=> {this.setNowPlaying(episode.url)}} className="ep-btn-play"> 
-										<AiFillPlayCircle className="play-icon" />
-									</button>
-								</td>
-								<td className="center-text">
-									<button onClick={()=>this.openCloseModal(true,episode)}>
-										<ImCross />
-									</button>
-								</td>
-						</tr>;
+						return ( 
+							<React.Fragment key={index}>
+								<tr className="episode">
+										<td><img src={episode.img} alt="Episode cover" /></td>
+										<td><h3>{episode.name}</h3></td>
+										<td className="ep-description">{episode.description}</td>
+										<td className="ep-select-container">
+											<select className="episodes-select-pod" onChange={this.setInput} name={episode.name} value={episode.podcast}> 
+												{this.state.podcastsNames.map( (name, index) => <option key={index}>{name}</option>)}
+											</select>
+										</td>
+										<td className="ep-highlight-container flex center-content">
+											<button onClick={ () => { this.showHighlight(index) }} className="shift-button"> Visa höjdpunkter </button>
+										</td>
+										<td>
+											<button onClick={ ()=> {this.setNowPlaying(episode.url)}} className="ep-btn-play"> 
+												<AiFillPlayCircle className="play-icon" />
+											</button>
+										</td>
+										<td className="center-text">
+											<button onClick={()=>this.openCloseModal(true,episode)}>
+												<ImCross />
+											</button>
+										</td>
+								</tr>
+								<tr className={`highlight-container ${episode.showHighlight ? 'display-highlight':''}`}>
+									<td align="center" colSpan="7">
+										<div className={`highlight-content ${episode.showHighlight ? 'show-highlight':''}`}>
+											<Highlight url={episode.url} />
+										</div>
+									</td>
+								</tr>
+							</React.Fragment>
+						);
 					})}
 				</tbody>
 			</table>

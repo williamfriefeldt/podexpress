@@ -91,6 +91,15 @@
 	width: 150px;
 }
 
+.ep-highlight-container {
+	width: 175px;
+}
+
+.ep-highlight-container button {
+	margin-top: 25px;
+	margin-left: 10px;
+}
+
 .episodes-select-pod {
 	width: 150px;
 	height: 43px;
@@ -100,4 +109,14 @@
 	cursor: pointer;
 	background-color: wheat;
 	color: #003366;
+}
+
+.highlight-container {
+	background-color: #003366;
+	color: wheat;
+	display: none;
+}
+
+.display-highlight {
+	display: table-row;
 }
