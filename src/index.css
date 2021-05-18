@@ -8,6 +8,9 @@ body {
   color: wheat;
 }
 
+:root {
+  --play-time: 0%;
+}
 
 #root {
   /*height: 100vh; /* Fallback for browsers that do not support Custom Properties */

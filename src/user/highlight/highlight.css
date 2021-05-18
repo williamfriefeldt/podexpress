@@ -2,10 +2,10 @@
   background-color: teal;
   width: 200px;
   border-radius: 10px;
-  padding: 10px;
+  padding: 10px 0px;
   position: absolute;
-  margin-left: -109px;
-  top: -62px;
+  margin-left: calc(var(--play-time) - 100px);
+  top: -70px;
 }
 
 .highlight-box::after {
@@ -25,4 +25,32 @@
 
 .highlight-component .rhap_container {
   margin-top: 70px;
+}
+
+.highlight-box input {
+  background-color: teal;
+  color: wheat;
+  border: none;
+  border-radius: 0px;
+  border-bottom: 2px solid wheat !important;
+  padding: 2.5px;
+}
+.highlight-box input::placeholder {
+  color:wheat;
+}
+.highlight-box input:focus {
+  background-color: teal;
+  color: wheat;
+}
+
+.highlight-add-btn {
+  margin-bottom: 17.5px;
+}
+.highlight-add-btn:disabled {
+  opacity: 0.75;
+}
+.highlight-add-btn:disabled:hover {
+  transform: none;
+  box-shadow: none;
+  cursor: not-allowed;
 }

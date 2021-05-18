@@ -155,7 +155,7 @@ class UserEpisodes extends React.Component {
 								<tr className={`highlight-container ${episode.showHighlight ? 'display-highlight':''}`}>
 									<td align="center" colSpan="7">
 										<div className={`highlight-content ${episode.showHighlight ? 'show-highlight':''}`}>
-											<Highlight url={episode.url} />
+											<Highlight url={episode.url} index={index} />
 										</div>
 									</td>
 								</tr>
