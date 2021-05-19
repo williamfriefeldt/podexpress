@@ -196,3 +196,30 @@ td img {
   0% { transform: rotate(0deg); }
   100% {  transform: rotate(359deg); }
 }
+
+/* INPUT DELETE BUTTON */
+span.delete-icon {
+  position: relative;
+}
+span.delete-icon span {
+  position: absolute;
+  display: block;
+  top: 5px;
+  right: 5px;
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.25s ease-in-out;
+  padding: 7.5px;
+}
+span.delete-icon input {
+  padding-right: 16px;
+  box-sizing: border-box;
+}
+span.delete-icon input:focus + #delete-btn {
+  color: wheat;
+}
+.show-delete-icon {
+  opacity: 1 !important;
+}

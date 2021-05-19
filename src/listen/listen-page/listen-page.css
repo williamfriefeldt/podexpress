@@ -134,7 +134,7 @@
 }
 
 .show-comments {
-	height: calc(100vh - 100px);
+	height: calc(var(--vh, 1vh) * 100);
 }
 
 @media (max-width: 600px) {
@@ -144,10 +144,6 @@
 
 	.podcast-back {
 		left: 5px;
-	}
-
-	.show-comments {
-		height: calc(100vh - 80px);
 	}
 
 	.listen-comment-container {

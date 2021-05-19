@@ -3,6 +3,7 @@ import './login.css';
 import { firestore } from '../../store/services/firebase';
 import { VscLoading } from 'react-icons/vsc';
 import { IoChevronBack } from 'react-icons/io5';
+import { ImCross } from 'react-icons/im';
 import Cookies from 'universal-cookie';
 
 class Login extends React.Component {
@@ -25,6 +26,7 @@ class Login extends React.Component {
 		this.setInput = this.setInput.bind(this);
 		this.login = this.login.bind(this);
 		this.findCompany = this.findCompany.bind(this);
+		this.clearInput = this.clearInput.bind(this);
 	}
 
 	componentDidMount() {
@@ -39,6 +41,12 @@ class Login extends React.Component {
 	setInput( event ) {
  		let inputs = this.state.inputs;
   	inputs[event.target.name] = event.target.value;
+    this.setState({ inputs });
+	}
+
+	clearInput(type) {
+		let inputs = this.state.inputs;
+  	inputs[type] = '';
     this.setState({ inputs });
 	}
 
@@ -90,14 +98,39 @@ class Login extends React.Component {
 							{this.props.companyInfo.companyName === '' ?
 								<div className="grid">
 									<label className="login-label"> Företagsnamn </label>
-									<input className="login-input" type="text" onChange={this.setInput} value={this.state.inputs.companyName} name="companyName"
-												onKeyDown={ e => { if( e.key === 'Enter' ) this.findCompany(); }}/>
+									<span className="delete-icon">
+										<input className="login-input" 
+													 type="text" 
+													 onChange={this.setInput} 
+													 value={this.state.inputs.companyName} 
+													 name="companyName"
+													 onKeyDown={ e => { if( e.key === 'Enter' ) this.findCompany(); }}
+										/>
+										<span id="delete-btn" 
+													className={`${this.state.inputs.companyName === '' ? '':'show-delete-icon'}`}
+													onClick={ () => this.clearInput('companyName') }
+										>
+											<ImCross />
+										</span>
+									</span>
 								</div>
 							:
 								<div className="grid">
 									<label className="login-label">	Lösenord </label>
-									<input className="login-input" type="password" onChange={this.setInput} name="password"
-												onKeyDown={ e => { if( e.key === 'Enter' ) this.login(); }}/>
+									<span className="delete-icon">
+										<input className="login-input" 
+													 type="password" 
+													 onChange={this.setInput}
+													 value={this.state.inputs.password} 
+													 name="password"
+													 onKeyDown={ e => { if( e.key === 'Enter' ) this.login(); }}/>
+										<span id="delete-btn" 
+													className={`${this.state.inputs.password === '' ? '':'show-delete-icon'}`}
+													onClick={ () => this.clearInput('password') }
+										>
+											<ImCross />
+										</span>
+									</span>
 								</div>
 							}
 

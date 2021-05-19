@@ -11,6 +11,7 @@ import Start from './start/start';
 import Header from './header/header';
 import Contact from './contact/contact';
 import Tutorial from './tutorial/tutorial';
+import CookiesComponent from './cookies/cookies';
 
 function App() {
 
@@ -35,8 +36,8 @@ function App() {
             <Tutorial />
             <Contact />
           </Route>
+          <CookiesComponent />
       </Navigation>
-
     );
 
 }
