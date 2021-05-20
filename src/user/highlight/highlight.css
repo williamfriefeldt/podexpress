@@ -5,7 +5,8 @@
   padding: 10px 0px;
   position: absolute;
   margin-left: calc(var(--play-time) - 100px);
-  top: -70px;
+  top: -60px;
+  z-index: -1;
 }
 
 .highlight-box::after {
@@ -17,6 +18,11 @@
   border-width: 20px;
   border-style: solid;
   border-color: teal transparent transparent transparent;
+}
+
+.highlight-saved {
+  top: -56px;
+  z-index: 1;
 }
 
 .highlight-component {
@@ -34,6 +40,7 @@
   border-radius: 0px;
   border-bottom: 2px solid wheat !important;
   padding: 2.5px;
+  pointer-events: auto;
 }
 .highlight-box input::placeholder {
   color:wheat;

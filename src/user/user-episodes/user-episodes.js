@@ -32,6 +32,7 @@ class UserEpisodes extends React.Component {
 		this.removeEp = this.removeEp.bind(this);
 		this.setInput = this.setInput.bind(this);
 		this.showHighlight = this.showHighlight.bind(this);
+		this.addHighlight = this.addHighlight.bind(this);
 	}
 
 	async componentDidMount() {
@@ -46,7 +47,6 @@ class UserEpisodes extends React.Component {
 					episodes = [];
 				} else {
 					episodes = Object.values( data ).map( item => ({...item, showHighlight: true}));
-					console.log( episodes );
 				}
 				const podcastsNames = [];
 				snapshot.data()['podcasts'].map( pod => podcastsNames.push(pod.name) );
@@ -103,11 +103,25 @@ class UserEpisodes extends React.Component {
 		this.setState({episodes});
 	}
 
-	showHighlight(index) {
+	showHighlight( index ) {
 		let episodes = this.state.episodes;
 		episodes[index].showHighlight = !episodes[index].showHighlight;
-		console.log(episodes);
 		this.setState({episodes});
+	}
+
+	async addHighlight( highlight, index ) {
+		let episodes = this.state.episodes;
+		episodes.map( (ep, index) => delete episodes[index].showHighlight );
+		if( episodes[index].highlights ) {
+			episodes[index].highlights.push(highlight);
+		} else {
+			episodes[index].highlights = [highlight];
+		}
+		const user = auth.currentUser;
+		const userRef = firestore.doc(`companies/${user.uid}`);
+		await userRef.set({ episodes }, { merge:true });
+		episodes = episodes.map( item => ({...item, showHighlight: false}));
+		this.setState({episodes});		
 	}
 
 	render() {
@@ -155,7 +169,11 @@ class UserEpisodes extends React.Component {
 								<tr className={`highlight-container ${episode.showHighlight ? 'display-highlight':''}`}>
 									<td align="center" colSpan="7">
 										<div className={`highlight-content ${episode.showHighlight ? 'show-highlight':''}`}>
-											<Highlight url={episode.url} index={index} />
+											<Highlight url={episode.url} 
+																 index={index} 
+																 highlights={episode.highlights}
+																 addHighlight={this.addHighlight}
+											/>
 										</div>
 									</td>
 								</tr>
