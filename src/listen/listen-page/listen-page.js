@@ -81,7 +81,7 @@ class ListenPage extends React.Component {
 		this.setState({nowPlayingInfo:prop});
 	}
 
-	showEps(pod) {
+	showEps( pod ) {
 		this.setState({currentPod:pod});
 	}
 

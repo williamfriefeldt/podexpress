@@ -13,6 +13,7 @@ function ListenHeader( input ) {
 
 	const logOut = () => {
 		new Cookies().remove( input.company.companyNameRegX, { path: '/' } );
+		window.location.href = '/lyssna/' + input.company.companyName;
 	}
 
 	return (
