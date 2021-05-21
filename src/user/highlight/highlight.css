@@ -1,10 +1,10 @@
 .highlight-box {
   background-color: teal;
-  width: 200px;
+  min-width: 165px;
   border-radius: 10px;
   padding: 10px 0px;
   position: absolute;
-  margin-left: calc(var(--play-time) - 100px);
+  margin-left: calc(var(--play-time) - 82.5px);
   top: -60px;
   z-index: -1;
 }
@@ -13,7 +13,7 @@
   content: "";
   position: absolute;
   top: 100%;
-  left: 50%;
+  left: 82.5px;
   margin-left: -20px;
   border-width: 20px;
   border-style: solid;
@@ -23,6 +23,7 @@
 .highlight-saved {
   top: -56px;
   z-index: 1;
+  padding: 10px 5px;
 }
 
 .highlight-component {
@@ -40,6 +41,7 @@
   border-radius: 0px;
   border-bottom: 2px solid wheat !important;
   padding: 2.5px;
+  width: 150px;
   pointer-events: auto;
 }
 .highlight-box input::placeholder {
@@ -60,4 +62,8 @@
   transform: none;
   box-shadow: none;
   cursor: not-allowed;
+}
+
+.highlight-remove {
+  padding-left: 7.5px;
 }

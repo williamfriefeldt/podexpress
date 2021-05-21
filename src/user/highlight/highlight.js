@@ -2,6 +2,8 @@ import './highlight.css';
 import AudioPlayer from 'react-h5-audio-player';
 import 'react-h5-audio-player/lib/styles.css';
 import React, {useState} from 'react';
+import ReactDOMServer from 'react-dom/server';
+import { ImCross } from 'react-icons/im';
 
 function Highlight(input) {
 
@@ -15,9 +17,6 @@ function Highlight(input) {
   const setHighlights = () => {
     const node = document.createElement('DIV');
     node.classList.add("highlight-box");
-    node.ontouchstart = (e) => {
-      console.log(e);
-    }
     /*Highlight input*/
     const inputElement = document.createElement('INPUT');
     inputElement.setAttribute("placeholder", "Skriv en höjdpunkt");
@@ -33,16 +32,17 @@ function Highlight(input) {
         const highlightElement = document.createElement('DIV');
         highlightElement.classList.add("highlight-box");
         highlightElement.classList.add("highlight-saved");
-        highlightElement.innerHTML = item.text;
+        highlightElement.innerHTML = item.text + ReactDOMServer.renderToString(<ImCross className="highlight-remove" id={item.time} size={15} />);
         highlightElement.onclick = () => audioNative.currentTime = item.time;
-        highlightElement.style.setProperty('margin-left', 'calc(' + (item.time/ audioNative.duration ) * 100 + '% - 100px)');
+        highlightElement.style.setProperty('margin-left', 'calc(' + (item.time/ audioNative.duration ) * 100 + '% - 82.5px)');
         audio.current.progressBar.current.children[0].appendChild( highlightElement );
+        document.getElementById(item.time).onclick = () => removeHighlight(item.time);
       });
     }
-
+    /*-------------------*/
     audio.current.progressBar.current.children[0].appendChild(node);
     audio.current.audio.current.ontimeupdate = () => {
-      const percent = ( audioNative.currentTime / audioNative.duration ) * 100;
+      const percent = audioNative.currentTime === 0 ? 0 : ( audioNative.currentTime / audioNative.duration ) * 100;
       document.documentElement.style.setProperty('--play-time', `${percent}%`);
     }
   }
@@ -52,6 +52,11 @@ function Highlight(input) {
     const currentTime = audio.current.audio.current.currentTime;
     const newHighlight = { time: Math.round(currentTime), text:inputValue };
     input.addHighlight( newHighlight, input.index );  
+  }
+
+  const removeHighlight = (time) => {
+    const highlight = input.highlights.find( item => item.time === time );
+    input.removeHighlight( highlight, input.index );
   }
 
 	return (

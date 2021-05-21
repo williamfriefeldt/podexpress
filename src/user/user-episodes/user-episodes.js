@@ -33,6 +33,7 @@ class UserEpisodes extends React.Component {
 		this.setInput = this.setInput.bind(this);
 		this.showHighlight = this.showHighlight.bind(this);
 		this.addHighlight = this.addHighlight.bind(this);
+		this.removeHighlight = this.removeHighlight.bind(this);
 	}
 
 	async componentDidMount() {
@@ -46,7 +47,7 @@ class UserEpisodes extends React.Component {
 				if( data === undefined ) {
 					episodes = [];
 				} else {
-					episodes = Object.values( data ).map( item => ({...item, showHighlight: true}));
+					episodes = Object.values( data ).map( item => ({...item, showHighlight: false}));
 				}
 				const podcastsNames = [];
 				snapshot.data()['podcasts'].map( pod => podcastsNames.push(pod.name) );
@@ -120,8 +121,31 @@ class UserEpisodes extends React.Component {
 		const user = auth.currentUser;
 		const userRef = firestore.doc(`companies/${user.uid}`);
 		await userRef.set({ episodes }, { merge:true });
-		episodes = episodes.map( item => ({...item, showHighlight: false}));
+		episodes = episodes.map( (item, itemIndex) => {
+			if( itemIndex !== index ) {
+				return {...item, showHighlight: false}
+			} else {
+				return {...item, showHighlight: true}
+			}
+		});
 		this.setState({episodes});		
+	}
+
+	async removeHighlight( highlight, index ) {
+		let episodes = this.state.episodes;
+		episodes.map( (ep, index) => delete episodes[index].showHighlight );
+		episodes[index].highlights = episodes[index].highlights.filter( item => item.time !== highlight.time );
+		const user = auth.currentUser;
+		const userRef = firestore.doc(`companies/${user.uid}`);
+		await userRef.set({ episodes }, { merge:true });
+		episodes = episodes.map( (item, itemIndex) => {
+			if( itemIndex !== index ) {
+				return {...item, showHighlight: false}
+			} else {
+				return {...item, showHighlight: true}
+			}
+		});
+		this.setState({episodes});
 	}
 
 	render() {
@@ -173,6 +197,7 @@ class UserEpisodes extends React.Component {
 																 index={index} 
 																 highlights={episode.highlights}
 																 addHighlight={this.addHighlight}
+																 removeHighlight={this.removeHighlight}
 											/>
 										</div>
 									</td>
