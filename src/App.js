@@ -15,6 +15,8 @@ import CookiesComponent from './cookies/cookies';
 
 function App() {
 
+    console.log(`Environment: ${process.env.NODE_ENV}`);
+
     return (
       <Navigation>
           <Header />
