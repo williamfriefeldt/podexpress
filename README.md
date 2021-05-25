@@ -1,6 +1,7 @@
-# Getting Started with Create React App
+# Podexpress
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Codebase for Podexpress' web application.
+Copyright (C) 2021 by Podexpress AB
 
 ## Available Scripts
 
