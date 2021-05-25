@@ -1,9 +1,32 @@
 .about-company-container {
-  padding-top: 80px;
+  padding-top: 70px;
 }
 .about-company-back {
-  left: 20px;
+  margin-top: 20px;
 }
 .description-width {
   width: 600px;
+}
+.description-width a {
+  width: 5%;
+}
+.description-width h2 {
+  width: 95%;
+}
+
+@media(max-width:600px) {
+  .description-width {
+    width: 90%;
+    margin: 0% 5%;
+  }
+  .description-width a {
+    width: 10%;
+  }
+  .description-width h2 {
+    width: 90%;
+    font-size: 20px;
+  }
+  .about-company-back {
+    margin-top: 12px;
+  }
 }

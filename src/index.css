@@ -173,6 +173,11 @@ td img {
     display: block !important;
   }
 }
+@media (max-width: 600px) {
+  .mobile-grid {
+    display: grid !important;
+  }  
+}
 
 /* REACT TRANSITION CUSTOM CSS */
 .react-tiger-transition--screen::-webkit-scrollbar {
@@ -222,4 +227,20 @@ span.delete-icon input:focus + #delete-btn {
 }
 .show-delete-icon {
   opacity: 1 !important;
+}
+
+/* CUSTOM TEXTAREA SCROLL */
+textarea::-webkit-scrollbar {
+  width: 1em;
+  cursor: auto;
+}
+
+textarea::-webkit-scrollbar-track {
+  -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+  box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+}
+
+textarea::-webkit-scrollbar-thumb {
+background-color: #003366;
+outline: 1px solid #003366;
 }

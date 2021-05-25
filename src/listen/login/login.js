@@ -48,6 +48,8 @@ class Login extends React.Component {
 		let inputs = this.state.inputs;
   	inputs[type] = '';
     this.setState({ inputs });
+		const input = document.querySelector("input");
+		input.focus();
 	}
 
 	async findCompany() {
@@ -105,6 +107,7 @@ class Login extends React.Component {
 													 value={this.state.inputs.companyName} 
 													 name="companyName"
 													 onKeyDown={ e => { if( e.key === 'Enter' ) this.findCompany(); }}
+													 autoFocus
 										/>
 										<span id="delete-btn" 
 													className={`${this.state.inputs.companyName === '' ? '':'show-delete-icon'}`}
@@ -123,7 +126,9 @@ class Login extends React.Component {
 													 onChange={this.setInput}
 													 value={this.state.inputs.password} 
 													 name="password"
-													 onKeyDown={ e => { if( e.key === 'Enter' ) this.login(); }}/>
+													 onKeyDown={ e => { if( e.key === 'Enter' ) this.login(); }}
+													 autoFocus
+										/>
 										<span id="delete-btn" 
 													className={`${this.state.inputs.password === '' ? '':'show-delete-icon'}`}
 													onClick={ () => this.clearInput('password') }

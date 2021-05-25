@@ -32,6 +32,8 @@ class ListenPage extends React.Component {
 			loading: true
 		};
 
+		this.commentsRef = React.createRef();
+
 		this.setNowPlaying = this.setNowPlaying.bind(this);
 		this.showEps = this.showEps.bind(this);
 		this.saveReaction = this.saveReaction.bind(this);
@@ -39,6 +41,16 @@ class ListenPage extends React.Component {
 		this.closeComments = this.closeComments.bind(this);
 		this.sendComment = this.sendComment.bind(this);
 		this.removeComment = this.removeComment.bind(this);
+	}
+
+	UNSAFE_componentWillMount() {
+    window.onpopstate = () => {
+			const data = this.state.companyInfo;
+			const password = this.state.cookie.get( data.companyNameRegX );
+			if( password !== data.password ) {
+				window.location.href = '/lyssna/' + data.companyNameRegX;
+			}
+    }
 	}
 
 	async componentDidMount() {
@@ -58,7 +70,7 @@ class ListenPage extends React.Component {
 				} else {
 					let currentPod = null;
 					if(path[3] !== 'podcasts') {
-						currentPod = Object.values(data.podcasts).find( pod => pod.name.replace(/\s/g,'').toLowerCase()  === path[3] );
+						currentPod = Object.values(data.podcasts).find( pod => pod.name.replace(/\s/g,'').toLowerCase() === path[3] );
 					}
 					this.setState({loading:false, currentPod: currentPod});
 				}
@@ -107,7 +119,7 @@ class ListenPage extends React.Component {
 				let indexPod = null;
 				if( typeof podcasts === 'object' ) {
 					podcasts = Object.values(podcasts);
-					podcasts.find( (pod,index) => {
+					podcasts.forEach( (pod,index) => {
 						if(pod.name === this.state.currentPod.name) indexPod = index;
 					});
 				}
@@ -138,7 +150,11 @@ class ListenPage extends React.Component {
 
 	openComments() {
 		document.documentElement.style.setProperty('--audio-layer', `0`);
-		this.setState({openComments:true});
+		this.setState({openComments:true});		
+		setTimeout( () =>{
+			const input = document.querySelector("input");
+			input.focus();
+		}, 500);
 	}
 
 	closeComments() {
@@ -160,7 +176,7 @@ class ListenPage extends React.Component {
 			 let podcasts = company.data()['podcasts'], indexPod;
 			 if( typeof podcasts === 'object' ) {
 				podcasts = Object.values(podcasts);
-				podcasts.find( (pod,index) => {
+				podcasts.forEach( (pod,index) => {
 					if(pod.name === this.state.currentPod.name) indexPod = index;
 				});
 			 }
@@ -180,6 +196,7 @@ class ListenPage extends React.Component {
 				currentPod['comments'] = [commentInfo];
 			 }
 			 this.setState({currentPod});
+			 this.commentsRef.current.scrollToBottom();
 		});
 	}
 
@@ -190,12 +207,20 @@ class ListenPage extends React.Component {
 			 let podcasts = company.data()['podcasts'], indexPod;
 			 if( typeof podcasts === 'object' ) {
 				podcasts = Object.values(podcasts);
-				podcasts.find( (pod,index) => {
+				podcasts.forEach( (pod,index) => {
 					if(pod.name === this.state.currentPod.name) indexPod = index;
 				});
 			 }
 			 podcasts[indexPod]['comments'] = podcasts[indexPod]['comments'].filter( item => { 
-				 return item.comment !== comment.comment && item.reactionID !== comment.reactionID;
+				if( item.reactionID !== comment.reactionID ) {
+					return true;
+				} else {
+					if( item.name !== comment.name || item.comment !== comment.comment ) {
+						return true;
+					} else {
+						return false;
+					}
+				}
 			 });
 
 			 const userRef = await firestore.doc(`companies/${company.id}`);
@@ -203,7 +228,15 @@ class ListenPage extends React.Component {
 
 			 let currentPod = this.state.currentPod;
 			 currentPod['comments'] = currentPod['comments'].filter( item => { 
-				return item.comment !== comment.comment && item.reactionID !== comment.reactionID;
+				if( item.reactionID !== comment.reactionID ) {
+					return true;
+				} else {
+					if( item.name !== comment.name || item.comment !== comment.comment ) {
+						return true;
+					} else {
+						return false;
+					}
+				}
 			 });
 			 this.setState({currentPod});
 		});
@@ -281,7 +314,7 @@ class ListenPage extends React.Component {
 											</div>
 											<Episodes 
 													eps = {
-																	typeof this.state.companyInfo.episodes === 'array' ?
+																  Array.isArray(this.state.companyInfo.episodes) ?
 																		this.state.companyInfo.episodes.filter(ep => ep.podcast === this.state.currentPod.name)
 																	:
 																		Object.values(this.state.companyInfo.episodes).filter(ep => ep.podcast === this.state.currentPod.name)
@@ -304,7 +337,9 @@ class ListenPage extends React.Component {
 													closeComments={this.closeComments} 
 													currentPod={this.state.currentPod} 
 													sendComment={this.sendComment}
-													removeComment={this.removeComment}/>
+													removeComment={this.removeComment}
+													ref={this.commentsRef}
+								/>
 							</div>
 					</Route>
 				</Navigation>

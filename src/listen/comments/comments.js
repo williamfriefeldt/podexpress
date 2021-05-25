@@ -16,9 +16,16 @@ class Comments extends React.Component {
       cookie: new Cookies()
     }
 
+    this.commentListBottom = React.createRef();
+
     this.setInput = this.setInput.bind(this);
     this.sendComment = this.sendComment.bind(this);
     this.removeComment = this.removeComment.bind(this);
+  }
+
+
+  scrollToBottom() {
+    if(this.commentListBottom.current) this.commentListBottom.current.scrollIntoView({ behavior: "smooth", block: "end", inline: "nearest" });
   }
 
   setInput(event) {
@@ -34,7 +41,7 @@ class Comments extends React.Component {
   sendComment() {
     if( this.state.inputs.name !== '' && this.state.inputs.comment !== '' ) {
       this.props.sendComment(this.state.inputs); 
-      this.setState({inputs:{name:'',comment:''}});
+      this.setState({inputs:{comment:'', name: this.state.inputs.name }});
     }
   }
 
@@ -59,13 +66,14 @@ class Comments extends React.Component {
                           </p>
                         </div>     
                 })} 
-              </div>
+              </div>                             
             :
               <p>Inga kommentarer</p> }
           </div>
         :
          ''
         }
+        <div ref={this.commentListBottom}></div>
       </div>
     );
 

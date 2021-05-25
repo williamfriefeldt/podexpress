@@ -70,7 +70,7 @@ class Login extends React.Component {
 				<form className="login-container">
 
 					<label className="login-label"> Emailadress	</label>
-					<input className="login-input" type="email" onChange={this.setInput} name="email"/>
+					<input className="login-input" type="email" onChange={this.setInput} name="email" autoFocus/>
 
 					<label className="login-label login-label-not-first">	Lösenord </label>
 					<input className="login-input" type="password" onChange={this.setInput} name="password"
