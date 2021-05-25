@@ -35,7 +35,7 @@ class UserMenu extends React.Component {
 			await auth.signOut();
 			window.location.href = '/';
 		} catch ( error ) {
-			console.log('Något gick fel...');
+			console.log(error);
 		}
 	}
 

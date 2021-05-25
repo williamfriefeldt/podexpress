@@ -18,7 +18,7 @@
 .contact-form-container {
 	background-color: wheat;
 	color: #003366;
-	padding: 20px;
+	padding: 5px 20px 20px 20px;
 	border-radius: 20px;
 	display: grid;
   width: 400px;
@@ -40,7 +40,7 @@
 }
 
 .contact-form-button {
-  margin-top: 20px;
+  margin-top: 10px;
 }
 
 .contact-form-mail-success {
