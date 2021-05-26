@@ -6,9 +6,10 @@ Copyright (C) 2021 by Podexpress AB
 ## Table of contents
 * [Technologies](#technologies)
 * [Installation](#installation)
-* [Local start](#local%20start)
-* [Commit progress](Commit progress)
-* [Other scripts](Other scripts)
+* [Local start](#local-start)
+* [Commit progress](#commit-progress)
+* [Deployment](#deployment)
+* [Other scripts](#other-scripts)
 
 ## Technologies
 * React v17.0.1
@@ -52,6 +53,10 @@ For production, use branch `main`. This branch should **only** be used to merge 
 
 ### Main branch
 Type `git checkout main`, `git pull`, `git merge test`, `git push` to update `main` with latest form `test`.
+
+## Deployment
+For depoyment, we use [heroku](https://dashboard.heroku.com/apps/podexpress).\
+Read more here [TODO: Insert link].
 
 ## Other scripts
 Check `scripts` in [https://github.com/williamfriefeldt/podexpress/blob/test/package.json](package.json)) for available scripts.
