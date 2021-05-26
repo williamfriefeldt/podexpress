@@ -14,13 +14,13 @@ Copyright (C) 2021 by Podexpress AB
 ## Technologies
 * React v17.0.1
 * Node v14.2.0
-* Various packages (see [https://github.com/williamfriefeldt/podexpress/blob/test/package.json](package.json))
+* Various packages (see [package.json](https://github.com/williamfriefeldt/podexpress/blob/test/package.json))
 
 ## Installation
-1. Clone the project (how to [https://git-scm.com/docs/git-clone](clone))
+1. Clone the project (how to [clone](https://git-scm.com/docs/git-clone))
 2. As package manager we use `yarn`. If you have `yarn`, skip to step X.
-3. Install `yarn` [https://classic.yarnpkg.com/en/docs/install#windows-stable](here).
-4. Enter the project in your terminal or [https://code.visualstudio.com/](VSC).
+3. Install `yarn` [here](https://classic.yarnpkg.com/en/docs/install#windows-stabl).
+4. Enter the project in your terminal or [VSC](https://code.visualstudio.com/).
 5. Install all packages with `yarn install` 
 6. Create a file at the root of the project called `.env`.
 7. Add all environment variables needed.
@@ -59,7 +59,7 @@ For depoyment, we use [heroku](https://dashboard.heroku.com/apps/podexpress).\
 Read more here [TODO: Insert link].
 
 ## Other scripts
-Check `scripts` in [https://github.com/williamfriefeldt/podexpress/blob/test/package.json](package.json)) for available scripts.
+Check `scripts` in [package.json](https://github.com/williamfriefeldt/podexpress/blob/test/package.json)) for available scripts.
 ### `yarn test`
 Launches the test runner in the interactive watch mode.\
 See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
