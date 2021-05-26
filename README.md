@@ -5,7 +5,7 @@ Copyright (C) 2021 by Podexpress AB
 
 ## Table of contents
 * [Technologies](#technologies)
-* [Installation](Installation)
+* [Installation](#installation)
 * [#Local start](Local start)
 * [Commit progress](Commit progress)
 * [Other scripts](Other scripts)
@@ -15,7 +15,7 @@ Copyright (C) 2021 by Podexpress AB
 * Node v14.2.0
 * Various packages (see [https://github.com/williamfriefeldt/podexpress/blob/test/package.json](package.json))
 
-## Installation <a name="installation"></a>
+## Installation
 1. Clone the project (how to [https://git-scm.com/docs/git-clone](clone))
 2. As package manager we use `yarn`. If you have `yarn`, skip to step X.
 3. Install `yarn` [https://classic.yarnpkg.com/en/docs/install#windows-stable](here).
