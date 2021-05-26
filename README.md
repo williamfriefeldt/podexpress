@@ -7,7 +7,26 @@ Copyright (C) 2021 by Podexpress AB
 ## Technologies 
 * React v17.0.1
 * Node v14.2.0
-* Various packages (see package.json)
+* Various packages (see [https://github.com/williamfriefeldt/podexpress/blob/test/package.json](package.json))
+
+## Installation
+1. Clone the project (how to [https://git-scm.com/docs/git-clone](clone))
+2. As package manager we use `yarn`. If you have `yarn`, skip to step X.
+3. Install `yarn` [https://classic.yarnpkg.com/en/docs/install#windows-stable](here).
+4. Enter the project in your terminal or [https://code.visualstudio.com/](VSC).
+5. Install all packages with `yarn install` 
+6. Create a file at the root of the project called `.env`.
+7. Add all environment variables needed.
+
+## Local start
+First, checkout the dev branch and use `git pull` to get the latest code.
+### Start frontend
+Use `yarn start-client` to start the frontend application running on [http://localhost:3000](http://localhost:3000).
+### Start backend
+Use `yarn start-server` to start node server running on [http://localhost:5000](http://localhost:5000).
+Endpoint for sending email is [http://localhost:5000/send_email](http://localhost:5000/send_mail).
+### Start both
+Use `yarn start` to start both front- and backend.
 
 ## Available Scripts
 
@@ -16,7 +35,7 @@ In the project directory, you can run:
 ### `yarn start`
 
 Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+Open  to view it in the browser.
 
 The page will reload if you make edits.\
 You will also see any lint errors in the console.
