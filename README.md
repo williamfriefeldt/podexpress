@@ -1,38 +1,42 @@
 # Podexpress
 
-Codebase for Podexpress' web application.
-
+Codebase for Podexpress' web application.\
 Copyright (C) 2021 by Podexpress AB
 
 ## Technologies 
 * React v17.0.1
 * Node v14.2.0
-* Various packages (see package.json)
+* Various packages (see [https://github.com/williamfriefeldt/podexpress/blob/test/package.json](package.json))
 
-## Available Scripts
+## Installation
+1. Clone the project (how to [https://git-scm.com/docs/git-clone](clone))
+2. As package manager we use `yarn`. If you have `yarn`, skip to step X.
+3. Install `yarn` [https://classic.yarnpkg.com/en/docs/install#windows-stable](here).
+4. Enter the project in your terminal or [https://code.visualstudio.com/](VSC).
+5. Install all packages with `yarn install` 
+6. Create a file at the root of the project called `.env`.
+7. Add all environment variables needed.
 
-In the project directory, you can run:
+## Local start
+First, checkout the dev branch and use `git pull` to get the latest code.
+### Start frontend
+Use `yarn start-client` to start the frontend application running on [http://localhost:3000](http://localhost:3000).
+### Start backend
+Use `yarn start-server` to start node server running on [http://localhost:5000](http://localhost:5000).
+Endpoint for sending email is [http://localhost:5000/send_email](http://localhost:5000/send_mail).
+### Start both
+Use `yarn start` to start both front- and backend.
 
-### `yarn start`
-
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
-
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
-
+## Other scripts
+Check `scripts` in [https://github.com/williamfriefeldt/podexpress/blob/test/package.json](package.json)) for available scripts.
 ### `yarn test`
-
 Launches the test runner in the interactive watch mode.\
 See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
 ### `yarn build`
-
 Builds the app for production to the `build` folder.\
 It correctly bundles React in production mode and optimizes the build for the best performance.
 
 The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
 
 See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
