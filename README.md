@@ -3,6 +3,13 @@
 Codebase for Podexpress' web application.\
 Copyright (C) 2021 by Podexpress AB
 
+## Table of contents
+* [Technologies](Technologies)
+* [Installation](Installation)
+* [Local start](Local start)
+* [Commit progress](Commit progress)
+* [Other scripts](Other scripts)
+
 ## Technologies 
 * React v17.0.1
 * Node v14.2.0
@@ -26,6 +33,25 @@ Use `yarn start-server` to start node server running on [http://localhost:5000](
 Endpoint for sending email is [http://localhost:5000/send_email](http://localhost:5000/send_mail).
 ### Start both
 Use `yarn start` to start both front- and backend.
+
+## Commit progress
+Development is **always** made from branch `dev`. \
+To test new development, use branch `test`. This branch should **only** be used to merge from `dev`.\
+For production, use branch `main`. This branch should **only** be used to merge from `test`.
+
+### Dev branch
+1. Start from `dev`. If the branch is even with main go to step 3.
+2. Type `git checkout main`, `git pull`, `git checkout dev`, `git merge main`, `git push` to update `dev` from `main`.
+3. For larger changes, create a new branch from `dev`, make changes on this branch, merge it to `dev` and then close branch.
+4. When done, type `git add *`, `git commit -m "[Message]"`. Keep the message short but clear. Finally, `git push`.
+
+### Test branch
+1. Start from `test`. If the branch is even with main go to step 3.
+2. Type `git checkout main`, `git pull`, `git checkout test`, `git merge main`, `git push` to update `test` from `main`.
+3. Type `git merge dev`, `git push` to update `test` with latest form `dev`.
+
+### Main branch
+Type `git checkout main`, `git pull`, `git merge test`, `git push` to update `main` with latest form `test`.
 
 ## Other scripts
 Check `scripts` in [https://github.com/williamfriefeldt/podexpress/blob/test/package.json](package.json)) for available scripts.
