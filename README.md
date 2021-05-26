@@ -6,11 +6,11 @@ Copyright (C) 2021 by Podexpress AB
 ## Table of contents
 * [Technologies](#technologies)
 * [Installation](#installation)
-* [#Local start](Local start)
+* [Local start](#local%20start)
 * [Commit progress](Commit progress)
 * [Other scripts](Other scripts)
 
-## Technologies <a name="technologies"></a>
+## Technologies
 * React v17.0.1
 * Node v14.2.0
 * Various packages (see [https://github.com/williamfriefeldt/podexpress/blob/test/package.json](package.json))
