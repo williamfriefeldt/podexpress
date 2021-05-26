@@ -1,7 +1,13 @@
 # Podexpress
 
 Codebase for Podexpress' web application.
+
 Copyright (C) 2021 by Podexpress AB
+
+## Technologies 
+* React v17.0.1
+* Node v14.2.0
+* Various packages (see package.json)
 
 ## Available Scripts
 
