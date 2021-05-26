@@ -1,7 +1,6 @@
 # Podexpress
 
-Codebase for Podexpress' web application.
-
+Codebase for Podexpress' web application.\
 Copyright (C) 2021 by Podexpress AB
 
 ## Technologies 
@@ -28,30 +27,16 @@ Endpoint for sending email is [http://localhost:5000/send_email](http://localhos
 ### Start both
 Use `yarn start` to start both front- and backend.
 
-## Available Scripts
-
-In the project directory, you can run:
-
-### `yarn start`
-
-Runs the app in the development mode.\
-Open  to view it in the browser.
-
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
-
+## Other scripts
+Check `scripts` in [https://github.com/williamfriefeldt/podexpress/blob/test/package.json](package.json)) for available scripts.
 ### `yarn test`
-
 Launches the test runner in the interactive watch mode.\
 See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
 ### `yarn build`
-
 Builds the app for production to the `build` folder.\
 It correctly bundles React in production mode and optimizes the build for the best performance.
 
 The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
 
 See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
