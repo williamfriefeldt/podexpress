@@ -6,16 +6,16 @@ Copyright (C) 2021 by Podexpress AB
 ## Table of contents
 * [Technologies](Technologies)
 * [Installation](Installation)
-* [Local start](Local start)
+* [#Local start](Local start)
 * [Commit progress](Commit progress)
 * [Other scripts](Other scripts)
 
-## Technologies 
+## Technologies <a name="technologies"></a>
 * React v17.0.1
 * Node v14.2.0
 * Various packages (see [https://github.com/williamfriefeldt/podexpress/blob/test/package.json](package.json))
 
-## Installation
+## Installation <a name="installation"></a>
 1. Clone the project (how to [https://git-scm.com/docs/git-clone](clone))
 2. As package manager we use `yarn`. If you have `yarn`, skip to step X.
 3. Install `yarn` [https://classic.yarnpkg.com/en/docs/install#windows-stable](here).
