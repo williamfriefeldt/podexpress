@@ -4,7 +4,7 @@ Codebase for Podexpress' web application.\
 Copyright (C) 2021 by Podexpress AB
 
 ## Table of contents
-* [Technologies](Technologies)
+* [#technologies](Technologies)
 * [Installation](Installation)
 * [#Local start](Local start)
 * [Commit progress](Commit progress)
