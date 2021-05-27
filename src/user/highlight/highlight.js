@@ -28,7 +28,7 @@ function Highlight(input) {
     const audioNative = audio.current.audio.current;
     /*Existing highlights*/
     if(input.highlights) {
-      input.highlights.map( item => {
+      input.highlights.forEach( item => {
         const highlightElement = document.createElement('DIV');
         highlightElement.classList.add("highlight-box");
         highlightElement.classList.add("highlight-saved");
@@ -55,7 +55,7 @@ function Highlight(input) {
   }
 
   const removeHighlight = (time) => {
-    const highlight = input.highlights.find( item => item.time === time );
+    const highlight = input.highlights.forEach( item => item.time === time );
     input.removeHighlight( highlight, input.index );
   }
 

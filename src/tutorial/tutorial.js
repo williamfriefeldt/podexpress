@@ -29,7 +29,7 @@ function Tutorial() {
 
   const TagWrapper = (input) => (
     <div>{input.keys === 0 ?
-        <a className="go-to-create-account" href={`${companyShow ? '/skapa-konto':'lyssna'}`} target="_blank">
+        <a className="go-to-create-account" href={`${companyShow ? '/skapa-konto':'lyssna'}`} target="_blank"  rel="noreferrer">
           {input.html}
         </a>
         :
@@ -46,7 +46,7 @@ function Tutorial() {
   return (
     <div className="full-height-min" id="sa-funkar-det">
       <div className="tutorial-container grid center-content">
-        <div className="flex center-content">
+        <div className="flex center-content mobile-grid">
           <h2 className="center-text">Så funkar det för</h2>
           <button onClick={ () => {
               setCompanyShow(!companyShow);

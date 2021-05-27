@@ -60,23 +60,38 @@ class UserEpisodes extends React.Component {
 		}
 	}
 
+	/**
+	 * @description - Set url of current episode 
+	 * @param {string} url 
+	 */
 	setNowPlaying( url ) {
 		this.setState({nowPlaying: url});
 	}
 
+	/**
+	 * @description - Change text on copy button
+	 */
 	changeCopyText() {
 		this.setState({copyText: 'Kopierat!'})
 	}
 
+	/**
+	 * @description - Open / close delete episode modal
+	 * @param {boolean} status 
+	 * @param {object} episode 
+	 */
 	openCloseModal(status, episode) {
 		this.setState({modal: status, deleteEP: episode});
 	}
 
+	/**
+	 * @description - Remove episode from database
+	 */
 	async removeEp() {
 		const epToDelete = this.state.deleteEP;
 		
 		const oldEpisodes = this.state.episodes;
-		const episodes = oldEpisodes.filter( ep => ep.name !== epToDelete.name);
+		const episodes = oldEpisodes.filter( ep => ep.name !== epToDelete.name );
 
 		const user = auth.currentUser;
 		const userRef = firestore.doc(`companies/${user.uid}`);
@@ -85,10 +100,13 @@ class UserEpisodes extends React.Component {
 		this.setState({episodes, modal: false});
 	}
 
+	/**
+	 * @description - Change podcast of episode
+	 * @param {object} event 
+	 */
 	async setInput(event) {
 		let episodes = this.state.episodes;
-
-		episodes.map( (ep, index) => {
+		episodes.forEach( (ep, index) => {
 			delete episodes[index].showHighlight;
 			if(ep.name === event.target.name) {
 				episodes[index].podcast = event.target.value;
@@ -100,7 +118,6 @@ class UserEpisodes extends React.Component {
 		await userRef.set({ episodes }, { merge:true });
 
 		episodes = episodes.map( item => ({...item, showHighlight: false}));
-		
 		this.setState({episodes});
 	}
 

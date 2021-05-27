@@ -20,7 +20,7 @@ function CookiesComponent() {
       <button className="cookie-btn shift-button" onClick={ () => {
         new Cookies().set('cookie-accept', true); 
         setShowCookie(false);
-      }}>
+      }} tabIndex="-1">
         Acceptera cookies
       </button>
     </div>

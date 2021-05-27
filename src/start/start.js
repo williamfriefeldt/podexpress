@@ -34,7 +34,7 @@ class Start extends React.Component {
     document.getElementsByClassName('react-tiger-transition--screen')[0].scrollTo( {top:0} );
     let vh = window.innerHeight * 0.01;
     document.documentElement.style.setProperty('--vh', `${vh}px`);
-
+    
     setTimeout( () => { this.setState({opacitySlogan:[1,0,0]}) }, 1250 );
     setTimeout( () => { this.setState({opacitySlogan:[1,1,0]}) }, 2250 );
     setTimeout( () => { this.setState({opacitySlogan:[1,1,1]}) }, 3250 );

@@ -4,14 +4,14 @@ import "firebase/firestore";
 import "firebase/storage";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyCet7TzgUgRe91p63_4LR0zX9bcX3-5LnA",
-  authDomain: "podexpress-dc12a.firebaseapp.com",
-  databaseURL: "https://podexpress-dc12a-default-rtdb.firebaseio.com",
-  projectId: "podexpress-dc12a",
-  storageBucket: "podexpress-dc12a.appspot.com",
-  messagingSenderId: "887110287738",
-  appId: "1:887110287738:web:e7835ea0b56785c25256c3",
-  measurementId: "G-10ZHMSRLMX"
+  apiKey: process.env.REACT_APP_apiKey,
+  authDomain: process.env.REACT_APP_authDomain,
+  databaseURL: process.env.REACT_APP_databaseURL,
+  projectId: process.env.REACT_APP_projectId,
+  storageBucket: process.env.REACT_APP_storageBucket,
+  messagingSenderId: process.env.REACT_APP_messageSenderId,
+  appId: process.env.REACT_APP_appId,
+  measurementId: process.env.REACT_APP_measurementId
 };
 
 firebase.initializeApp(firebaseConfig);
