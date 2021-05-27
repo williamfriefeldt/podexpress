@@ -3,16 +3,24 @@
 Codebase for Podexpress' web application.\
 Copyright (C) 2021 by Podexpress AB
 
-## Technologies 
+## Table of contents
+* [Technologies](#technologies)
+* [Installation](#installation)
+* [Local start](#local-start)
+* [Commit progress](#commit-progress)
+* [Deployment](#deployment)
+* [Other scripts](#other-scripts)
+
+## Technologies
 * React v17.0.1
 * Node v14.2.0
-* Various packages (see [https://github.com/williamfriefeldt/podexpress/blob/test/package.json](package.json))
+* Various packages (see [package.json](https://github.com/williamfriefeldt/podexpress/blob/test/package.json))
 
 ## Installation
-1. Clone the project (how to [https://git-scm.com/docs/git-clone](clone))
+1. Clone the project (how to [clone](https://git-scm.com/docs/git-clone))
 2. As package manager we use `yarn`. If you have `yarn`, skip to step X.
-3. Install `yarn` [https://classic.yarnpkg.com/en/docs/install#windows-stable](here).
-4. Enter the project in your terminal or [https://code.visualstudio.com/](VSC).
+3. Install `yarn` [here](https://classic.yarnpkg.com/en/docs/install#windows-stabl).
+4. Enter the project in your terminal or [VSC](https://code.visualstudio.com/).
 5. Install all packages with `yarn install` 
 6. Create a file at the root of the project called `.env`.
 7. Add all environment variables needed.
@@ -27,8 +35,31 @@ Endpoint for sending email is [http://localhost:5000/send_email](http://localhos
 ### Start both
 Use `yarn start` to start both front- and backend.
 
+## Commit progress
+Development is **always** made from branch `dev`. \
+To test new development, use branch `test`. This branch should **only** be used to merge from `dev`.\
+For production, use branch `main`. This branch should **only** be used to merge from `test`.
+
+### Dev branch
+1. Start from `dev`. If the branch is even with main go to step 3.
+2. Type `git checkout main`, `git pull`, `git checkout dev`, `git merge main`, `git push` to update `dev` from `main`.
+3. For larger changes, create a new branch from `dev`, make changes on this branch, merge it to `dev` and then close branch.
+4. When done, type `git add *`, `git commit -m "[Message]"`. Keep the message short but clear. Finally, `git push`.
+
+### Test branch
+1. Start from `test`. If the branch is even with main go to step 3.
+2. Type `git checkout main`, `git pull`, `git checkout test`, `git merge main`, `git push` to update `test` from `main`.
+3. Type `git merge dev`, `git push` to update `test` with latest form `dev`.
+
+### Main branch
+Type `git checkout main`, `git pull`, `git merge test`, `git push` to update `main` with latest form `test`.
+
+## Deployment
+For depoyment, we use [heroku](https://dashboard.heroku.com/apps/podexpress).\
+Read more here [TODO: Insert link].
+
 ## Other scripts
-Check `scripts` in [https://github.com/williamfriefeldt/podexpress/blob/test/package.json](package.json)) for available scripts.
+Check `scripts` in [package.json](https://github.com/williamfriefeldt/podexpress/blob/test/package.json)) for available scripts.
 ### `yarn test`
 Launches the test runner in the interactive watch mode.\
 See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.

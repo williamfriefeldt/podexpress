@@ -123,8 +123,19 @@ class UserEpisodes extends React.Component {
 
 	showHighlight( index ) {
 		let episodes = this.state.episodes;
-		episodes[index].showHighlight = !episodes[index].showHighlight;
+		episodes = episodes.map( (item,i) => {
+			if(i === index){
+				return ({...item, showHighlight: !item.showHighlight});
+			} else {
+				return ({...item, showHighlight: false});
+			}
+		});
 		this.setState({episodes});
+		if(episodes[index].showHighlight) {
+			document.getElementsByClassName("episodes-container")[0].scrollTo({
+				top:200*index, behavior:'smooth'
+			});
+		}
 	}
 
 	async addHighlight( highlight, index ) {
@@ -194,7 +205,8 @@ class UserEpisodes extends React.Component {
 											</select>
 										</td>
 										<td className="ep-highlight-container flex center-content">
-											<button onClick={ () => { this.showHighlight(index) }} className="shift-button"> Visa höjdpunkter </button>
+											<button onClick={ () => { this.showHighlight(index) }} className="shift-button">
+												{episode.showHighlight ? 'Dölj höjdpunkter' : 'Visa höjdpunkter'} </button>
 										</td>
 										<td>
 											<button onClick={ ()=> {this.setNowPlaying(episode.url)}} className="ep-btn-play"> 
@@ -209,7 +221,9 @@ class UserEpisodes extends React.Component {
 								</tr>
 								<tr className={`highlight-container ${episode.showHighlight ? 'display-highlight':''}`}>
 									<td align="center" colSpan="7">
-										<div className={`highlight-content ${episode.showHighlight ? 'show-highlight':''}`}>
+										<div id={`open-highlight-${index}`}
+												 className={`highlight-content ${episode.showHighlight ? 'show-highlight':''}`}
+										>
 											<Highlight url={episode.url} 
 																 index={index} 
 																 highlights={episode.highlights}
