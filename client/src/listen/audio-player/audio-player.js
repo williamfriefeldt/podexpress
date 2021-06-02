@@ -2,7 +2,6 @@ import React from 'react';
 import './audio-player.css';
 import AudioPlayer from 'react-h5-audio-player';
 import 'react-h5-audio-player/lib/styles.css';
-import ReactDOMServer from 'react-dom/server';
 
 class PodexpressAudioPlayer extends React.Component {
 
@@ -20,7 +19,7 @@ class PodexpressAudioPlayer extends React.Component {
 	audioLoaded() {
 	    const audioNative = this.audio.current.audio.current;
 	    if(this.props.nowPlayingInfo.highlights) {
-	      this.props.nowPlayingInfo.highlights.map( item => {
+	      this.props.nowPlayingInfo.highlights.forEach( item => {
 	        const highlightElement = document.createElement('DIV');
 	        highlightElement.classList.add("listen-highlight-box");
 	        highlightElement.innerHTML = item.text;

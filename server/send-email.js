@@ -1,18 +1,11 @@
-const express = require('express');
-const cors = require('cors');
-const nodemailer = require("nodemailer");
+const nodemailer = require('nodemailer');
 
-// App
-const app = express();
-
-// Set port
-app.set("port", 5000);
-
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }))
-
-// Mail request
-app.get("/send_mail", async (req, res) => {
+/**
+ * @description - Send an email with query from the request and answer with success/fail response
+ * @param {object} req - Query with email adress, header and text
+ * @param {object} res - Resolve in success (object) or fail (string)
+ */
+const sendEmail = async (req, res) => {
   /* Allow cors headers */
   res.header("Access-Control-Allow-Origin", "http://localhost:3000");
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
@@ -26,30 +19,30 @@ app.get("/send_mail", async (req, res) => {
     port: 465,
     secure: true, // true for 465, false for other ports
     auth: {
-      user: "kontakt@poddsok.nu", 
-      pass: "nybrogatan57a", 
+      user: "contact@poddsok.nu", 
+      pass: "Nybrogatan57a", 
     },
     tls: {
         rejectUnauthorized: false
     }
   });
 
-  console.log('Transport created');
-
   // Send mail 
   await transporter.sendMail({
     from: email, // sender address
-    to: "kontakt@poddsok.nu", // list of receivers
+    to: "william.friefeldt@gmail.com", // list of receivers
     subject: header, // Subject line
     text: text, // plain text body
-    html: "<b>Hello world?</b>", // html body
+    html: text, // html body
   }, (error, info) => {
             if (error) {
+                console.log('Error:')
                 console.log(error.message);
                 res.json('Något gick fel: ' + error.message);
                 return;
             }
-            console.log(info.messageId);
+            console.log('Success!')
+            console.log(info.messageId); 
             const sucessData = {
               sent: true,
               mailID: info.messageId
@@ -57,9 +50,6 @@ app.get("/send_mail", async (req, res) => {
             res.json( sucessData );
             done();
         });
-});
+};
 
-// Server
-app.listen(5000, () => console.log(`Server running on localhost:${5000}`));
-
-
+module.exports = sendEmail;

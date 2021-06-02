@@ -14,11 +14,16 @@ class Contact extends React.Component {
       loading: false,
       noInput: false,
       emailSent: false,
-      emailError: false
+      emailError: false,
+      apiUrl: window.location.href
     }
 
     this.setInput = this.setInput.bind(this);
     this.sendEmail = this.sendEmail.bind(this);
+  }
+
+  componentDidMount() {
+    if( process.env.NODE_ENV === 'development' ) this.state.apiUrl = 'http://localhost:5000';
   }
 
   setInput( event ) {
@@ -28,42 +33,49 @@ class Contact extends React.Component {
   }
 
   async sendEmail() {
-    this.setState({loading: true});
+    if( !this.state.loading ) {
+      this.setState({loading: true, emailSent: false, emailError: false});
 
-    let state = this.state;
-    if (/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test( state['email'] )) {
-      state['validEmail'] = true;
-    } else {
-      state['validEmail'] = false;
-    }
+      let state = this.state;
+      if (/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test( state['email'] )) {
+        state['validEmail'] = true;
+      } else {
+        state['validEmail'] = false;
+      }
 
-    if( state['text'] === '' || state['header'] === '' ) {
-      state['noInput'] = true;
-    } else {
-      state['noInput'] = false;
-    }
+      if( state['text'] === '' || state['header'] === '' ) {
+        state['noInput'] = true;
+      } else {
+        state['noInput'] = false;
+      }
 
-    if( state['noInput'] || !state['validEmail'] ) {
-      state['loading'] = false;
-      this.setState(state);
-    } else {
-      await fetch( 'http://localhost:5000/send_mail?email=' + state['email'] + '&header=' + state['header'] + '&text=' + state['text'], {
-        method: 'GET',
-        mode: 'cors',
-        cache: 'no-cache',
-        credentials: 'same-origin'
-      })
-      .then(response => {
-        return response.json()
-      })
-      .then((data) => {
-        this.setState({loading: false, emailSent: true});
-        this.scrollIntoRes()
-      })
-      .catch((error) => {
-        this.setState({loading: false, emailError: true});
-        this.scrollIntoRes()
-      })
+      if( state['noInput'] || !state['validEmail'] ) {
+        state['loading'] = false;
+        this.setState(state);
+      } else {
+        const text = state['text'].split('\n').join('<br/>');
+        await fetch( this.state.apiUrl + '/send_email?email=' + state['email'] + '&header=' + state['header'] + '&text=' + text, {
+          method: 'GET',
+          mode: 'cors',
+          cache: 'no-cache',
+          credentials: 'same-origin'
+        })
+        .then(response => {
+          return response.json()
+        })
+        .then((data) => {
+          if( data.sent ) {
+            this.setState({loading: false, emailSent: true});
+          } else {
+            this.setState({loading: false, emailError: true});
+          }
+          this.scrollIntoRes();
+        })
+        .catch((error) => {
+          this.setState({loading: false, emailError: true});
+          this.scrollIntoRes()
+        })
+      }
     }
 
 
