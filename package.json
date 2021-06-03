@@ -14,7 +14,7 @@
     "start-client": "cd client && yarn start-client",
     "start-server": "node server/server.js",
     "install-all": "yarn install && cd client && yarn install",
-    "build": "cd client && yarn build",
+    "build": "cd client && yarn && yarn build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "heroku-postbuild": "yarn build && yarn start-server"
