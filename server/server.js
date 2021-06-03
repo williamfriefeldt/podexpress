@@ -12,11 +12,17 @@ const app = express();
  */
 app.set('port', 5000);
 
+/**
+ * @description - Routes for API Endpoints
+ */
+ app.use('/api', routes);
+
 /** 
  * @description - Serve static files from the React app (Podexpress frontend)
  */
 app.use(express.static(path.join(__dirname, '../client/build')));
-app.get('/*', function(req, res) {
+app.get('/*', function(req, res, next) {
+  if(req.url === '/api') return next();
   res.sendFile(path.join(__dirname, '../client/build/index.html'));
 });
 
@@ -26,11 +32,6 @@ app.get('/*', function(req, res) {
  */
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }))
-
-/**
- * @description - Routes for API Endpoints
- */
-app.use('/', routes);
 
 /**
  * @description - Serve the application
