@@ -15,7 +15,11 @@ app.set('port', 5000);
 /** 
  * @description - Serve static files from the React app (Podexpress frontend)
  */
-app.use(express.static(path.join(__dirname, '/build')));
+app.use(express.static(path.join(__dirname, '../client/build')));
+app.get('/', function(req, res) {
+  res.sendFile(path.join(__dirname, '../client/build/index.html'));
+});
+
 
 /**
  * @description - Parse incoming requests as JSON-object and match the header 'Content-Type'

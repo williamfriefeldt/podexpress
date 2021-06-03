@@ -14,10 +14,10 @@
     "start-client": "cd client && yarn start-client",
     "start-server": "node server/server.js",
     "install-all": "yarn install && cd client && yarn install",
-    "build": "react-scripts build",
+    "build": "cd client && yarn build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "heroku-postbuild": "npm run build && yarn start-server"
+    "heroku-postbuild": "yarn build && yarn start-server"
   },
   "repository": "https://github.com/williamfriefeldt/podexpress.git",
   "author": "WP\\friwi <william.friefeldt@agmail.com>",
