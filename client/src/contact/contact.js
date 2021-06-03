@@ -23,7 +23,7 @@ class Contact extends React.Component {
   }
 
   componentDidMount() {
-    if( process.env.NODE_ENV === 'development' ) this.setState({apiUrl:'http://localhost:5000'});
+    if( process.env.NODE_ENV === 'development' ) this.setState({apiUrl:'http://localhost:5000/'});
   }
 
   setInput( event ) {
@@ -54,7 +54,7 @@ class Contact extends React.Component {
         this.setState(state);
       } else {
         const text = state['text'].split('\n').join('<br/>');
-        await fetch( this.state.apiUrl + '/send_email?email=' + state['email'] + '&header=' + state['header'] + '&text=' + text, {
+        await fetch( this.state.apiUrl + 'send_email?email=' + state['email'] + '&header=' + state['header'] + '&text=' + text, {
           method: 'GET',
           mode: 'cors',
           cache: 'no-cache',

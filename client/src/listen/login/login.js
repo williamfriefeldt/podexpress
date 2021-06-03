@@ -35,7 +35,9 @@ class Login extends React.Component {
 			if( password === this.props.companyInfo.password )
 				window.location.href = this.props.companyInfo.companyNameRegX.toLowerCase() + '/podcasts'; 
 		}
-		setTimeout( () => this.setState({loadingBig:false}), 500);
+		setTimeout( () => {
+			this.setState({loadingBig:false});
+		}, 500);
 	}
 
 	setInput( event ) {
@@ -86,11 +88,10 @@ class Login extends React.Component {
 				{!this.state.loadingBig ?
 					<div>
 						<div className="listen-login-title-container">
-							{this.props.companyInfo.companyName !== '' ?
-								<button className="link-button login-back"
-												onClick={() => { window.location.pathname= '/lyssna' }}>
-													<IoChevronBack size={30}/>
-								</button> : '' } 
+							<button className="link-button login-back"
+											onClick={() => { window.location.pathname= this.state.inputs.companyName !== '' ? '/lyssna' : '/' }}>
+												<IoChevronBack size={30}/>
+							</button>
 							<h2> 
 								{this.props.companyInfo.companyName === '' ? 'Hitta företag' : this.props.companyInfo.companyName.replace('%20',' ')}
 							</h2>
@@ -108,6 +109,7 @@ class Login extends React.Component {
 													 name="companyName"
 													 onKeyDown={ e => { if( e.key === 'Enter' ) this.findCompany(); }}
 													 autoFocus
+													 placeholder="Namnet på företaget"
 										/>
 										<span id="delete-btn" 
 													className={`${this.state.inputs.companyName === '' ? '':'show-delete-icon'}`}
@@ -128,6 +130,7 @@ class Login extends React.Component {
 													 name="password"
 													 onKeyDown={ e => { if( e.key === 'Enter' ) this.login(); }}
 													 autoFocus
+													 placeholder="Företagets lösenord"
 										/>
 										<span id="delete-btn" 
 													className={`${this.state.inputs.password === '' ? '':'show-delete-icon'}`}

@@ -176,7 +176,15 @@ td img {
 @media (max-width: 600px) {
   .mobile-grid {
     display: grid !important;
-  }  
+  }
+  a:hover {
+    transform: translateX(0px);
+    text-shadow: none;
+  }
+  a:active {
+    transform: translateX(5px);
+    text-shadow: 0 4px 17px black;
+  }
 }
 
 /* REACT TRANSITION CUSTOM CSS */
