@@ -23,7 +23,7 @@ class Contact extends React.Component {
   }
 
   componentDidMount() {
-    if( process.env.NODE_ENV === 'development' ) this.state.apiUrl = 'http://localhost:5000';
+    if( process.env.NODE_ENV === 'development' ) this.setState({apiUrl:'http://localhost:5000'});
   }
 
   setInput( event ) {
@@ -65,7 +65,7 @@ class Contact extends React.Component {
         })
         .then((data) => {
           if( data.sent ) {
-            this.setState({loading: false, emailSent: true});
+            this.setState({loading: false, emailSent: true, header: '', text: ''});
           } else {
             this.setState({loading: false, emailError: true});
           }
@@ -98,7 +98,13 @@ class Contact extends React.Component {
             <label className="contact-form-label">
               Email
             </label>
-            <input className="contact-form-input" type="email" onChange={this.setInput} name="email" />
+            <input 
+              className="contact-form-input" 
+              type="email" 
+              onChange={this.setInput} 
+              name="email" 
+              placeholder="Din emailadress"
+            />
             <div className={`no-match no-match-text ${ this.state.validEmail ? '' : 'show-no-match-text'}`}>
               <p> Ogiltig emailadress </p>
             </div>
@@ -106,12 +112,25 @@ class Contact extends React.Component {
             <label className="contact-form-label contact-form-label-not-first">
               Rubrik
             </label>
-            <input className="contact-form-input" type="text" onChange={this.setInput} name="header"/>
+            <input 
+              className="contact-form-input" 
+              type="text" 
+              onChange={this.setInput} 
+              name="header" 
+              value={this.state.header} 
+              placeholder="Emailets rubrik"
+            />
 
             <label className="contact-form-label contact-form-label-not-first">
               Text
             </label>
-            <textarea className="input-textarea contact-form-textearea" onChange={this.setInput} name="text" />
+            <textarea 
+              className="input-textarea contact-form-textearea" 
+              onChange={this.setInput} 
+              name="text" 
+              value={this.state.text} 
+              placeholder="Emailets innehåll"
+            />
 
             <div className={`no-match no-match-text ${ !this.state.noInput ? '' : 'show-no-match-text'}`}>
               <p> Saknar rubrik och/eller text </p>
