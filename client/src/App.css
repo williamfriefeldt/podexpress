@@ -1,9 +1,3 @@
-.start-container {
-	display: flex;
-  height: calc(100vh - 83px);
-  padding-top: 58px;
-}
-
 .intro-container {
   padding-left: 100px;
   width: 60%;
@@ -56,10 +50,6 @@
 }
 
 @media (max-width: 750px) {
-  .start-container {
-    display: block;
-  }
-
   .speaker-icon {
     display: none;
   }

@@ -23,7 +23,10 @@ class PodexpressAudioPlayer extends React.Component {
 	        const highlightElement = document.createElement('DIV');
 	        highlightElement.classList.add("listen-highlight-box");
 	        highlightElement.innerHTML = item.text;
-	        highlightElement.onclick = () => audioNative.currentTime = item.time;
+	        highlightElement.onclick = () => { 
+						audioNative.currentTime = item.time;
+						audioNative.play();
+					};
 	        highlightElement.style.setProperty('margin-left', 'calc(' + (item.time/ audioNative.duration ) * 100 + '% - 82.5px)');
 	        this.audio.current.progressBar.current.children[0].appendChild( highlightElement );
 	      });
@@ -31,14 +34,14 @@ class PodexpressAudioPlayer extends React.Component {
 	}
 
 	showHighlights() {
-		let showHighlights = this.state.showHighlights;
+		let showHighlights = !this.state.showHighlights;
 		const highlights = document.getElementsByClassName('listen-highlight-box');
 		if( showHighlights ) {
 			Array.from(highlights).map( el => el.classList.add('listen-highlight-box-show') );			
 		} else {
 			Array.from(highlights).map( el => el.classList.remove('listen-highlight-box-show') );
 		}
-		this.setState({showHighlights: !showHighlights});
+		this.setState({showHighlights: showHighlights});
 	}
 
 	render() {
@@ -54,13 +57,17 @@ class PodexpressAudioPlayer extends React.Component {
 							ref={this.audio} 
 							onLoadedData={this.audioLoaded}
 						/>
-						<button className="show-highlights-btn" onClick={this.showHighlights}>
-							{!this.state.showHighlights ? 
-								'Visa höjdpunkter'
-							:
-								'Dölj höjdpunkter'
-							}
-						</button>
+						{this.props.nowPlayingInfo.highlights ?
+							<button className="show-highlights-btn" onClick={this.showHighlights}>
+								{!this.state.showHighlights ? 
+									'Visa höjdpunkter'
+								:
+									'Dölj höjdpunkter'
+								}
+							</button>
+						:
+							''
+						}
 					</div>
 				:
 					''

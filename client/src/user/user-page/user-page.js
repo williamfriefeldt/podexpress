@@ -58,7 +58,7 @@ class UserPage extends React.Component {
 	  	const companyName = userData.data()['companyName'];
 			const companyNameRegX = userData.data()['companyNameRegX'];
 
-	 	  const path = window.location.pathname.split('/');
+	 	  const path = decodeURIComponent(window.location.pathname).split('/');
 			
 	 	  if( companyNameRegX !== path[2].replace(/%20/g, ' ').toLocaleLowerCase() ) {
 	 	  	await auth.signOut();

@@ -44,7 +44,7 @@ function Header() {
 			<div className="mobile">
 				<div className="flex">
  					<img className="mobile speaker-icon mobile-icon" src={speakericon}  alt="Speaker" />
-					<div onClick={ () => { setOpen(!open) }}><GiHamburgerMenu size={30} className="menu-icon pointer" /></div>
+					<div onClick={ () => { setOpen(!open) }}><GiHamburgerMenu size={25} className="menu-icon pointer" /></div>
 				</div>
 
 				<div className={`mobile-menu ${open ? 'open-mobile-menu' : '' }`}>

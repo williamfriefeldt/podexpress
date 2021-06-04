@@ -26,11 +26,6 @@ class Login extends React.Component {
 		this.login = this.login.bind(this);
 	}
 
-	componentDidMount() {
-		let vh = window.innerHeight * 0.01;
-		document.documentElement.style.setProperty('--vh', `${vh}px`);
-	}
-
 	setInput( event ) {
  		let inputs = this.state.inputs;
 		inputs[event.target.name] = event.target.value;

@@ -27,7 +27,7 @@ function ShowPodcast(props) {
 
   const Episodes = (input) => (
     <div>
-      {input ?
+      {input && input.episodes ?
         <div>
           {Object.values(input.episodes).map( (ep, index) => { 
             if(ep.podcast === props.podcast.name) {
@@ -36,7 +36,7 @@ function ShowPodcast(props) {
               return '';
             }
           })}
-        </div> : ''}
+        </div> : 'Inga avsnitt finns'}
     </div>
   )
 

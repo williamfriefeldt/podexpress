@@ -112,7 +112,6 @@ class UserEpisodes extends React.Component {
 				episodes[index].podcast = event.target.value;
 			}
 		});		
-
 		const user = auth.currentUser;
 		const userRef = firestore.doc(`companies/${user.uid}`);
 		await userRef.set({ episodes }, { merge:true });
@@ -260,7 +259,7 @@ class UserEpisodes extends React.Component {
 								<div className="no-eps-container grid center-content">
 									<p> Det finns ingen podcast skapad </p>
 									<button className="upload-eps-btn shift-button"
-													onClick={() =>{ this.props.newRoute({location:'podcast'}) }}> Skapa podcast </button>
+													onClick={() =>{ this.props.newRoute({location:'podcasts'}) }}> Skapa podcast </button>
 								</div>
 							:
 								<div>

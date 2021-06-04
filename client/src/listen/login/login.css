@@ -57,3 +57,9 @@
 	top: 0px;
 	height: 45px;
 }
+
+@media (max-width: 750px) {
+	.listen-login-placeholder {
+		padding: 50px;
+	}
+}

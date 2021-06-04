@@ -59,7 +59,7 @@ class Login extends React.Component {
 		const userRef = firestore.collection('companies').where('companyNameRegX', '==', this.state.inputs.companyName.replace(/\s/g,'').toLowerCase());
 	  const companies =	await userRef.get();
 	 	companies.forEach( company => {
-	 		window.location = '/lyssna/' + company.data().companyName.toLowerCase();
+	 		window.location = '/lyssna/' + company.data().companyNameRegX;
 	 	});
 		setTimeout( () => {
 			let errorState = this.state.errorState;
@@ -72,7 +72,7 @@ class Login extends React.Component {
 		this.setState({loading:true, errorState:{msg:''}});
 		setTimeout( () =>{
 			if( this.state.inputs.password === this.props.companyInfo.password ) {
-				this.state.cookie.set( this.props.companyInfo.companyNameRegX, this.props.companyInfo.password, { path: '/' });
+				this.state.cookie.set( encodeURIComponent(this.props.companyInfo.companyNameRegX), this.props.companyInfo.password, { path: '/' });
 				window.location.href = this.props.companyInfo.companyNameRegX.toLowerCase() + '/podcasts';
 			} else {
 				let errorState = this.state.errorState;

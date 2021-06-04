@@ -13,6 +13,8 @@
 
 .menu-items {
 	display: grid;
+	row-gap: 5px;
+	margin-left:15px
 }
 
 .menu-items nav {

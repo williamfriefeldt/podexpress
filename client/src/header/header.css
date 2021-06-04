@@ -1,13 +1,15 @@
 .header-title {
 	padding-left: 40px;
+	margin-block-start: 0.6em;
 }
 
 nav {
-	padding: 30px;
+	padding: 25px 30px 0px 0px;
 }
 
 nav a {
-	padding-right: 30px;
+	margin-right: 30px;
+	font-size: 18.5px
 }
 
 .header-container {
@@ -21,7 +23,7 @@ nav a {
 }
 
 .menu-icon {
- padding: 20px 20px 20px 10px;
+	padding: 15px 20px 20px 10px;
 }
 
 .mobile-menu {
@@ -59,8 +61,8 @@ nav a {
 	}
 
 	.mobile-icon {
-		width: 30px;
-		height: 30px;
-		margin: 17.5px;
+		width: 25px;
+		height: 25px;
+		margin: 15.5px;
 	}
 }

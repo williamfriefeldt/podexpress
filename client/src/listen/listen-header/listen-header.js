@@ -25,10 +25,14 @@ function ListenHeader( input ) {
 			</Link>
 			
 			<div className="flex listen-header-menu desktop">
-				<Link to={`/lyssna/${input.company.companyNameRegX}/om`}
-							transition='flip-right'> 
-								Om företaget
-				</Link>
+				{input.company.description ?
+					<Link to={`/lyssna/${input.company.companyNameRegX}/om`}
+								transition='flip-right'> 
+									Om företaget
+					</Link>
+				:
+					''
+				 }
 				<Link to={`/lyssna/${input.company.companyNameRegX}/kontakt`}
 							transition='flip-right'> 
 								Kontakta 

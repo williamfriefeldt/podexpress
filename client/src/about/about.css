@@ -3,7 +3,7 @@
 	width: 60%;
 	text-align: center;
 	height: 100vh;
-	padding-top: 75px;
+	padding-top: 60px;
 }
 
 .about-container article {
@@ -15,7 +15,7 @@
 	.about-container {
 		margin-left: 5%;
 		width: 90%;
-		padding-top: 70px;
+		padding-top: 50px;
 	}
 	.about-container h1 {
 		font-size: 22.5px;

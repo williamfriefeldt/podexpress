@@ -1,6 +1,6 @@
 .contact-container {
   text-align: center;
-	padding-top: 80px;
+	padding-top: 60px;
 }
 
 .contact-container p {
@@ -62,7 +62,7 @@
 
 @media (max-width: 750px) {
   .contact-container {
-    padding-top: 50px;
+    padding-top: 40px;
   }
   .contact-form-container {
     width: 260px;

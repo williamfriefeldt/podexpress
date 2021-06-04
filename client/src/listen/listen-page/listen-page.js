@@ -61,9 +61,9 @@ class ListenPage extends React.Component {
 		const path = decodeURIComponent(window.location.pathname).split('/');
 		
 		if( path.length > 2 ) {
-			const data = await this.getData( path[2].replace(/[%20\s]/g,'').toLowerCase() );
+			const data = await this.getData( path[2].replace(/\s/g,'') );
 			if( data ) {
-				const password = this.state.cookie.get( data.companyNameRegX );
+				const password = this.state.cookie.get( encodeURIComponent(data.companyNameRegX) );
 				this.setState({companyInfo:data});
 				if( password !== data.password && path.length !== 3) {
 					window.location.href = '/lyssna/' + data.companyNameRegX;
@@ -264,7 +264,11 @@ class ListenPage extends React.Component {
 					</Route>
 					<Route path="/lyssna/:name/podcasts">
 						{!this.state.loading ?
-							<Podcasts podcasts={this.state.companyInfo.podcasts} showEps={this.showEps} />
+							<Podcasts 
+								podcasts={this.state.companyInfo.podcasts} 
+								showEps={this.showEps} 
+								companyName={this.state.companyInfo.companyNameRegX}
+							/>
 						:
 							<div className="flex center-content">
 								<span className="big-loading"><VscLoading /></span> 

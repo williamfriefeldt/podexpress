@@ -22,7 +22,6 @@ class Upload extends React.Component {
 				episodeDescription: '',
 				podcast: ''
 			},
-			podcastInfo: '',
 			podcasts: [],
 			fileName: {
 				img: '',
@@ -48,14 +47,16 @@ class Upload extends React.Component {
 			const user = auth.currentUser;
 		  const userRef = firestore.doc(`companies/${user.uid}`);
 		  const snapshot = await userRef.get();
-		  let podcasts = this.state.episodes;
+		  let podcasts;
 		  const data = snapshot.data()['podcasts'];
 			if( data === undefined ) {
 				podcasts = [];
 			} else {
 				podcasts = Object.values( data );
 			}
-		  this.setState({podcasts, podcastInfo:{podcast:podcasts[0].name}});
+			let epInfo = this.state.episodeInfo;
+			epInfo.podcast = podcasts[0].name;
+		  this.setState({podcasts, episodeInfo:epInfo });
 		} catch ( error ) {
 			console.log(error);
 		}

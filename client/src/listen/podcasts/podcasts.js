@@ -15,7 +15,7 @@ function Podcasts(props) {
 			{props.podcasts ?
 				<div className={`listen-podcasts flex ${ innerWidth() > 750 ? 'center-content' : '' }`}>
 					{Object.values(props.podcasts).map( (podcast, index) =>
-						<Link to={`/lyssna/podexpress/${podcast.name.replace(/\s/g,'').toLowerCase()}/avsnitt`}
+						<Link to={`/lyssna/${props.companyName}/${podcast.name.replace(/\s/g,'').toLowerCase()}/avsnitt`}
 									className="listen-podcast grid center-content" 
 									key={index} onClick={()=> { props.showEps(podcast);	}}
 									transition='glide-left'

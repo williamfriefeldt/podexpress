@@ -20,7 +20,7 @@ function App() {
     return (
       <Navigation>
           <Header />
-          <Route path="/logga-in">
+          <Route path="/logga-in" screen>
             <Login />
           </Route>
           <Route path="/skapa-konto" screen>
