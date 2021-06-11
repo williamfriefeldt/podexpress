@@ -18,7 +18,7 @@
 
 .podcast-back {
 	position: absolute;
-	top: 1px;
+	top: 7px;
 	height: 45px;
 	left: 20%;
 }
@@ -148,5 +148,10 @@
 
 	.listen-comment-container {
 		border-radius: 0;
+	}
+
+	.pod-info-container article {
+		padding-top: 2px;
+		padding-left: 2px;
 	}
 }

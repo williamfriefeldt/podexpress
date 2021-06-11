@@ -16,12 +16,14 @@ function AboutCompany( input ) {
             >
               <IoChevronBack size={30} />
             </Link> 
-            <h2 className="center-text">Podexpress, här för att stanna!</h2>
+            <h2 className="center-text">
+              {input.description[0].title ? input.description[0].title : input.companyName} 
+            </h2>
           </div>
 
           <div className="flex center-content">
             <article className="center-text description-width">
-              {input.description}
+              {input.description[0].text ? input.description[0].text : input.description}
             </article>
           </div>
         </div>

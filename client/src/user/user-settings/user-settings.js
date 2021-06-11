@@ -11,7 +11,8 @@ class UserSettings extends React.Component {
 			companyName: '',
 			companyNameRegX: '',
 			email: '',
-			description: '',
+			descriptionTitle: '',
+			descriptionText: '',
 			infoChange: false,
 			errors: {
 				companyExists: false,
@@ -34,7 +35,11 @@ class UserSettings extends React.Component {
 		state['companyName'] = userData.data()['companyName'];
 		state['email'] = email;
 		state['companyNameRegX'] = userData.data()['companyNameRegX'];
-		state['description'] = userData.data()['description'];
+		const description = userData.data()['description'];
+		if( description ) {
+			state['descriptionTitle'] = description[0]['title'];
+			state['descriptionText'] = description[0]['text'];
+		}
 		this.setState( state );
 	}
 
@@ -48,7 +53,8 @@ class UserSettings extends React.Component {
 
 	async updateInfo() {
 		this.setState({loading: true});
-		const { companyName, email, companyNameRegX, description } = this.state;
+		const { companyName, email, companyNameRegX, descriptionTitle, descriptionText } = this.state;
+		const description = [{ title:descriptionTitle, text:descriptionText }];
 		const userID = auth.currentUser.uid;
 		const userRef = firestore.doc(`companies/${userID}`);
 		if( companyName.replace(/\s/g,'').toLowerCase() !== companyNameRegX ) {
@@ -128,7 +134,15 @@ class UserSettings extends React.Component {
 					<label className="input-label">
 						Företagsbeskrivning
 					</label>
-					<textarea className="input-textarea description-area" onChange={this.setInput} name="description" value={this.state.description}/>
+					<input className="settings-input" autoComplete="off" value={this.state.descriptionTitle}
+											type="text" onChange={this.setInput} name="descriptionTitle" placeholder="Titel" />
+					<textarea 
+						className="input-textarea description-area" 
+						onChange={this.setInput} 
+						name="descriptionText" 
+						value={this.state.descriptionText}
+						placeholder="Beskrivning"
+					/>
 				</div>
 
 				<div className="grid">

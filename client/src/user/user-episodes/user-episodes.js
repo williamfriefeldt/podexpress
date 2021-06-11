@@ -130,11 +130,6 @@ class UserEpisodes extends React.Component {
 			}
 		});
 		this.setState({episodes});
-		if(episodes[index].showHighlight) {
-			document.getElementsByClassName("episodes-container")[0].scrollTo({
-				top:200*index, behavior:'smooth'
-			});
-		}
 	}
 
 	async addHighlight( highlight, index ) {
