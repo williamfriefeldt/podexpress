@@ -1,4 +1,4 @@
-.listen-audio-player-container {
+.listen-audio-player-container, .listen-audio-player-container-mobile {
 	background-color: wheat;
 	color: #003366;
 	border-top: 2px solid #003366;
@@ -132,4 +132,23 @@
 		margin-bottom: -17.5px;
 		margin-top: 12px;
 	}
+}
+
+/* MOBILE CSS */
+
+.listen-audio-player-container-mobile img {
+	height: 55px;
+	width: 55px;
+}
+.listen-audio-player-container-mobile h3 {
+	padding-left: 15px;
+	padding-top: 3.5px;
+	width: calc(100% - 200px);
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	overflow: hidden;
+}
+.listen-audio-player-container-mobile button {
+	margin: 11px 7.5px 0px 7.5px;
+	padding: 5px 10px;
 }
