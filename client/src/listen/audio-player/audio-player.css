@@ -152,3 +152,7 @@
 	margin: 11px 7.5px 0px 7.5px;
 	padding: 5px 10px;
 }
+.listen-audio-player-container-mobile button:hover {
+	box-shadow: none;
+	transform: translateY(0px);
+}

@@ -249,6 +249,6 @@ textarea::-webkit-scrollbar-track {
 }
 
 textarea::-webkit-scrollbar-thumb {
-background-color: #003366;
-outline: 1px solid #003366;
+  background-color: #003366;
+  outline: 1px solid #003366;
 }

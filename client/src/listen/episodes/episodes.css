@@ -37,4 +37,12 @@
 	.listen-episode h3, .listen-episode p {
 		padding: 3px;
 	}
+	.listen-episode button:hover {
+    transform: translateX(0px);
+    box-shadow: none;
+  }
+	.listen-episode button:active {
+    transform: translateX(5px);
+    box-shadow: 0 4px 17px black;
+  }
 }

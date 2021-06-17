@@ -33,6 +33,7 @@ class ListenPage extends React.Component {
 		};
 
 		this.commentsRef = React.createRef();
+		this.audioPlayer = React.createRef();
 
 		this.setNowPlaying = this.setNowPlaying.bind(this);
 		this.showEps = this.showEps.bind(this);
@@ -91,6 +92,7 @@ class ListenPage extends React.Component {
 
 	setNowPlaying( prop ) {
 		this.setState({nowPlayingInfo:prop});
+		this.audioPlayer.current.playAudio();
 	}
 
 	showEps( pod ) {
@@ -331,7 +333,7 @@ class ListenPage extends React.Component {
 							</div>
 
 							<div className={`listen-audio-container ${this.state.nowPlayingInfo.name ? 'listen-show-audio-container' : ''}`}>
-								<PodexpressAudioPlayer nowPlayingInfo={this.state.nowPlayingInfo} />
+								<PodexpressAudioPlayer nowPlayingInfo={this.state.nowPlayingInfo} ref={this.audioPlayer}/>
 								<button	className={`audio-play-close ${this.state.nowPlayingInfo.name ? 'audio-play-close-show' : ''}`} 
 											onClick={() => this.setNowPlaying({})}><ImCross /></button>
 							</div>

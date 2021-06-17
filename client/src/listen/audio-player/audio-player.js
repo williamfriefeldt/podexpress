@@ -2,7 +2,8 @@ import React from 'react';
 import './audio-player.css';
 import AudioPlayer from 'react-h5-audio-player';
 import 'react-h5-audio-player/lib/styles.css';
-import { AiFillPlayCircle } from 'react-icons/ai';
+import { AiFillPlayCircle, AiFillPauseCircle } from 'react-icons/ai';
+import { VscLoading } from 'react-icons/vsc';
 
 class PodexpressAudioPlayer extends React.Component {
 
@@ -10,11 +11,14 @@ class PodexpressAudioPlayer extends React.Component {
 		super(props);
 		this.state = {
 			showHighlights: false,
-			mobile: true
+			mobile: true,
+			playAudio: false,
+			loadAudio: false
 		};
 		this.audio = React.createRef();
 		this.audioLoaded = this.audioLoaded.bind(this);
 		this.showHighlights = this.showHighlights.bind(this);
+		this.playAudio = this.playAudio.bind(this);
 	}
 
 	componentDidMount() {
@@ -49,6 +53,30 @@ class PodexpressAudioPlayer extends React.Component {
 			Array.from(highlights).map( el => el.classList.remove('listen-highlight-box-show') );
 		}
 		this.setState({showHighlights: showHighlights});
+	}
+
+	playAudio() {
+		let time = 0;
+		if( this.audio.current === null ) {
+			time = 100;
+			this.setState({loadAudio: true});
+			setTimeout(() => { 
+				let audio = new Audio(this.props.nowPlayingInfo.url);
+				audio.addEventListener( 'canplaythrough', () => {
+					this.setState({loadAudio: false});
+				});
+				this.audio.current = audio;
+			}, 100);
+		}
+		setTimeout( () => {
+			const audioNative = this.audio.current;
+			if( !this.state.playAudio ) {
+				audioNative.play();
+			} else {
+				audioNative.pause();
+			}
+			this.setState({playAudio:!this.state.playAudio});
+		}, time);
 	}
 
 	render() {
@@ -88,8 +116,18 @@ class PodexpressAudioPlayer extends React.Component {
 							<div className="flex listen-audio-player-container-mobile">
 								{this.props.nowPlayingInfo.img ? <img src={this.props.nowPlayingInfo.img} alt="Omslagsbild för avsnitt" /> : '' }
 								<h3>{this.props.nowPlayingInfo.name}</h3>
-								<button onClick={console.log('hej')}>
-									<AiFillPlayCircle size={32}></AiFillPlayCircle>
+								<button onClick={this.playAudio}>
+									{!this.state.loadAudio ?
+										<React.Fragment>
+											{!this.state.playAudio ?
+												<AiFillPlayCircle size={32}></AiFillPlayCircle>
+											:
+												<AiFillPauseCircle size={32}></AiFillPauseCircle>
+											}
+										</React.Fragment>
+									:
+										<span className="loading"><VscLoading size={40} /></span>
+									}
 								</button>
 							</div>
 						:
