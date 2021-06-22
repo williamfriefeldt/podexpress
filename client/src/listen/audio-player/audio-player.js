@@ -4,6 +4,8 @@ import AudioPlayer from 'react-h5-audio-player';
 import 'react-h5-audio-player/lib/styles.css';
 import { AiFillPlayCircle, AiFillPauseCircle } from 'react-icons/ai';
 import { VscLoading } from 'react-icons/vsc';
+import { ImCross } from 'react-icons/im';
+import { MdForward30 } from 'react-icons/md';
 
 class PodexpressAudioPlayer extends React.Component {
 
@@ -13,12 +15,15 @@ class PodexpressAudioPlayer extends React.Component {
 			showHighlights: false,
 			mobile: true,
 			playAudio: false,
-			loadAudio: false
+			loadAudio: false,
+			openMobileInfo: false
 		};
 		this.audio = React.createRef();
 		this.audioLoaded = this.audioLoaded.bind(this);
 		this.showHighlights = this.showHighlights.bind(this);
 		this.playAudio = this.playAudio.bind(this);
+		this.isAudioLoaded = this.isAudioLoaded.bind(this);
+		this.openMobileInfo = this.openMobileInfo.bind(this);
 	}
 
 	componentDidMount() {
@@ -42,6 +47,10 @@ class PodexpressAudioPlayer extends React.Component {
 				this.audio.current.progressBar.current.children[0].appendChild( highlightElement );
 			});
 		}
+		audioNative.play();
+		audioNative.onplay = () => { this.props.isPlaying( this.props.nowPlayingInfo.name, true ) };
+		audioNative.onpause = () => { this.props.isPlaying( this.props.nowPlayingInfo.name, false ) };
+		this.setState({loading: false});
 	}
 
 	showHighlights() {
@@ -56,27 +65,52 @@ class PodexpressAudioPlayer extends React.Component {
 	}
 
 	playAudio() {
-		let time = 0;
-		if( this.audio.current === null ) {
-			time = 100;
-			this.setState({loadAudio: true});
-			setTimeout(() => { 
-				let audio = new Audio(this.props.nowPlayingInfo.url);
-				audio.addEventListener( 'canplaythrough', () => {
-					this.setState({loadAudio: false});
-				});
-				this.audio.current = audio;
-			}, 100);
+		if(this.state.mobile) {
+			let time = 0;
+			if( this.audio.current === null ) {
+				time = 100;
+				this.setState({loadAudio: true});
+				setTimeout(() => { 
+					let audio = new Audio(this.props.nowPlayingInfo.url);
+					audio.addEventListener( 'canplaythrough', () => {
+						this.setState({loadAudio: false});
+					});
+					this.audio.current = audio;
+				}, 100);
+			}
+			setTimeout( () => {
+				const audioNative = this.audio.current;
+				if( !this.state.playAudio ) {
+					audioNative.play();
+					this.props.isPlaying( this.props.nowPlayingInfo.name, true);
+				} else {
+					audioNative.pause();
+					this.props.isPlaying( this.props.nowPlayingInfo.name, false);
+				}
+				this.setState({playAudio:!this.state.playAudio});
+			}, time);
+		} else {
+			this.isAudioLoaded();
 		}
-		setTimeout( () => {
-			const audioNative = this.audio.current;
+	}
+
+	isAudioLoaded() {
+		if( this.audio.current === null ) {
+			setTimeout( () => {this.isAudioLoaded()}, 100)
+		} else {
+			const audioNative = this.audio.current.audio.current;
 			if( !this.state.playAudio ) {
 				audioNative.play();
 			} else {
 				audioNative.pause();
 			}
 			this.setState({playAudio:!this.state.playAudio});
-		}, time);
+		}
+	}
+
+	openMobileInfo() {
+		this.props.setMobileInfoOpen(!this.state.openMobileInfo);
+		this.setState({openMobileInfo:!this.state.openMobileInfo});
 	}
 
 	render() {
@@ -114,8 +148,8 @@ class PodexpressAudioPlayer extends React.Component {
 					<div>
 						{this.props.nowPlayingInfo.name ?
 							<div className="flex listen-audio-player-container-mobile">
-								{this.props.nowPlayingInfo.img ? <img src={this.props.nowPlayingInfo.img} alt="Omslagsbild för avsnitt" /> : '' }
-								<h3>{this.props.nowPlayingInfo.name}</h3>
+								{this.props.nowPlayingInfo.img ? <img onClick={this.openMobileInfo} src={this.props.nowPlayingInfo.img} alt="Omslagsbild för avsnitt" /> : '' }
+								<h3 onClick={this.openMobileInfo}>{this.props.nowPlayingInfo.name}</h3>
 								<button onClick={this.playAudio}>
 									{!this.state.loadAudio ?
 										<React.Fragment>
@@ -133,6 +167,31 @@ class PodexpressAudioPlayer extends React.Component {
 						:
 							''
 						}
+						<div className="ep-info-mobile" style={{transform: this.state.openMobileInfo ? 'translateY(0%)':'translateY(100%)'}}>
+							<div className="ep-info-mobile-title-container flex">
+								<h2 className="center-text full-width">{this.props.nowPlayingInfo.name}</h2>
+								<div className="close">
+									<ImCross size={22} className="pointer"/>
+								</div>
+								<div className="click-close-square" onClick={this.openMobileInfo}></div>
+							</div>
+
+							{this.props.nowPlayingInfo.img ? 
+								<div className="grid center-content">
+									<img className="ep-info-mobile-img" src={this.props.nowPlayingInfo.img} alt="Omslagsbild för avsnitt" /> 
+
+									<div className="flex space mobile-audio-controls">
+										<MdForward30 size={50}></MdForward30>
+										{!this.state.playAudio ?
+													<AiFillPlayCircle size={60} onClick={this.playAudio} ></AiFillPlayCircle>
+												:
+													<AiFillPauseCircle size={60} onClick={this.playAudio} ></AiFillPauseCircle>
+										}
+										<MdForward30 size={50}></MdForward30>
+									</div>
+								</div>
+							: '' }
+						</div>
 					</div>
 				}
 			</div>

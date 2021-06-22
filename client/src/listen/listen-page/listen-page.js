@@ -25,11 +25,16 @@ class ListenPage extends React.Component {
 			companyInfo: {companyName:''},
 			podcasts: [],
 			nowPlayingInfo: {},
+			isPlaying: {
+				name:'',
+				status: false
+			},
 			currentPod: null,
 			cookie: new Cookies(),
 			loadingReaction: false,
 			openComments: false,
-			loading: true
+			loading: true,
+			mobileInfoOpen: false
 		};
 
 		this.commentsRef = React.createRef();
@@ -42,6 +47,7 @@ class ListenPage extends React.Component {
 		this.closeComments = this.closeComments.bind(this);
 		this.sendComment = this.sendComment.bind(this);
 		this.removeComment = this.removeComment.bind(this);
+		this.isPlaying = this.isPlaying.bind(this);
 	}
 
 	UNSAFE_componentWillMount() {
@@ -90,8 +96,8 @@ class ListenPage extends React.Component {
 		return companyData;
 	}
 
-	setNowPlaying( prop ) {
-		this.setState({nowPlayingInfo:prop});
+	setNowPlaying( prop, status ) {
+		this.setState({nowPlayingInfo:prop, isPlaying:{status:status,name:prop.name}});
 		this.audioPlayer.current.playAudio();
 	}
 
@@ -244,13 +250,17 @@ class ListenPage extends React.Component {
 		});
 	}
 
+	isPlaying( ep, boolean ) {
+		this.setState({isPlaying: { name: ep, status: boolean }});
+	}
+
 	render() {
 
 		return (
 			<div className="listen-container"> 
 				<Navigation>
 					{this.state.companyInfo.companyName !== '' ? 
-						<ListenHeader company={this.state.companyInfo} comments={this.state.openComments} /> 
+						<ListenHeader company={this.state.companyInfo} comments={this.state.openComments} mobileInfoOpen={this.state.mobileInfoOpen}/> 
 					: '' }
 					<Route exact path="/lyssna">
 						<Login companyInfo={this.state.companyInfo} />
@@ -326,14 +336,21 @@ class ListenPage extends React.Component {
 																		Object.values(this.state.companyInfo.episodes).filter(ep => ep.podcast === this.state.currentPod.name)
 																}	 
 													showEps={this.showEps}
-													setNowPlaying={this.setNowPlaying} />
+													setNowPlaying={this.setNowPlaying}
+													isPlaying={this.state.isPlaying}
+											/>
 										</div>
 									}
 								</div>
 							</div>
 
 							<div className={`listen-audio-container ${this.state.nowPlayingInfo.name ? 'listen-show-audio-container' : ''}`}>
-								<PodexpressAudioPlayer nowPlayingInfo={this.state.nowPlayingInfo} ref={this.audioPlayer}/>
+								<PodexpressAudioPlayer 
+									nowPlayingInfo={this.state.nowPlayingInfo} 
+									ref={this.audioPlayer}
+									isPlaying={this.isPlaying}
+									setMobileInfoOpen={ (status) => this.setState({mobileInfoOpen:status}) }
+								/>
 								<button	className={`audio-play-close ${this.state.nowPlayingInfo.name ? 'audio-play-close-show' : ''}`} 
 											onClick={() => this.setNowPlaying({})}><ImCross /></button>
 							</div>

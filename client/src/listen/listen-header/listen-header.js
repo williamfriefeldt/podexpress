@@ -11,6 +11,8 @@ function ListenHeader( input ) {
 
 	const [open, setOpen] = useState(false);	
 
+	console.log(input);
+
 	const logOut = () => {
 		new Cookies().remove( input.company.companyNameRegX, { path: '/' } );
 		window.location.href = '/lyssna/' + input.company.companyNameRegX;
@@ -18,7 +20,7 @@ function ListenHeader( input ) {
 
 	return (
 		<div className="listen-header-container space flex full-width"
-				 style={{ transform: input.comments ? 'translateY(-100%)':'translateY(0%)' }}>
+				 style={{ transform: input.comments || input.mobileInfoOpen ? 'translateY(-100%)':'translateY(0%)' }}>
 			<Link to={`/lyssna/${input.company.companyNameRegX}/podcasts`}
 						transition='flip-right'>
 				<h2 className="listen-header-title">{input.company.companyName}</h2>

@@ -1,30 +1,33 @@
 import './episodes.css';
 import React from 'react';
-import { AiFillPlayCircle } from 'react-icons/ai';
+import { AiFillPlayCircle, AiFillPauseCircle } from 'react-icons/ai';
 
 class Episodes extends React.Component {
 
 	constructor(props) {
 		super(props);
-		this.state = {
-			nowPlaying: false
-		}
-
+		this.state = {}
 		this.play = this.play.bind(this);
 	}
 
 
 	play( ep ) {
-		this.props.setNowPlaying(ep)
-		this.setState({ nowPlaying:true });
+		const status = !this.props.isPlaying.status;
+		this.props.setNowPlaying(ep, status);
 	}
 
 	render() {
 		return( 
-			<div className={`listen-episodes-container ${this.state.nowPlaying ? 'listen-episodes-container-play' : ''}`}>
+			<div className="listen-episodes-container">
 				{this.props.eps.map( (ep, i) => 
 					<div key={i} className="listen-episode flex">
-						<button onClick={() => this.play(ep) }><AiFillPlayCircle className="play-icon" /></button> 
+						<button onClick={() => this.play(ep) }>
+							{this.props.isPlaying && this.props.isPlaying.name === ep.name && this.props.isPlaying.status ?
+								<AiFillPauseCircle size={32}></AiFillPauseCircle>
+							:
+								<AiFillPlayCircle className="play-icon" />
+							}	
+						</button> 
 						<div className="listen-episode-info">
 							<h3>{ep.name}</h3>
 							<p>{ep.description}</p>
