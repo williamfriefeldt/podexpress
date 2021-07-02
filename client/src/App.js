@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './App.css';
 import "react-tiger-transition/styles/main.min.css";
 import { Navigation, Route, glide, flip } from "react-tiger-transition";
@@ -12,10 +12,21 @@ import Header from './header/header';
 import Contact from './contact/contact';
 import Tutorial from './tutorial/tutorial';
 import CookiesComponent from './cookies/cookies';
+import { ImArrowUp } from "react-icons/im";
 
 function App() {
 
     console.log(`Environment: ${process.env.NODE_ENV}`);
+
+    const [scroll, setScroll] = useState(false);
+
+    const showScroll = (bool) => {
+      setScroll(bool);
+    }
+
+    const scrollTo = () => {
+      document.getElementsByClassName('react-tiger-transition--screen')[0].scrollTo({ top: 0, behavior: 'smooth' });
+    }
 
     return (
       <Navigation>
@@ -33,10 +44,14 @@ function App() {
             <ListenPage />
           </Route>
           <Route exact path="/" screen>
-            <Start />
+            <Start showScroll={showScroll} />
             <About />
             <Tutorial />
             <Contact />
+            <div className={`start-scroll-up pointer ${scroll ? 'show-scroll-up':''}`}
+                 onClick={scrollTo}>
+              <ImArrowUp size={30} />
+            </div>
           </Route>
           <CookiesComponent />
       </Navigation>

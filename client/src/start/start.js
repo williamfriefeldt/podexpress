@@ -7,7 +7,7 @@ import { AiOutlineArrowDown } from "react-icons/ai";
 
 class Start extends React.Component {
 
-  constructor() {
+  constructor(props) {
     super();
     this.state = {
       opacity: 1,
@@ -50,6 +50,11 @@ class Start extends React.Component {
     let callback = entries => entries.forEach(entry => {
       let opacity = prevIntersect && entry.isIntersecting ? entry.intersectionRatio : 0.1;
       prevIntersect = entry.isIntersecting;
+      if(opacity < 0.5) {
+        this.props.showScroll(true);
+      } else if(opacity > 0.9){
+        this.props.showScroll(false);
+      }
       if(window.location.pathname === '/') this.handleScroll(opacity);
     });
 

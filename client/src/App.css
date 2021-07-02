@@ -49,6 +49,22 @@
   height: 40px;
 }
 
+.start-scroll-up {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  background-color: wheat;
+  color: #003366;
+  padding: 10px 12.5px;
+  border-radius: 50%;
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+}
+
+.show-scroll-up {
+  opacity: 1;
+}
+
 @media (max-width: 750px) {
   .speaker-icon {
     display: none;
@@ -62,6 +78,11 @@
 
   .intro-container h1, h2 {
     text-align: center;
+  }
+
+  .start-scroll-up {
+    bottom: 5px;
+    right: 5px;
   }
 }
     

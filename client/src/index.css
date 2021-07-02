@@ -185,6 +185,14 @@ td img {
     transform: translateX(5px);
     text-shadow: 0 4px 17px black;
   }
+  button:hover {
+    transform: translateX(0px);
+    box-shadow: none;
+  }
+  button:active {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 17px rgba(0, 0, 0, 0.35);
+  }
 }
 
 /* REACT TRANSITION CUSTOM CSS */
