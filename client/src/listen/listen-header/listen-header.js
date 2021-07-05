@@ -10,11 +10,9 @@ import { ImCross } from 'react-icons/im';
 function ListenHeader( input ) {
 
 	const [open, setOpen] = useState(false);	
-
-	console.log(input);
-
+	
 	const logOut = () => {
-		new Cookies().remove( input.company.companyNameRegX, { path: '/' } );
+		new Cookies().remove( encodeURIComponent( input.company.companyNameRegX ), { path: '/' } );
 		window.location.href = '/lyssna/' + input.company.companyNameRegX;
 	}
 

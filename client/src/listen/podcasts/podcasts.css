@@ -14,7 +14,7 @@
 	background-color: wheat;
 	margin: 10px;
 	cursor: pointer;
-  transition: all 0.2s ease-in-out;
+  	transition: all 0.2s ease-in-out;
 }
 .listen-podcast:hover {
  	transform: scale(1.05); 
@@ -30,10 +30,10 @@
 	text-align: center;
 }
 .listen-podcast-img, .listen-podcast-img-placeholder {
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
-  width: 50%;
+  	display: block;
+  	margin-left: auto;
+  	margin-right: auto;
+  	width: 50%;
 	margin-top: 10px;
 }
 .listen-podcast-img-placeholder {

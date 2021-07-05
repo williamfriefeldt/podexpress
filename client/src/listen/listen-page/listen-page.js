@@ -51,13 +51,13 @@ class ListenPage extends React.Component {
 	}
 
 	UNSAFE_componentWillMount() {
-    window.onpopstate = () => {
-			const data = this.state.companyInfo;
-			const password = this.state.cookie.get( data.companyNameRegX );
-			if( password !== data.password ) {
-				window.location.href = '/lyssna/' + data.companyNameRegX;
-			}
-    }
+	    window.onpopstate = () => {
+				const data = this.state.companyInfo;
+				const password = this.state.cookie.get( encodeURIComponent(data.companyNameRegX) );
+				if( password !== data.password ) {
+					window.location.href = '/lyssna/' + data.companyNameRegX;
+				}
+	    }
 	}
 
 	async componentDidMount() {
@@ -112,7 +112,7 @@ class ListenPage extends React.Component {
 		for ( var i = 0; i < length; i++ ) {
 			result.push(characters.charAt(Math.floor(Math.random() * charactersLength)));
 		}
-   	return result.join('');
+   		return result.join('');
 	}	
 
 	async saveReaction(type) {
@@ -140,18 +140,18 @@ class ListenPage extends React.Component {
 				const otherType = type === 'thumbsUp' ? 'thumbsDown' : 'thumbsUp';
 				podcasts[indexPod][otherType] = podcasts[indexPod][otherType].filter( id => id !== reactionID );
 
-	      const userRef = await firestore.doc(`companies/${company.id}`);
-	      await userRef.set({ podcasts }, { merge:true });
+	      		const userRef = await firestore.doc(`companies/${company.id}`);
+	      		await userRef.set({ podcasts }, { merge:true });
 
-				this.state.cookie.set('reactionID', reactionID, { path: '/' });
+				this.state.cookie.set('reactionID', reactionID, { path: '/', expires: new Date(Date.now()+2592000) });
 				
-	      const newData = await userRef.get();
-	      const newThumbsUp = newData.data()['podcasts'][indexPod]['thumbsUp'];
+	      		const newData = await userRef.get();
+	      		const newThumbsUp = newData.data()['podcasts'][indexPod]['thumbsUp'];
 				const newThumbsDown = newData.data()['podcasts'][indexPod]['thumbsDown'];
-	      let currentPod = this.state.currentPod;
-	      currentPod['thumbsUp'] = newThumbsUp;
+	      		let currentPod = this.state.currentPod;
+	      		currentPod['thumbsUp'] = newThumbsUp;
 				currentPod['thumbsDown'] = newThumbsDown;
-	      this.setState({currentPod, loadingReaction:false});
+	      		this.setState({currentPod, loadingReaction:false});
 			});
 		}
 	}

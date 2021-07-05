@@ -30,7 +30,7 @@ function CookiesComponent() {
         </div>: ''}
       <h3>Vi sparar cookies för att ge dig en bättre användarupplevelse och se till att du kan återgå till där du slutade förra gången.</h3>
       <button className="cookie-btn shift-button" onClick={ () => {
-        new Cookies().set('cookie-accept', true); 
+        new Cookies().set('cookie-accept', true, { path:'/', expires: new Date(Date.now()+2592000) }); 
         setShowCookie(false);
       }} tabIndex="-1">
         Acceptera cookies

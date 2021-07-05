@@ -49,7 +49,7 @@ class Login extends React.Component {
 		} catch ( error ) {
     		let errorState = this.state.errorState;
     		errorState['msg'] = ErrorHandler( error.code );
-      	this.setState({ errorState, loading: false });
+      		this.setState({ errorState, loading: false });
 		}
 	}
 
@@ -60,7 +60,7 @@ class Login extends React.Component {
 					<Link to="/" transition='glide-left' className="link-button create-back">
 											<IoChevronBack size={30}/>
 					</Link>
-					<h2> Logga in	</h2>
+					<h2> Logga in </h2>
 				</div>
 				<form className="login-container">
 

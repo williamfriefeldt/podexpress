@@ -1,10 +1,10 @@
 .menu-container {
 	background: #003366;
-  position: absolute;
-  top: 0px;
-  bottom: 0px;
-  width: 0px;
-  transition: width 1.5s;
+	position: absolute;
+ 	top: 0px;
+ 	bottom: 0px;
+ 	width: 0px;
+ 	transition: width 1.5s;
 }
 
 .show-menu {
@@ -24,4 +24,8 @@
 .menu-items a {
 	padding-bottom: 10px;
 	padding-left: 10px;
+}
+
+.menu-items button {
+	padding-bottom: 50px;
 }

@@ -7,6 +7,7 @@ import { CircularProgressbarWithChildren, buildStyles } from 'react-circular-pro
 import 'react-circular-progressbar/dist/styles.css';
 
 import { VscLoading } from 'react-icons/vsc';
+import wrongDim from '../../fel-dim-2.png';
 
 class Upload extends React.Component {
 
@@ -27,6 +28,8 @@ class Upload extends React.Component {
 				img: '',
 				episode: ''
 			},
+			fileTmpURL: '',
+			squareImg: true,
 			errors: [],
 			loading: false,
 			progress: 0
@@ -40,11 +43,12 @@ class Upload extends React.Component {
 		this.checkFile = this.checkFile.bind(this);
 		this.checkInputs = this.checkInputs.bind(this);
 		this.uploadFile = this.uploadFile.bind(this);
+		this.onImgLoad = this.onImgLoad.bind(this);
 	}
 
 	async componentDidMount() {
 		try {
-			const user = auth.currentUser;
+		  const user = auth.currentUser;
 		  const userRef = firestore.doc(`companies/${user.uid}`);
 		  const snapshot = await userRef.get();
 		  let podcasts;
@@ -73,14 +77,25 @@ class Upload extends React.Component {
 		if( file.current.files.length > 0 ) {
 			let fileName = this.state.fileName;
 			fileName[type] = file.current.files[0].name;
-			this.setState({fileName});
+			const fileTmpURL = URL.createObjectURL(file.current.files[0]);
+			this.setState({fileName, fileTmpURL});
 		}
 	}
 
 	setInput(event) {
  		let episodeInfo = this.state.episodeInfo;
-  	episodeInfo[event.target.name] = event.target.value;
-  	this.setState({episodeInfo});
+  		episodeInfo[event.target.name] = event.target.value;
+  		this.setState({episodeInfo});
+	}
+
+	onImgLoad({target:img}) {
+		if( img.offsetHeight/img.offsetWidth === 1 ) {
+			console.log(this.state.squareImg);
+			this.setState({squareImg:true});
+		} else {
+			img.src = wrongDim;
+			this.setState({squareImg:false});
+		}
 	}
 
 	checkInputs() {
@@ -167,8 +182,18 @@ class Upload extends React.Component {
 							${this.state.hover.img ? 'upload-file-placeholder-hover' : ''}`}>
 								{this.state.fileName.img === '' ?
 									<p><strong> + </strong> Lägg till bild </p>:
-									<p>{this.state.fileName.img}</p>
+									<React.Fragment>
+										{this.state.squareImg && !this.state.hover.img ? <p style={{textAlign: 'center', maxWidth: '200px'}}>Visa bild</p> : '' }
+									</React.Fragment>
 								}
+								{this.state.fileTmpURL !== '' ?
+									<img 
+										onLoad={this.onImgLoad} 
+										src={this.state.fileTmpURL} 
+										alt="cover"
+										className={`${this.state.squareImg ? 'upload-cover-img':''} ${this.state.hover.img && this.state.squareImg ? 'upload-cover-show':''}`} 										
+									/>
+								: ''}
 						</div>
 						<input onMouseEnter={() => {this.setHover('img')}} 
 							   onMouseLeave={() => {this.setHover('img')}}

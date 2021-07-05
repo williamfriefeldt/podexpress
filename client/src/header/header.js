@@ -29,14 +29,22 @@ function Header() {
 			}
 			document.getElementsByClassName('react-tiger-transition--screen')[0].scrollTo({ top: scrollHeight, behavior: 'smooth' });
 		}
-  }
+  	};
+
+  	const ifOnListen = () => {
+  		if(window.location.pathname === '/lyssna') {
+  			window.location.href = '/logga-in';
+  		}
+  	}
+
 
 	return (
 		<div className="header-container" style={{display: display}}>
 			<Link to="/#hem"><h2 className="header-title pointer" onClick={ () => { scrollTo('hem') }}>Podexpress</h2></Link> 
 			<nav className="desktop">
 				<Link to="/lyssna" transition='glide-left'> Hitta podcast </Link>
-				<Link to="/logga-in"  transition="glide-left"> Logga in </Link>	
+				<Link to="/logga-in" transition="glide-left"
+					onClick={ifOnListen}> Logga in </Link>	
 				<Link to="/#om" onClick={ () => { scrollTo('om') }}> Om </Link>	
 				<Link to="/#sa-funkar-det" onClick={ () => { scrollTo('sa-funkar-det') }}> Så funkar det </Link>
 				<Link to="/#kontakt"onClick={ () => { scrollTo('kontakt') }}> Kontakt </Link>

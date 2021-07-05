@@ -2,7 +2,7 @@ import './about.css';
 import smoothscroll from 'smoothscroll-polyfill';
 import { AiOutlineArrowDown } from "react-icons/ai";
 
-function About() {
+function About(props) {
 
 	smoothscroll.polyfill();
 
@@ -13,7 +13,7 @@ function About() {
 	}
 
 	return(
-		<div className="about-container" id="om">
+		<div className={`about-container ${props.showAbout ? 'show-about-container' : ''}`} id="om">
 			<h1>Om Podexpress</h1>
 
 			<article>

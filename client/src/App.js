@@ -45,7 +45,7 @@ function App() {
           </Route>
           <Route exact path="/" screen>
             <Start showScroll={showScroll} />
-            <About />
+            <About showAbout={scroll} />
             <Tutorial />
             <Contact />
             <div className={`start-scroll-up pointer ${scroll ? 'show-scroll-up':''}`}

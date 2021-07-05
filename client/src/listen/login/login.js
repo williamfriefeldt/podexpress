@@ -42,14 +42,14 @@ class Login extends React.Component {
 
 	setInput( event ) {
  		let inputs = this.state.inputs;
-  	inputs[event.target.name] = event.target.value;
-    this.setState({ inputs });
+  		inputs[event.target.name] = event.target.value;
+    	this.setState({ inputs });
 	}
 
 	clearInput(type) {
 		let inputs = this.state.inputs;
-  	inputs[type] = '';
-    this.setState({ inputs });
+  		inputs[type] = '';
+    	this.setState({ inputs });
 		const input = document.querySelector("input");
 		input.focus();
 	}
@@ -57,7 +57,7 @@ class Login extends React.Component {
 	async findCompany() {
 		this.setState({loading:true, errorState:{msg:''}});
 		const userRef = firestore.collection('companies').where('companyNameRegX', '==', this.state.inputs.companyName.replace(/\s/g,'').toLowerCase());
-	  const companies =	await userRef.get();
+	  	const companies =	await userRef.get();
 	 	companies.forEach( company => {
 	 		window.location = '/lyssna/' + company.data().companyNameRegX;
 	 	});
@@ -72,7 +72,7 @@ class Login extends React.Component {
 		this.setState({loading:true, errorState:{msg:''}});
 		setTimeout( () =>{
 			if( this.state.inputs.password === this.props.companyInfo.password ) {
-				this.state.cookie.set( encodeURIComponent(this.props.companyInfo.companyNameRegX), this.props.companyInfo.password, { path: '/' });
+				this.state.cookie.set( encodeURIComponent(this.props.companyInfo.companyNameRegX), this.props.companyInfo.password, { path: '/', expires: new Date(Date.now()+2592000/4)});
 				window.location.href = this.props.companyInfo.companyNameRegX.toLowerCase() + '/podcasts';
 			} else {
 				let errorState = this.state.errorState;
