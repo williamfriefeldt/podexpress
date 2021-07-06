@@ -1,7 +1,7 @@
 import React from 'react';
 import './upload.css';
 import { auth, storage, firestore } from '../../store/services/firebase';
-import ImgTypes from './imgTypes';
+import { ImgTypes, EpTypes } from './fileTypes';
 
 import { CircularProgressbarWithChildren, buildStyles } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
@@ -29,7 +29,7 @@ class Upload extends React.Component {
 				episode: ''
 			},
 			fileTmpURL: '',
-			squareImg: true,
+			squareImg: false,
 			errors: [],
 			loading: false,
 			progress: 0
@@ -77,8 +77,12 @@ class Upload extends React.Component {
 		if( file.current.files.length > 0 ) {
 			let fileName = this.state.fileName;
 			fileName[type] = file.current.files[0].name;
-			const fileTmpURL = URL.createObjectURL(file.current.files[0]);
-			this.setState({fileName, fileTmpURL});
+			if( type === 'img' ) {
+				const fileTmpURL = URL.createObjectURL(file.current.files[0]);
+				this.setState({fileName, fileTmpURL});
+			} else {
+				this.setState({fileName});
+			}
 		}
 	}
 
@@ -90,10 +94,11 @@ class Upload extends React.Component {
 
 	onImgLoad({target:img}) {
 		if( img.offsetHeight/img.offsetWidth === 1 ) {
-			console.log(this.state.squareImg);
 			this.setState({squareImg:true});
 		} else {
-			img.src = wrongDim;
+			if( !this.state.squareImg ) {
+				img.src = wrongDim;		
+			} 
 			this.setState({squareImg:false});
 		}
 	}
@@ -105,6 +110,8 @@ class Upload extends React.Component {
 		} else {
 			if( ImgTypes.find( type => type === this.fileImgInput.current.files[0].type) === undefined ) {
 				errors.push( 'Bilden måste ha en godkänd typ' );
+			} else if( !this.state.squareImg ){
+				errors.push( 'Bilden måste vara fyrkantig' );
 			}
 		}
 		const epInfo = this.state.episodeInfo;
@@ -113,6 +120,10 @@ class Upload extends React.Component {
 
 		if( this.fileEpInput.current.files.length === 0 ) {
 			errors.push( 'Ett ljudklipp måste laddas upp' );
+		} else {
+			if( EpTypes.find( type => type === this.fileEpInput.current.files[0].type) === undefined ) {
+				errors.push( 'Ljudfilen måste vara av typen mp3' );
+			} 
 		}
 		this.setState({errors});
 	}
