@@ -156,6 +156,7 @@ class UserEpisodes extends React.Component {
 	async removeHighlight( highlight, index ) {
 		let episodes = this.state.episodes;
 		episodes.map( (ep, index) => delete episodes[index].showHighlight );
+		console.log(highlight)
 		episodes[index].highlights = episodes[index].highlights.filter( item => item.time !== highlight.time );
 		const user = auth.currentUser;
 		const userRef = firestore.doc(`companies/${user.uid}`);

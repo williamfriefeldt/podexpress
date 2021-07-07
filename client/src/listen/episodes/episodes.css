@@ -30,6 +30,10 @@
 	height: 35px;
 }
 
+.reaction-container {
+	padding: 10px;
+}
+
 @media (max-width: 600px) {
 	.listen-episode {
 		padding: 10px 0px 10px 0px;

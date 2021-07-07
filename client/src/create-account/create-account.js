@@ -80,8 +80,9 @@ class CreateAccount extends React.Component {
 	    const { email } = user;
 	    try {
 	      await userRef.set({ companyName, companyNameRegX: this.state.inputs.companyNameRegX, email, password: 'jW92kLP' });
-				await user.sendEmailVerification();
-				await auth.signInWithEmailAndPassword( email, this.state.inputs.password );
+		  await user.updateProfile({displayName:companyName});
+		  await user.sendEmailVerification();
+		  await auth.signInWithEmailAndPassword( email, this.state.inputs.password );
 	      window.location.href = window.location.href.replace( window.location.pathname, '' ) + '/företag/' + this.state.inputs.companyNameRegX;
 	    } catch (error) {
 	      console.error("Error creating user document", error);

@@ -40,24 +40,24 @@ class Comments extends React.Component {
 
   sendComment() {
     if( this.state.inputs.name !== '' && this.state.inputs.comment !== '' ) {
-      this.props.sendComment(this.state.inputs); 
+      this.props.sendComment(this.state.inputs, this.props.currentEp); 
       this.setState({inputs:{comment:'', name: this.state.inputs.name }});
     }
   }
 
   removeComment(comment) {
-    this.props.removeComment(comment);
+    this.props.removeComment(comment, this.props.currentEp);
   }
 
   render() {
 
     const Comments = (input) => (
       <div className="comments-list">
-        {input.comments.currentPod ?
+        {input.props.currentEp ?
           <div>
-            {input.comments.currentPod.comments ?
+            {input.props.currentEp.comments && input.props.currentEp.comments.length !== 0 ?
               <div id="comments-list">
-                {input.comments.currentPod.comments.map( (item, index) => {
+                {input.props.currentEp.comments.map( (item, index) => {
                   return <div className="comment" key={index}>
                           <p className={`${ this.state.cookie.get('reactionID') === item.reactionID ? 'own-comment' : '' }`}>
                             <strong>{item.name}:</strong> &nbsp; {item.comment}
@@ -84,7 +84,7 @@ class Comments extends React.Component {
           <ImCross />
         </div>
         <hr/>
-        <Comments comments={this.props} />
+        <Comments props={this.props} />
         <div className={`comment-box ${this.props.openComment ? 'show-comment-box':''}`}>
           <label>Kommentera</label>
           <input onChange={this.setInput} name="name" placeholder="Namn" value={this.state.inputs.name} />

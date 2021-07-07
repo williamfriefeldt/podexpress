@@ -24,6 +24,7 @@ class Login extends React.Component {
 
 		this.setInput = this.setInput.bind(this);
 		this.login = this.login.bind(this);
+		this.sendPasswordReset = this.sendPasswordReset.bind(this);
 	}
 
 	setInput( event ) {
@@ -53,6 +54,15 @@ class Login extends React.Component {
 		}
 	}
 
+	async sendPasswordReset() {
+		try {
+			auth.sendPasswordResetEmail(this.state.inputs.email);
+			this.setState({passwordReset:true});
+		} catch( e ) {
+			console.log(e);
+		}
+	}
+
 	render() {
 		return (
 			<div className="login-placeholder">
@@ -75,9 +85,21 @@ class Login extends React.Component {
 						<p> {this.state.errorState.msg} </p>
 					</div>
 
+					{this.state.errorState.msg === 'Fel lösenord' && !this.state.passwordReset ?
+						<div className="flex center-content">
+							<button type="button" onClick={this.sendPasswordReset}> Glömt lösenord? </button>
+						</div>
+					: '' }
+
+					{this.state.passwordReset ? 						
+						<div className="flex center-content">
+							<p> Email har skickats! </p>
+						</div>
+					: '' }
+
 					<button type="button" className="create-account-button shift-button" onClick={this.login}>
 						{this.state.loading ?
-							<span className="loading"><VscLoading /></span> 
+							<span className="loading"><VscLoading/></span> 
 						: 
 							'Logga in' 
 						}	

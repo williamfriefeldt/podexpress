@@ -55,7 +55,11 @@ function Highlight(input) {
   }
 
   const removeHighlight = (time) => {
-    const highlight = input.highlights.forEach( item => item.time === time );
+    const highlight = input.highlights.find( item => {
+      console.log(item.time);
+      console.log(time);
+      return item.time === time;
+  });
     input.removeHighlight( highlight, input.index );
   }
 

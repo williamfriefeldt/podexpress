@@ -28,9 +28,9 @@ class UserSettings extends React.Component {
 
 	async componentDidMount() {
 		const email = auth.currentUser.email;
-    const userID = auth.currentUser.uid;
-    const userRef = firestore.doc(`companies/${userID}`);
-    const userData = await userRef.get();
+    	const userID = auth.currentUser.uid;
+    	const userRef = firestore.doc(`companies/${userID}`);
+    	const userData = await userRef.get();
 		let state = this.state;
 		state['companyName'] = userData.data()['companyName'];
 		state['email'] = email;

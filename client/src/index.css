@@ -132,6 +132,10 @@ td img {
   justify-content: center;
 }
 
+.right-content {
+  justify-content: flex-end;
+}
+
 .mobile {
   display: none;
 }

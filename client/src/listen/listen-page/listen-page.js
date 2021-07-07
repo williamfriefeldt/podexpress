@@ -29,12 +29,11 @@ class ListenPage extends React.Component {
 				name:'',
 				status: false
 			},
-			currentPod: null,
+			currentEp: null,
 			cookie: new Cookies(),
-			loadingReaction: false,
-			openComments: false,
 			loading: true,
-			mobileInfoOpen: false
+			mobileInfoOpen: false,
+			openComments: false
 		};
 
 		this.commentsRef = React.createRef();
@@ -42,21 +41,21 @@ class ListenPage extends React.Component {
 
 		this.setNowPlaying = this.setNowPlaying.bind(this);
 		this.showEps = this.showEps.bind(this);
-		this.saveReaction = this.saveReaction.bind(this);
+		this.isPlaying = this.isPlaying.bind(this);
+		this.updateEps = this.updateEps.bind(this);
 		this.openComments = this.openComments.bind(this);
 		this.closeComments = this.closeComments.bind(this);
 		this.sendComment = this.sendComment.bind(this);
 		this.removeComment = this.removeComment.bind(this);
-		this.isPlaying = this.isPlaying.bind(this);
 	}
 
 	UNSAFE_componentWillMount() {
 	    window.onpopstate = () => {
-				const data = this.state.companyInfo;
-				const password = this.state.cookie.get( encodeURIComponent(data.companyNameRegX) );
-				if( password !== data.password ) {
-					window.location.href = '/lyssna/' + data.companyNameRegX;
-				}
+			const data = this.state.companyInfo;
+			const password = this.state.cookie.get( encodeURIComponent(data.companyNameRegX) );
+			if( password !== data.password ) {
+				window.location.href = '/lyssna/' + data.companyNameRegX;
+			}
 	    }
 	}
 
@@ -105,60 +104,20 @@ class ListenPage extends React.Component {
 		this.setState({currentPod:pod});
 	}
 
-	makeId(length) {
-		var result = [];
-		var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-		var charactersLength = characters.length;
-		for ( var i = 0; i < length; i++ ) {
-			result.push(characters.charAt(Math.floor(Math.random() * charactersLength)));
-		}
-   		return result.join('');
-	}	
-
-	async saveReaction(type) {
-		if(!this.state.loadingReaction) {
-			this.setState({loadingReaction:true});
-			let reactionID = this.state.cookie.get('reactionID');
-			const isClicked = this.state.currentPod[type].find( id => id === reactionID );
-			const companyRef = firestore.collection('companies').where('companyName', '==', this.state.companyInfo.companyName.replace('%20',' ') );
-			const companies =	await companyRef.get();
-			companies.forEach( async company => {
-			 	let podcasts = company.data()['podcasts'];
-				let indexPod = null;
-				if( typeof podcasts === 'object' ) {
-					podcasts = Object.values(podcasts);
-					podcasts.forEach( (pod,index) => {
-						if(pod.name === this.state.currentPod.name) indexPod = index;
-					});
-				}
-			 	if( !isClicked ) {
-			 		if( !reactionID ) reactionID = this.makeId(8); 
-					podcasts[indexPod][type].push( reactionID );
-				} else {
-					podcasts[indexPod][type] = podcasts[indexPod][type].filter( id => id !== reactionID );
-				}
-				const otherType = type === 'thumbsUp' ? 'thumbsDown' : 'thumbsUp';
-				podcasts[indexPod][otherType] = podcasts[indexPod][otherType].filter( id => id !== reactionID );
-
-	      		const userRef = await firestore.doc(`companies/${company.id}`);
-	      		await userRef.set({ podcasts }, { merge:true });
-
-				this.state.cookie.set('reactionID', reactionID, { path: '/', expires: new Date(Date.now()+2592000) });
-				
-	      		const newData = await userRef.get();
-	      		const newThumbsUp = newData.data()['podcasts'][indexPod]['thumbsUp'];
-				const newThumbsDown = newData.data()['podcasts'][indexPod]['thumbsDown'];
-	      		let currentPod = this.state.currentPod;
-	      		currentPod['thumbsUp'] = newThumbsUp;
-				currentPod['thumbsDown'] = newThumbsDown;
-	      		this.setState({currentPod, loadingReaction:false});
-			});
-		}
+	isPlaying( ep, boolean ) {
+		this.setState({isPlaying: { name: ep, status: boolean }});
 	}
 
-	openComments() {
+	updateEps(eps) {
+		let companyInfo = this.state.companyInfo;
+		companyInfo.episodes = eps;
+		this.setState({companyInfo: companyInfo});
+	}
+
+	openComments(ep) {
 		document.documentElement.style.setProperty('--audio-layer', `0`);
-		this.setState({openComments:true});		
+		console.log(ep)
+		this.setState({openComments:true, currentEp:ep});		
 		setTimeout( () =>{
 			const input = document.querySelector("input");
 			input.focus();
@@ -167,10 +126,20 @@ class ListenPage extends React.Component {
 
 	closeComments() {
 		document.documentElement.style.setProperty('--audio-layer', `1`);
-		this.setState({openComments:false});
+		this.setState({openComments:false, currentComments:null});
 	}
-	
-	async sendComment(commentInfo) {
+
+	makeId(length) {
+		var result = [];
+		var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+		var charactersLength = characters.length;
+		for ( var i = 0; i < length; i++ ) {
+			result.push(characters.charAt(Math.floor(Math.random() * charactersLength)));
+		}
+   		return result.join('');
+	}
+
+	async sendComment(commentInfo, ep) {
 		let reactionID = this.state.cookie.get('reactionID');
 		if( reactionID ) {
 			commentInfo['reactionID'] = reactionID;
@@ -181,45 +150,39 @@ class ListenPage extends React.Component {
 		const companyRef = firestore.collection('companies').where('companyNameRegX', '==', this.state.companyInfo.companyNameRegX );
 		const companies =	await companyRef.get();
 		companies.forEach( async company => {
-			 let podcasts = company.data()['podcasts'], indexPod;
-			 if( typeof podcasts === 'object' ) {
-				podcasts = Object.values(podcasts);
-				podcasts.forEach( (pod,index) => {
-					if(pod.name === this.state.currentPod.name) indexPod = index;
-				});
-			 }
-			 if( podcasts[indexPod]['comments'] ) {
-				podcasts[indexPod]['comments'].push(commentInfo);
-			 } else {
-				podcasts[indexPod]['comments'] = [commentInfo];
-			 }
+			let episodes = company.data()['episodes'], indexPod;
+			episodes.forEach( (episode, index) => {
+				if(episode.name === ep.name) indexPod = index;
+			});
+			if( episodes[indexPod]['comments'] ) {
+				episodes[indexPod]['comments'].push( commentInfo );
+			} else {
+				episodes[indexPod]['comments'] = [commentInfo];
+			}
 
-			 const userRef = await firestore.doc(`companies/${company.id}`);
-			 await userRef.set({ podcasts }, { merge:true });
+			const userRef = await firestore.doc(`companies/${company.id}`);
+			await userRef.set({ episodes }, { merge:true });
 
-			 let currentPod = this.state.currentPod;
-			 if( currentPod['comments'] ) {
-				currentPod['comments'].push(commentInfo);
-			 } else {
-				currentPod['comments'] = [commentInfo];
-			 }
-			 this.setState({currentPod});
-			 this.commentsRef.current.scrollToBottom();
+			let currentEp = this.state.currentEp;
+			if( currentEp['comments'] ) {
+				currentEp['comments'].push(commentInfo);
+			} else {
+				currentEp['comments'] = [commentInfo];
+			}
+			this.setState({currentEp});
+			this.commentsRef.current.scrollToBottom();
 		});
 	}
 
-	async removeComment(comment) {
+	async removeComment(comment, ep) {
 		const companyRef = firestore.collection('companies').where('companyNameRegX', '==', this.state.companyInfo.companyNameRegX );
 		const companies =	await companyRef.get();
 		companies.forEach( async company => {
-			 let podcasts = company.data()['podcasts'], indexPod;
-			 if( typeof podcasts === 'object' ) {
-				podcasts = Object.values(podcasts);
-				podcasts.forEach( (pod,index) => {
-					if(pod.name === this.state.currentPod.name) indexPod = index;
-				});
-			 }
-			 podcasts[indexPod]['comments'] = podcasts[indexPod]['comments'].filter( item => { 
+			 let episodes = company.data()['episodes'], indexPod;
+			 episodes.forEach( (episode,index) => {
+				if(episode.name === this.state.currentEp.name) indexPod = index;
+			 });
+			 episodes[indexPod]['comments'] = episodes[indexPod]['comments'].filter( item => { 
 				if( item.reactionID !== comment.reactionID ) {
 					return true;
 				} else {
@@ -232,10 +195,10 @@ class ListenPage extends React.Component {
 			 });
 
 			 const userRef = await firestore.doc(`companies/${company.id}`);
-			 await userRef.set({ podcasts }, { merge:true });
+			 await userRef.set({ episodes }, { merge:true });
 
-			 let currentPod = this.state.currentPod;
-			 currentPod['comments'] = currentPod['comments'].filter( item => { 
+			 let currentEp = this.state.currentEp;
+			 currentEp['comments'] = currentEp['comments'].filter( item => { 
 				if( item.reactionID !== comment.reactionID ) {
 					return true;
 				} else {
@@ -246,12 +209,8 @@ class ListenPage extends React.Component {
 					}
 				}
 			 });
-			 this.setState({currentPod});
+			 this.setState({currentEp});
 		});
-	}
-
-	isPlaying( ep, boolean ) {
-		this.setState({isPlaying: { name: ep, status: boolean }});
 	}
 
 	render() {
@@ -316,17 +275,6 @@ class ListenPage extends React.Component {
 												<article>
 													{this.state.currentPod.description}
 												</article>
-												<div className="pod-reactions">
-													<button className="shift-button comment-btn" onClick={() => { this.openComments() }}>Kommentarer</button>
-													<div onClick={() => this.saveReaction('thumbsUp')} 
-															className={`thumbs ${this.state.currentPod.thumbsUp.find((id) => this.state.cookie.get('reactionID') === id) ? 'thumb-filled' : ''}`}>
-																<p><FiThumbsUp />{this.state.currentPod.thumbsUp.length}</p>
-													</div>&nbsp;&nbsp;
-													<div onClick={() => this.saveReaction('thumbsDown')} 
-															className={`thumbs ${this.state.currentPod.thumbsDown.find((id) => this.state.cookie.get('reactionID') === id) ? 'thumb-filled' : ''}`}>
-																<p><FiThumbsDown />{this.state.currentPod.thumbsDown.length}</p>
-													</div>
-												</div>
 											</div>
 											<Episodes 
 													eps = {
@@ -338,6 +286,9 @@ class ListenPage extends React.Component {
 													showEps={this.showEps}
 													setNowPlaying={this.setNowPlaying}
 													isPlaying={this.state.isPlaying}
+													companyNameRegX={this.state.companyInfo.companyNameRegX}
+													updateEps={this.updateEps}
+													openComments={this.openComments}
 											/>
 										</div>
 									}
@@ -357,11 +308,11 @@ class ListenPage extends React.Component {
 
 							<div className={`listen-comment-container ${this.state.openComments ? 'show-comments':''}`}>
 								<Comments openComment={this.state.openComments} 
-													closeComments={this.closeComments} 
-													currentPod={this.state.currentPod} 
-													sendComment={this.sendComment}
-													removeComment={this.removeComment}
-													ref={this.commentsRef}
+										  closeComments={this.closeComments} 
+										  currentEp={this.state.currentEp}
+										  sendComment={this.sendComment}
+										  removeComment={this.removeComment}
+										  ref={this.commentsRef}
 								/>
 							</div>
 					</Route>
